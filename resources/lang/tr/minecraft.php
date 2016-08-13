@@ -64,4 +64,10 @@ return [
 
     'VILLAGER' => 'Köylü',
 
+    /*
+    * OTHERS
+    */
+
+    'ARROW' => 'Ok',
+
 ];

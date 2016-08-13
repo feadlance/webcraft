@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<base href="/">
-		<title>{{ env('SITE_NAME') }}</title>
+		<title>@yield('title', 'Anasayfa') - {{ env('SITE_NAME') }}</title>
 
 		<!-- meta -->
 		<meta charset="utf-8">

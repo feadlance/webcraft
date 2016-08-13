@@ -11,7 +11,7 @@
 	<div class="profile-detail">
 		<div class="header">
 			<img class="cover" src="assets/images/cover.jpg" alt="Cover">
-			<img class="avatar" src="https://minotar.net/avatar/{{ $user->username }}/70" alt="User Avatar">
+			<img class="avatar" src="{{ $user->getAvatar(70) }}" alt="User Avatar">
 			<span class="title">{{ $user->getDisplayName() }}</span>
 			@if ( Auth::id() !== $user->id )
 				<div class="friend-actions">
@@ -76,17 +76,7 @@
 				</ul>
 			</div>
 		</div>-->
-	</div>
-	<div class="profile-post">
-		@include('templates.status.share')
-		<div class="posts">
-			@foreach ( $statuses as $status )
-				@include('templates.status.statuses')
-			@endforeach
-		</div>
-	</div>
-	<div class="game-stats">
-		<div class="panel">
+		<div class="panel" style="margin-top: 5px;">
 			<div class="title">Oyun İstatistikleri</div>
 			@if ( $user->game() )
 				<ul class="content">
@@ -95,18 +85,18 @@
 							Öldürme
 							<small><a href="{{ route('profile.killed', ['player' => $user->username]) }}">(detaylı)</a></small>
 						</span>
-						{{ $user->game()->playerKills('PLAYER', true) }} oyuncu, {{ $user->game()->playerKills('ANIMALS', true) }} hayvan ve {{ $user->game()->playerKills('MONSTERS', true) }} yaratık.
+						{{ $user->game()->playerKills('ALL', true) }} oyuncu - yaratık - hayvan
 					</li>
 					<li>
 						<span>
-							Ölme
-							<small><a href="#">(detaylı)</a></small>
+							Ölüm
+							<small><a href="{{ route('profile.death', ['player' => $user->username]) }}">(detaylı)</a></small>
 						</span>
-						{{ $user->game()->totalDeath() }} kez.
+						{{ $user->game()->playerDeaths('ALL', true) }} kez
 					</li>
 					<li>
 						<span>Oynama Süresi</span>
-						{{ $user->game()->playTime() }} saniye.
+						{{ $user->game()->playTime() }} saniye
 					</li>
 				</ul>
 			@else
@@ -114,6 +104,14 @@
 					Hiç veri yok.
 				</div>
 			@endif
+		</div>
+	</div>
+	<div class="profile-post">
+		@include('templates.status.share')
+		<div class="posts">
+			@foreach ( $statuses as $status )
+				@include('templates.status.statuses')
+			@endforeach
 		</div>
 	</div>
 @stop

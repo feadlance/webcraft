@@ -41,6 +41,7 @@ class StatusController extends Controller
 		return \Response::json([
 			'success' => true,
 			'username' => $status->user()->username,
+			'avatar' => $status->user()->getAvatar(50),
 			'display_name' => $status->user()->getDisplayName(),
 			'created_at' => $status->created_at->diffForHumans()
 		]);
@@ -133,6 +134,8 @@ class StatusController extends Controller
 			'success' => true,
 			'comment_count' => $status->comments($parent_id)->count(),
 			'username' => \Auth::user()->username,
+			'avatar_25' => \Auth::user()->getAvatar(25),
+			'avatar_40' => \Auth::user()->getAvatar(40),
 			'display_name' => \Auth::user()->getDisplayName()
 		]);
 	}

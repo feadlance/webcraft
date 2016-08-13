@@ -242,7 +242,7 @@ $(function() {
 				if ( respond.error ) {
 					swal("Hata!", respond.error, "error");
 				} else {
-					$('.posts').prepend('<div class="item ui"> <div class="header"> <div class="avatar"> <img src="https://minotar.net/avatar/' + respond.username + '/50" alt="User Avatar"> </div> <div class="title"> <a href="javascript:;">' + respond.display_name + '</a> </div> <div class="extra"> ' + respond.created_at + '</div> </div> <div class="content"> <p>' + body.val() + '</p> <div class="show_comments_button info"> <span>Tüm işlemler için sayfayı yenileyin.</span> </div> </div> </div>');
+					$('.posts').prepend('<div class="item ui"> <div class="header"> <div class="avatar"> <img src="' + respond.avatar + '" alt="User Avatar"> </div> <div class="title"> <a href="javascript:;">' + respond.display_name + '</a> </div> <div class="extra"> ' + respond.created_at + '</div> </div> <div class="content"> <p>' + body.val() + '</p> <div class="show_comments_button info"> <span>Tüm işlemler için sayfayı yenileyin.</span> </div> </div> </div>');
 					body.val('');
 				}
 
@@ -358,10 +358,10 @@ $(function() {
 					swal("Hata!", respond.error, "error");
 				} else {
 					if ( reply ) {
-						$(thiss).closest('.comment').find('.child-comments').prepend('<div class="comment"> <img src="https://minotar.net/avatar/' + respond.username + '/25" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clear-after"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
+						$(thiss).closest('.comment').find('.child-comments').prepend('<div class="comment"> <img src="' + respond.avatar_25 + '" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clear-after"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
 						$(thiss).closest('.comment').find('.show_reply_comments_button').text('Yanıtla (' + respond.comment_count + ')');
 					} else {
-						$(thiss).closest('.comments').find('.post-comment').after('<div class="comment"> <img src="https://minotar.net/avatar/' + respond.username + '/40" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clear-after"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
+						$(thiss).closest('.comments').find('.post-comment').after('<div class="comment"> <img src="' + respond.avatar_40 + '" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clear-after"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
 						$(thiss).closest('.ui.item').find('.comment-counter').text(respond.comment_count);
 					}
 

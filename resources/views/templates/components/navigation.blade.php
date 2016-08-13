@@ -12,7 +12,7 @@
 	<div class="widget" style="border-bottom: 0;">
 		<div class="ui card">
 			<div class="ui slide masked image">
-				<img style="position: absolute; bottom: 50%; left: 50%; margin-bottom: -100px; margin-left: -50px; width: 100px;" src="https://minotar.net/body/{{ Auth::user()->username }}/100.png" alt="{{ Auth::user()->username }}">
+				<img style="position: absolute; bottom: 50%; left: 50%; margin-bottom: -100px; margin-left: -50px; width: 100px;" src="{{ Auth::user()->getSkin(100) }}" alt="{{ Auth::user()->username }}">
 				<img src="assets/images/skin-backgrounds/1.png" alt="Avatar Background">
 			</div>
 			<div class="content">

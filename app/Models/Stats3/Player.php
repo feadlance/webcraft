@@ -2,6 +2,7 @@
 
 namespace Webcraft\Models\Stats3;
 
+use Config;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,27 +15,31 @@ class Player extends Model
 		return $this->belongsTo('Webcraft\Models\User', 'name', 'username')->first();
 	}
 
-	public function playerKills($type, $sum = false)
+	public function playerKills($type, $sum = false, $table = 'Kill', $column = 'entityType')
 	{
-		$kills = $this->belongsTo('Webcraft\Models\Stats3\Kill', 'uuid', 'uuid');
+		$kills = $this->belongsTo('Webcraft\Models\Stats3\\' . $table, 'uuid', 'uuid');
 
-		if ( isset(Kill::getEntityGroups()[$type]) ) {
-			$kills = $kills->whereIn('entityType', Kill::getEntityGroups()[$type]);
+		if ( $type === 'ALL' ) {
+			return $sum === true ? $kills->sum('value') : $kills;
+		}
+
+		if ( Config::has('minecraft.mobs.' . $type) ) {
+			$kills = $kills->whereIn($column, Config::get('minecraft.mobs.' . $type));
 		} else {
-			$kills = $kills->where('entityType', $type);
+			$kills = $kills->where($column, $type);
 		}
 
 		return $sum === true ? $kills->sum('value') : $kills;
 	}
 
-	public function detailKillPlayers()
+	public function playerDeaths($type, $sum = false)
 	{
-		return $this->belongsTo('Webcraft\Models\Stats3\Pvp', 'uuid', 'uuid');
+		return $this->playerKills($type, $sum, 'Death', 'cause');
 	}
 
-	public function totalDeath()
+	public function detailPlayerKills($column = 'uuid')
 	{
-		return $this->belongsTo('Webcraft\Models\Stats3\Death', 'uuid', 'uuid')->sum('value');
+		return $this->belongsTo('Webcraft\Models\Stats3\Pvp', 'uuid', $column);
 	}
 
 	public function playTime()

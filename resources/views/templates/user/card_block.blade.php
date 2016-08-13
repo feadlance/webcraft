@@ -1,6 +1,6 @@
 <div class="card">
 	<div class="image" style="background: url('assets/images/cover.jpg'); height: 80px;">
-		<img src="https://minotar.net/avatar/{{ $user->username }}/60.png">
+		<img src="{{ $user->getAvatar(60) }}">
 	</div>
 	<div class="content text-center">
 		<a class="header" href="{{ route('profile', ['player' => $user->username]) }}">

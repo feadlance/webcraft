@@ -21,7 +21,7 @@
 
 		<div class="header-item user-control">
 			<span class="title">{{ Auth::user()->getDisplayName() }}</span>
-			<img class="user-avatar" src="https://minotar.net/avatar/{{ Auth::user()->username }}" alt="{{ Auth::user()->getDisplayName() }}">
+			<img class="user-avatar" src="{{ Auth::user()->getAvatar(60) }}" alt="{{ Auth::user()->getDisplayName() }}">
 
 			<!--<ul class="user-actions">
 				<li><a href="#">Profil</a></li>

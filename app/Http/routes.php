@@ -69,9 +69,15 @@ Route::get('/oyuncu/{player}', [
   'middleware' => ['auth']
 ]);
 
-Route::get('/oyuncu/{player}/oldurme', [
+Route::get('/oyuncu/{player}/oldurme-detaylari', [
   'uses' => '\Webcraft\Http\Controllers\ProfileController@getDetailKill',
   'as' => 'profile.killed',
+  'middleware' => ['auth']
+]);
+
+Route::get('/oyuncu/{player}/olum-detaylari', [
+  'uses' => '\Webcraft\Http\Controllers\ProfileController@getDetailDeath',
+  'as' => 'profile.death',
   'middleware' => ['auth']
 ]);
 

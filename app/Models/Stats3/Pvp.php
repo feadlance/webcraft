@@ -13,7 +13,7 @@ class Pvp extends Model
 		return $this->belongsTo('Webcraft\Models\Stats3\Player', 'victim', 'uuid')->first()->getUser();
 	}
 
-	public function user()
+	public function killer()
 	{
 		return $this->belongsTo('Webcraft\Models\Stats3\Player', 'uuid', 'uuid')->first()->getUser();
 	}

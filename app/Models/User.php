@@ -55,6 +55,16 @@ class User extends Authenticatable
 	    return $this->realname ?: $this->username;
 	}
 
+	public function getAvatar($size = 60)
+	{
+		return 'https://minotar.net/avatar/' . $this->username . '/' . $size;
+	}
+
+	public function getSkin($size = 100)
+	{
+		return 'https://minotar.net/body/' . $this->username . '/' . $size;
+	}
+
 	public function getSex()
 	{
 	    return $this->sex === 1 ? 'Erkek' : ($this->sex !== 0 ? 'Kadın' : false);
