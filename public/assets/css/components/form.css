@@ -1,0 +1,130 @@
+/*
+* Buttons
+*/
+
+.btn {
+	width: 100%;
+	display: block;
+	height: 35px;
+	line-height: 35px;
+	border-radius: 5px;
+	color: #fff;
+	text-decoration: none;
+	font-family: 'Titillium Web';
+	font-weight: 700;
+	border: none;
+	cursor: pointer;
+	outline: none;
+}
+
+.btn-lg {
+	height: 45px;
+	line-height: 45px;
+}
+
+.btn-default {
+	color: #4a4a4a;
+	background: #ddd;
+}
+
+.btn-default:hover {
+	background: #d2d2d2;
+}
+
+.btn-default:active {
+	background: #c3c3c3;
+}
+
+.btn-primary {
+	background: #34495e;
+}
+
+.btn-primary:hover {
+	background: #5d6d7e;
+}
+
+.btn-primary:active {
+	background: #2c3e50;
+}
+
+.btn-danger {
+	background: #e74c3c;
+}
+
+.btn-danger:hover {
+	background: #ec7063;
+}
+
+.btn-danger:active {
+	background: #c54133;
+}
+
+/*
+* Inputs
+*/
+
+.input {
+	width: 100%;
+	display: block;
+	height: 35px;
+	line-height: 35px;
+	border-radius: 5px;
+	text-decoration: none;
+	font-weight: 700;
+	outline: none;
+	text-indent: 10px;
+	background: #fff;
+}
+
+.input-default {
+	color: #464646;
+	border: 2px solid #ddd;
+}
+
+.input-default:focus {
+	border: 2px solid #aba6a6;
+}
+
+.input-primary {
+	color: #34495e;
+	border: 2px solid #34495e;
+}
+
+.input-group {
+	text-indent: 0;
+	padding: 5px;
+	height: auto;
+	border-radius: 10px;
+}
+
+.input-group-addon {
+	width: 100%;
+	border: none;
+	resize: none;
+	outline: none;
+}
+
+/*
+* Labels
+*/
+
+.control-label {
+	display: block;
+	margin-bottom: 5px;
+	cursor: pointer;
+	font-family: arial;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+/*
+* Forms
+*/
+
+.form-group {
+	margin-bottom: 10px;
+}
+
+.form-group:last-child {
+	margin-bottom: 0;
+}

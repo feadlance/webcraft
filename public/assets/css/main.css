@@ -1,0 +1,721 @@
+@import 'components/autoload.css';
+
+body {
+    background: #ecf0f1;
+}
+
+header {
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+}
+
+header .header-item {
+    float: right;
+}
+
+header .header-item:hover {
+    background: #d03a2b;
+}
+
+header .logo a {
+    width: 300px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    color: #fff;
+    background: #e74c3c;
+    font-size: 50px;
+    font-family: 'Titillium Web';
+    float: left;
+    text-decoration: none;
+}
+
+header .container {
+    height: 100px;
+    background: #c0392b;
+    margin-left: 300px;
+    overflow: hidden;
+    position: relative;
+}
+
+header .container .page-title {
+    max-width: 400px;
+    margin: 0 20px;
+    line-height: 100px;
+    font-size: 30px;
+    color: #fff;
+    float: left;
+    font-family: 'Exo';
+}
+
+header .container .search-toggle {
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+}
+
+header .container .search-toggle i {
+    color: #fff;
+    font-size: 40px;
+    line-height: 100px;
+}
+
+header .container .search-form {
+    width: 100%;
+    float: left;
+    display: none;
+}
+
+header .container .search-form .input-search {
+    width: 100%;
+    height: 100px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-family: 'Exo';
+    font-size: 30px;
+    text-indent: 20px;
+    float: left;
+    padding-right: 100px;
+}
+
+header .container .search-form .input-search::-webkit-input-placeholder {
+   color: #fff;
+}
+
+header .container .search-form .input-search:-moz-placeholder {
+   color: #fff;
+}
+
+header .container .search-form .input-search::-moz-placeholder {
+   color: #fff;
+}
+
+header .container .search-form .input-search:-ms-input-placeholder {
+   color: #fff;
+}
+
+header .container .search-form i {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    line-height: 95px;
+    color: #fff;
+    font-size: 40px;
+    cursor: pointer;
+    float: right;
+    position: relative;
+    bottom: 100px;
+}
+
+header .container .user-control {
+    padding: 0 50px;
+    height: 100px;
+    cursor: pointer;
+    text-align: center;
+}
+
+header .container .user-control .title {
+    color: #fff;
+    font-size: 18px;
+    font-family: 'Titillium Web';
+    position: relative;
+    margin-right: 10px;
+    top: -23px;
+}
+
+header .container .user-control .user-avatar {
+    width: 60px;
+    height: 60px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+header .container .user-control .user-actions {
+    float: right;
+    position: absolute;
+    list-style-type: none;
+    margin-left: -50px;
+    width: 100%;
+    z-index: 3;
+    top: 50px;
+}
+
+header .container .user-control .user-actions li a {
+    padding: 5px 0;
+    display: block;
+    color: black;
+    background: red;
+}
+
+nav {
+    width: 300px;
+    float: left;
+    background: #fff;
+    height: 100%;
+    margin-top: 100px;
+    padding-bottom: 153px;
+    position: absolute;
+    z-index: 1;
+    overflow: auto;
+}
+
+nav .widget {
+    width: 270px;
+    border-bottom: 1px solid #ddd;
+    margin: 0 auto;
+    padding: 13px 0;
+}
+
+nav .widget:first-child {
+  margin-top: 7px;
+}
+
+nav .widget:last-child {
+    border-bottom: 0;
+}
+
+nav .widget .form-group .control-label {
+    color: #2c3e50;
+    font-family: 'Titillium Web';
+    font-size: 14px;
+    display: block;
+    margin-bottom: 7px;
+}
+
+.navigation-menu {
+    list-style-type: none;
+    overflow: hidden;
+}
+
+.navigation-menu li {
+    height: 30px;
+    line-height: 30px;
+    text-indent: 10px;
+    margin-bottom: 1px;
+}
+
+.navigation-menu li a {
+    color: #e74c3c;
+    display: block;
+    text-decoration: none;
+    font-family: 'Titillium Web';
+    border-radius: 2px;
+}
+
+.navigation-menu li.active a, .navigation-menu li a:hover {
+    color: #fff;
+    background: #e74c3c;
+}
+
+.breadcrumb {
+    width: 100%;
+    height: 50px;
+    margin-left: 300px;
+    position: absolute;
+    top: 100px;
+    background: #fff;
+    z-index: 2;
+    list-style-type: none;
+    line-height: 50px;
+    margin-right: 10px;
+}
+
+.breadcrumb li {
+    float: left;
+    font-family: 'Titillium Web';
+    font-size: 16px;
+}
+
+.breadcrumb li:after {
+    content: ">";
+    margin: 0 7px;
+    font-family: 'Exo';
+    font-size: 10px;
+}
+
+.breadcrumb li:last-child:after {
+    content: "";
+}
+
+.breadcrumb li a {
+    color: #acb0b1;
+    text-decoration: none;
+    display: inline-block;
+    font-family: 'Titillium Web';
+    font-size: 16px;
+}
+
+.breadcrumb li a:hover {
+    color: #868686;
+}
+
+main {
+    min-width: 1903px;
+    position: relative;
+    top: 150px;
+    padding: 5px 5px 50px 305px;
+    font-family: 'Titillium Web';
+    color: #4a4a4a;
+}
+
+footer {
+    width: 100%;
+    height: 53px;
+    line-height: 53px;
+    background: #ecf0f1;
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+}
+
+footer .footer-left {
+    width: 300px;
+    height: 53px;
+    color: #ffffff;
+    background: #e74c3c;
+    line-height: 57px;
+    text-align: center;
+    font-family: 'Titillium Web';
+    font-size: 15px;
+    float: left;
+}
+
+footer .footer-right {
+   margin-left: 300px;
+}
+
+/*
+* Profile Page
+*/
+
+.profile-detail {
+    min-width: 500px;
+    float: left;
+    position: inherit;
+    top: 0;
+}
+
+.profile-detail .header {
+    height: 135px;
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+.profile-detail .header .avatar {
+    border-radius: 50%;
+    border: 3px solid #fafafa;
+    position: absolute;
+    right: 20px;
+    top: 90px;
+}
+
+.profile-detail .header .title {
+    position: absolute;
+    top: 105.5px;
+    padding: 5px 15px;
+    color: #f5f5f5;
+    background: rgba(0, 0, 0, .4);
+}
+
+.profile-detail .header .friend-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.profile-detail .media {
+    list-style-type: none;
+    background: #fafafa;
+}
+
+.profile-detail .media:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.profile-detail .media li {
+    width: 110px;
+    height: 100px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    float: left;
+    overflow: hidden;
+}
+
+.profile-detail .media li:last-child {
+    margin-bottom: 0;
+}
+
+.profile-detail .media li:nth-child(3n+3) {
+    margin-right: 0;
+}
+
+.profile-post {
+    width: 633px;
+    margin-left: 5px;
+    float: left;
+}
+
+.profile-post .panel {
+    background: #fafafa;
+    margin-bottom: 5px;
+}
+
+.profile-post .input-content textarea {
+    border: none;
+    width: 100%;
+    height: 60px;
+    background: #fafafa;
+    outline: none;
+    text-indent: 5px;
+    margin-bottom: -4px;
+}
+
+.profile-post .footer {
+    overflow: hidden;
+    background: #f5f5f5;
+    border-top: 1px solid rgba(0, 0, 0, .03);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.profile-post .footer .pull-left {
+    line-height: 36px;
+}
+
+.profile-post .footer .action {
+    display: block;
+    background: #fff;
+    padding: 0 10px;
+    border: none;
+    border-right: 1px solid rgba(0, 0, 0, .05);
+    color: #484848;
+    transition: all 100ms;
+    float: left;
+    outline: none;
+}
+
+.profile-post .footer .action:hover {
+    background: #efefef;
+}
+
+.profile-post .footer .action-text i {
+    margin-right: 5px;
+}
+
+.profile-post .footer .action.liked {
+    color: #2185d0;
+}
+
+/*
+* Posts
+*/
+
+.posts .item {
+    background: #f9f9f9;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, .10);
+}
+
+.posts .item:last-child {
+    margin-bottom: 0;
+}
+
+.posts .item .header {
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, .08);
+    padding: 10px 10px 0 10px;
+    height: 50px;
+}
+
+.posts .item .header .options {
+    float: right;
+}
+
+.posts .item .header .options .dropdown > i {
+    margin: 5px 10px;
+    color: #d2d2d2;
+}
+
+.posts .item .header .options .dropdown > i:hover {
+    color: #4a4a4a;
+}
+
+.posts .item .header .title {
+    font-weight: bold;
+}
+
+.posts .item .header .extra {
+    color: rgba(0, 0, 0, .6);
+    font-size: 12.5px;
+}
+
+.posts .item .header .avatar {
+    float: left;
+    margin-right: 10px;
+    height: 50px;
+}
+
+.posts .item .header .avatar img {
+    border-radius: 10%;
+}
+
+.posts .item > .content {
+    margin-top: 5px;
+    padding: 10px;
+}
+
+.posts .item > .content p {
+    font-family: arial;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+.posts .item > .content .photos, .posts .item .content .photo {
+    list-style-type: none;
+    margin-top: 10px;
+    overflow: hidden;
+    height: 100px;
+}
+
+.posts .item > .content .photos li img {
+    float: left;
+    width: 180px;
+    margin-right: 5px;
+    overflow: hidden;
+}
+
+.posts .item > .content .photo {
+    height: auto;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.posts .item > .content .photo li img {
+    width: 100%;
+}
+
+.posts .item > .content .info {
+    margin-top: 5px;
+    margin-left: -5px;
+    padding: 3px;
+    display: inline-block;
+    border-radius: 5px;
+    color: #868686;
+    transition: background 100ms;
+    cursor: pointer;
+}
+
+.posts .item > .content .info:hover {
+    background: rgba(0, 0, 0, .05);
+}
+
+.posts .item > .content .info span {
+    margin-right: 5px;
+}
+
+.posts .item .comments {
+    background: #f5f5f5;
+    display: none;
+}
+
+.posts .item .comments .post-comment .user img {
+    margin-right: 0;
+}
+
+.posts .item .comments .post-comment input, .posts .item .comments .bottom .post-comment-reply input {
+    border: none;
+    height: 40px;
+    outline: none;
+    background: #e4e4e4;
+    resize: none;
+    width: 593px;
+    vertical-align: middle;
+    line-height: 35px;
+    text-indent: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, .04);
+}
+
+.posts .item .comments .comment:nth-child(2) {
+    margin-top: 5px;
+}
+
+.posts .item .comments .comment {
+    padding: 5px 10px;
+}
+
+.posts .item .comments img {
+    float: left;
+    margin-right: 5px;
+}
+
+.posts .item .comments a.user-link {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.posts .item .comments .comment .comment-body {
+    display: table;
+}
+
+.posts .item .comments .comment .bottom .comment-actions {
+    list-style-type: none;
+    margin-left: 45px;
+    font-size: 13px;
+    margin-top: 1px;
+}
+
+.posts .item .comments .comment .bottom .comment-actions li {
+    float: left;
+    color: #a5a4a4;
+    height: 20px;
+}
+
+.posts .item .comments .comment .bottom .comment-actions li:after {
+    content: "-";
+    margin: 0 5px;
+}
+
+.posts .item .comments .comment .bottom .comment-actions li:last-child:after {
+    content: "";
+}
+
+.posts .item .comments .comment .bottom .comment-actions li.comment-likes {
+    color: #2185d0;
+}
+
+.posts .item .comments .comment .bottom .comment-actions li.comment-likes[data-likes="0"] {
+    color: #a5a4a4;
+}
+
+.posts .item .comments .comment .bottom .post-comment-reply {
+    margin-left: 45px;
+    margin-top: 5px;
+    display: none;
+}
+
+.posts .item .comments .bottom .post-comment-reply input {
+    height: 25px;
+    width: 543px;
+    margin-left: -5px;
+    margin-bottom: 5px;
+}
+
+.posts .item .comments .child-comments {
+   margin-left: 45px;
+   display: none;
+}
+
+.posts .item .comments .child-comments .comment {
+    padding: 0;
+    margin-top: 5px;
+}
+
+.posts .item .comments .child-comments .comment .comment-actions {
+    margin-left: 0;
+}
+
+.posts .item .comments .child-comments .comment .comment-actions {
+    margin-left: 30px;
+}
+
+/*
+* Game Stats
+*/
+
+.game-stats {
+    width: 450px;
+    float: left;
+    margin-left: 5px;
+}
+
+/*
+* User Avatar List
+*/
+
+.list-user-avatar {
+    list-style-type: none;
+}
+
+.list-user-avatar li {
+    float: left;
+    margin-right: 5px;
+    position: relative;
+}
+
+.list-user-avatar li:last-child {
+    margin-right: 0;
+}
+
+.list-user-avatar li a {
+    display: block;
+    height: 65.71px;
+}
+
+.list-user-avatar li a img {
+    width: 65.71px;
+    border-radius: 10%;
+}
+
+.list-user-avatar li a img:hover {
+    opacity: .6;
+}
+
+.list-user-avatar li a img:active {
+    opacity: .8;
+}
+
+.list-user-avatar li.more {
+    border-radius: 10%;
+}
+
+.list-user-avatar li.more a {
+    width: 65.7px;
+    height: 65.7px;
+    line-height: 65.7px;
+    color: #4a4a4a;
+    text-align: center;
+}
+
+/*
+* List Users
+*/
+
+.list-users {
+    list-style-type: none;
+}
+
+.list-users li {
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+.list-users li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.list-users li .avatar {
+    float: left;
+    margin-right: 5px;
+    height: 40px;
+}
+
+.list-users li .avatar img {
+    border-radius: 10%;
+}
+
+.list-users li .detail {
+    float: left;
+}
+
+.list-users li .detail .description {
+    color: #afafaf;
+}

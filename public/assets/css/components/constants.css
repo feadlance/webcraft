@@ -1,0 +1,264 @@
+/*
+* Error Label
+*/
+
+.error-p {
+	color: #db2828;
+	margin-left: 2px;
+	font-family: arial;
+	font-size: 12px;
+	display: block;
+}
+
+.error-p:empty {
+	display: none;
+}
+
+/*
+* Typo
+*/
+
+.arial {
+	font-family: arial !important;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+.lowercase {
+	text-transform: lowercase;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.pull-right {
+	float: right;
+}
+
+.pull-left {
+	float: left;
+}
+
+/*
+* Margin
+*/
+
+.m-b-0 {
+	margin-bottom: 0 !important;
+}
+
+.m-b-5 {
+	margin-bottom: 5px !important;
+}
+
+.m-b-10 {
+	margin-bottom: 10px !important;
+}
+
+.m-t-0 {
+	margin-top: 0 !important;
+}
+
+.m-t-5 {
+	margin-top: 5px !important;
+}
+
+.m-t-10 {
+	margin-top: 10px !important;
+}
+
+/*
+* Colors
+*/
+
+.green {
+	background: #21ba45;
+}
+
+.red {
+	background: #db2828;
+}
+
+.yellow {
+	background: #fbbd08;
+}
+
+.blue {
+	background: #2185d0;
+}
+
+.blue-text {
+	color: #2185d0 !important;
+}
+
+/*
+* Fix
+*/
+
+.block {
+	width: 100%;
+}
+
+.clear {
+	clear: both;
+}
+
+.clear-after, .clear-before {
+	overflow: hidden;
+}
+
+.clear-before:before {
+	content: "";
+    display: table;
+    clear: both;
+}
+
+.clear-after:after {
+	content: "";
+    display: table;
+    clear: both;
+}
+
+textarea {
+	resize: vertical;
+}
+
+.p-relative {
+	position: relative !important;
+}
+
+/*
+* Panel
+*/
+
+.panel {
+    background: #fff;
+    border-bottom: 4px solid rgba(175, 175, 175, .36);
+}
+
+.panel > .title {
+    font-weight: bold;
+    font-size: 16px;
+    background: #fff;
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+.panel > .content {
+    background: #fafafa;
+    padding: 5px;
+}
+
+/*
+* Panel Content List
+*/
+
+.panel-content-list, .panel ul.content {
+    padding: 10px;
+    background: #fafafa;
+    list-style-type: none;
+    border-bottom: 1px solid #ddd;
+}
+
+.panel-content-list li, .panel ul.content li {
+    padding-bottom: 7px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, .03);
+}
+
+.panel-content-list li:last-child, .panel ul.content li:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+
+.panel-content-list span, .panel ul.content span {
+    color: #afafaf;
+    display: block;
+}
+
+/*
+* Semantic UI Custom
+*/
+
+.ui.button.transparent {
+    background-color: rgba(0, 0, 0, .40);
+}
+
+.ui.special.cards .card .image img {
+	position: absolute;
+	left: 50%;
+	bottom: 10px;
+	margin-left: -30px;
+	width: 60px;
+	border-radius: 50%;
+}
+
+.ui.special.cards .card .content {
+	padding: 0;
+}
+
+.ui.special.cards .card .content .header {
+	margin: 0;
+	padding: 10px;
+	transition: all 100ms;
+}
+
+.ui.special.cards .card .content .header i {
+	font-size: 12px;
+	color: green;
+	margin-right:3px;
+	vertical-align: middle;
+	transition: color 100ms;
+}
+
+.ui.special.cards .card .content .header:hover {
+	color: #fff;
+	background: #2185D0;
+}
+
+.ui.special.cards .card .content .header:hover i {
+	color: #00e300;
+}
+
+/*
+* Loading
+*/
+
+.loading-panel {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, .6);
+	display: none;
+}
+
+.loading-panel.active {
+	display: block;
+}
+
+.loading-content {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -25px;
+	margin-top: -25px;
+}
+
+.loading-content .fa-spin {
+	-webkit-animation: fa-spin 1s infinite linear;
+  	animation: fa-spin 1s infinite linear;
+}
