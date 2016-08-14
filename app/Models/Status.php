@@ -2,6 +2,7 @@
 
 namespace Webcraft\Models;
 
+use Webcraft\Helpers\Functions\SocialFunction;
 use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
@@ -28,5 +29,18 @@ class Status extends Model
 	public function likes()
 	{
 		return $this->morphMany('Webcraft\Models\Like', 'likeable');
+	}
+
+	public function postFormat()
+	{
+		/* Resource */
+		$body = nl2br(htmlentities($this->body, ENT_QUOTES));
+
+		/* Replaces */
+		$body = SocialFunction::youtubeToEmbed($body);
+		$body = SocialFunction::vimeoToEmbed($body);
+
+		/* Return */
+        return $body;
 	}
 }

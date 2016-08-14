@@ -470,7 +470,7 @@ footer .footer-right {
     padding: 10px;
 }
 
-.posts .item > .content p {
+.posts .item > .content .body {
     font-family: arial;
     font-size: 16px;
     margin-bottom: 0;
@@ -718,4 +718,17 @@ footer .footer-right {
 
 .list-users li .detail .description {
     color: #afafaf;
+}
+
+/*
+* Video Embed
+*/
+
+.video-embed {
+    margin: 0 -10px;
+}
+
+.video-embed iframe {
+    width: 100%;
+    height: 300px;
 }

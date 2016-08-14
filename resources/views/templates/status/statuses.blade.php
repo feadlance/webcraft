@@ -28,7 +28,9 @@
 		</div>
 	</div>
 	<div class="content">
-		<p>{{ $status->body }}</p>
+		<div class="body">
+			{!! $status->postFormat() !!}
+		</div>
 
 		<div class="show_comments_button info">
 			<span><font class="like-counter">{{ $status->likes()->count() }}</font> beğeni</span>
