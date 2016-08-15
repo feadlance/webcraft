@@ -178,6 +178,7 @@ textarea {
     background: #fff;
     padding: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, .05);
+    text-transform: uppercase;
 }
 
 .panel > .content {

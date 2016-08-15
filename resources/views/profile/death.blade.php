@@ -5,7 +5,6 @@
 @section('breadcrumb')
 	<li><a href="{{ route('users') }}">Oyuncular</a></li>
 	<li><a href="{{ route('profile', ['player' => $user->username]) }}">{{ $user->getDisplayName() }}</a></li>
-	<li>Ölüm Detayları</li>
 @stop
 
 @section('container')

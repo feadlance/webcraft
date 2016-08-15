@@ -70,4 +70,5 @@
 <ul class="breadcrumb">
 	<li><a href="/">{{ MinecraftServer::name() }}</a></li>
 	@yield('breadcrumb')
+	<li>@yield('title')</li>
 </ul>

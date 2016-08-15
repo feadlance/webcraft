@@ -156,6 +156,16 @@ Route::get('/oyuncular', [
 ]);
 
 /*
+* Top 100
+*/
+
+Route::get('/hit/en-iyi-katiller', [
+  'uses' => '\Webcraft\Http\Controllers\HitController@getTopKillers',
+  'as' => 'top.killers',
+  'middleware' => ['auth']
+]);
+
+/*
 * Statuses
 */
 

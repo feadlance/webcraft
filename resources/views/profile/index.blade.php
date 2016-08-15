@@ -4,7 +4,6 @@
 
 @section('breadcrumb')
 	<li><a href="{{ route('users') }}">Oyuncular</a></li>
-	<li>{{ $user->getDisplayName() }}</li>
 @stop
 
 @section('container')

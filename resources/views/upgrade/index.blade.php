@@ -2,10 +2,6 @@
 
 @section('title', 'Hesabımı Yükselt')
 
-@section('breadcrumb')
-	<li>Hesabımı Yükselt</li>
-@stop
-
 @section('container')
 	@if ( Auth::user()->isAdmin() )
 		<form id="form_new_group" class="ui modal panel">
