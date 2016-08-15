@@ -242,7 +242,7 @@ $(function() {
 				if ( respond.error ) {
 					swal("Hata!", respond.error, "error");
 				} else {
-					$('.posts').prepend('<div class="item ui"> <div class="header"> <div class="avatar"> <img src="' + respond.avatar + '" alt="User Avatar"> </div> <div class="title"> <a href="javascript:;">' + respond.display_name + '</a> </div> <div class="extra"> ' + respond.created_at + '</div> </div> <div class="content"> <p>' + body.val() + '</p> <div class="show_comments_button info"> <span>Tüm işlemler için sayfayı yenileyin.</span> </div> </div> </div>');
+					$('.posts').prepend('<div class="item ui"> <div class="header"> <div class="avatar"> <img src="' + respond.avatar + '" alt="User Avatar"> </div> <div class="title"> <a href="javascript:;">' + respond.display_name + '</a> </div> <div class="extra"> ' + respond.created_at + '</div> </div> <div class="content"> <p>' + respond.body + '</p> <div class="show_comments_button info"> <span>Tüm işlemler için sayfayı yenileyin.</span> </div> </div> </div>');
 					body.val('');
 				}
 

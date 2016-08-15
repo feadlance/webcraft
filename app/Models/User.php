@@ -124,6 +124,8 @@ class User extends Authenticatable
 	        });
 	    })->orWhere(function ($query) {
 	        return $query->where('wall_id', $this->id)->whereIn('user_id', $this->friends()->lists('id'));
+	    })->orWhere(function ($query) {
+	    	return $query->where('wall_id', $this->id)->whereIn('user_id', User::where('isAdmin', 1)->lists('id'));
 	    });
 	}
 
@@ -131,6 +133,7 @@ class User extends Authenticatable
 	{
 	    return Status::where(function ($query) {
 	        return $query->where('user_id', $this->id)
+	        	->orWhere('user_id', 0)
 	            ->orWhereIn('user_id', $this->friends()->lists('id'));
 	    });
 	}

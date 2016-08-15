@@ -2,6 +2,9 @@
 
 namespace Webcraft\Http\Controllers;
 
+use Auth;
+use Response;
+use Validator;
 use Webcraft\Models\User;
 use Webcraft\Models\Comment;
 use Webcraft\Models\Status;
@@ -12,7 +15,7 @@ class StatusController extends Controller
 {
 	public function postStatus(Request $request)
 	{
-		$validator = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'body' => 'required|max:1000'
 		]);
 
@@ -25,25 +28,26 @@ class StatusController extends Controller
 			$wall_id = $wall->id;
 		}
 
-		if ( \Auth::id() !== $wall_id && !\Auth::user()->isFriendsWith($wall) ) {
-			return \Response::json(['error' => 'Bu profilde paylaşım yapmak istiyorsan onunla arkadaş olmalısın.']);
+		if ( !Auth::user()->isAdmin() && (Auth::id() !== $wall_id && !Auth::user()->isFriendsWith($wall)) ) {
+			return Response::json(['error' => 'Bu profilde paylaşım yapmak istiyorsan onunla arkadaş olmalısın.']);
 		}
 
 		if ( $validator->fails() ) {
-			return \Response::json(['error' => $validator->errors()->first('body')]);
+			return Response::json(['error' => $validator->errors()->first('body')]);
 		}
 
-		$status = \Auth::user()->getMyStatuses()->create([
+		$status = Auth::user()->getMyStatuses()->create([
 			'body' => $request->input('body'),
 			'wall_id' => $wall_id
 		]);
 
-		return \Response::json([
+		return Response::json([
 			'success' => true,
 			'username' => $status->user()->username,
 			'avatar' => $status->user()->getAvatar(50),
 			'display_name' => $status->user()->getDisplayName(),
-			'created_at' => $status->created_at->diffForHumans()
+			'created_at' => $status->created_at->diffForHumans(),
+			'body' => $status->postFormat()
 		]);
 	}
 
@@ -52,17 +56,17 @@ class StatusController extends Controller
 		$status = Status::find($id);
 
 		if ( $status === null ) {
-			return \Response::json(['error' => 'Post bulunamadı.']);
+			return Response::json(['error' => 'Post bulunamadı.']);
 		}
 
-		if ( \Auth::id() !== $status->user_id && \Auth::id() !== $status->wall_id ) {
-			return \Response::json(['error' => 'Bu postu silemezsiniz.']);
+		if ( Auth::user()->isAdmin() !== true && Auth::id() !== $status->user_id && Auth::id() !== $status->wall_id ) {
+			return Response::json(['error' => 'Bu postu silemezsiniz.']);
 		}
 
 		$status->delete();
 		$status->comments('all')->delete();
 
-		return \Response::json(['success' => true]);
+		return Response::json(['success' => true]);
 	}
 
 	public function putLikeStatus($id)
@@ -70,23 +74,23 @@ class StatusController extends Controller
 		$status = Status::find($id);
 
 		if ( $status === null ) {
-			return \Response::json(['error' => 'Post bulunamadı.']);
+			return Response::json(['error' => 'Post bulunamadı.']);
 		}
 
-		if ( \Auth::id() !== $status->user()->id && !\Auth::user()->isFriendsWith($status->user()) ) {
-			return \Response::json(['error' => 'Siz arkadaş değilsiniz.']);
+		if ( Auth::id() !== $status->user()->id && !Auth::user()->isFriendsWith($status->user()) ) {
+			return Response::json(['error' => 'Siz arkadaş değilsiniz.']);
 		}
 
-		if ( \Auth::user()->hasLikedStatus($status) ) {
-			$status->likes()->where('user_id', \Auth::id())->delete();
+		if ( Auth::user()->hasLikedStatus($status) ) {
+			$status->likes()->where('user_id', Auth::id())->delete();
 			$json = ['success' => true, 'liked' => false, 'like_count' => $status->likes()->count()];
 		} else {
 			$like = $status->likes()->create([]);
-			\Auth::user()->likes()->save($like);
+			Auth::user()->likes()->save($like);
 			$json = ['success' => true, 'liked' => true, 'like_count' => $status->likes()->count()];
 		}
 
-		return \Response::json($json);
+		return Response::json($json);
 	}
 
 	public function putCommentStatus(Request $request, $id)
@@ -98,7 +102,7 @@ class StatusController extends Controller
 			$comment = Comment::find($id);
 
 			if ( $comment === null ) {
-				return \Response::json(['error' => 'Yorum bulunamadı.']);
+				return Response::json(['error' => 'Yorum bulunamadı.']);
 			}
 
 			$parent_id = $comment->id;
@@ -108,19 +112,19 @@ class StatusController extends Controller
 		$status = Status::find($id);
 
 		if ( $status === null ) {
-			return \Response::json(['error' => 'Post bulunamadı.']);
+			return Response::json(['error' => 'Post bulunamadı.']);
 		}
 
-		if ( \Auth::id() !== $status->user()->id && !\Auth::user()->isFriendsWith($status->user()) ) {
-			return \Response::json(['error' => 'Siz arkadaş değilsiniz.']);
+		if ( Auth::id() !== $status->user()->id && !Auth::user()->isFriendsWith($status->user()) ) {
+			return Response::json(['error' => 'Siz arkadaş değilsiniz.']);
 		}
 
-		$validator = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'body' => 'required|max:500'
 		]);
 
 		if ( $validator->fails() ) {
-			return \Response::json(['error' => $validator->errors()->first('body')]);
+			return Response::json(['error' => $validator->errors()->first('body')]);
 		}
 
 		$comments = $status->comments()->create([
@@ -128,15 +132,15 @@ class StatusController extends Controller
 			'parent_id' => $parent_id
 		]);
 
-		\Auth::user()->comments()->save($comments);
+		Auth::user()->comments()->save($comments);
 
-		return \Response::json([
+		return Response::json([
 			'success' => true,
 			'comment_count' => $status->comments($parent_id)->count(),
-			'username' => \Auth::user()->username,
-			'avatar_25' => \Auth::user()->getAvatar(25),
-			'avatar_40' => \Auth::user()->getAvatar(40),
-			'display_name' => \Auth::user()->getDisplayName()
+			'username' => Auth::user()->username,
+			'avatar_25' => Auth::user()->getAvatar(25),
+			'avatar_40' => Auth::user()->getAvatar(40),
+			'display_name' => Auth::user()->getDisplayName()
 		]);
 	}
 }

@@ -462,6 +462,7 @@ footer .footer-right {
 }
 
 .posts .item .header .avatar img {
+    width: 45px;
     border-radius: 10%;
 }
 

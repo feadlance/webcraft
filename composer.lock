@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "81621553aa8ce2d7925f59141a56fbf2",
-    "content-hash": "0a8b164d48ae6e464fd22b5d1e24fa0c",
+    "hash": "2c19315836042e7d628aadc85c7afa3c",
+    "content-hash": "8f586f48d4452e30c9dcb084eb2a3cde",
     "packages": [
         {
             "name": "anchu/ftp",
@@ -204,44 +204,6 @@
                 "string"
             ],
             "time": "2015-11-06 14:35:42"
-        },
-        {
-            "name": "funnyitselmo/minecraftserverstatus",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FunnyItsElmo/PHP-Minecraft-Server-Status-Query.git",
-                "reference": "71ba574c1a6587340f4ba141fa92ff8595751226"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FunnyItsElmo/PHP-Minecraft-Server-Status-Query/zipball/71ba574c1a6587340f4ba141fa92ff8595751226",
-                "reference": "71ba574c1a6587340f4ba141fa92ff8595751226",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "MinecraftServerStatus\\": "src/",
-                    "MinecraftServerStatus\\Packets\\": "src/Packets/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD"
-            ],
-            "authors": [
-                {
-                    "name": "Julian Spravil",
-                    "email": "julian.spr@t-online.de"
-                }
-            ],
-            "keywords": [
-                "minecraft",
-                "server",
-                "status"
-            ],
-            "time": "2016-03-25 20:45:58"
         },
         {
             "name": "jakub-onderka/php-console-color",

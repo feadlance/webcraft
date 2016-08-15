@@ -67,6 +67,6 @@
 	</div>
 </nav>
 <ul class="breadcrumb">
-	<li><a href="/">{{ env('SITE_NAME') }}</a></li>
+	<li><a href="/">{{ MinecraftServer::name() }}</a></li>
 	@yield('breadcrumb')
 </ul>

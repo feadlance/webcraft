@@ -8,8 +8,7 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "laravelcollective/html": "^5.2",
-        "anchu/ftp": "^2.0",
-        "funnyitselmo/minecraftserverstatus": "^1.0"
+        "anchu/ftp": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -8,7 +8,7 @@
 						<i class="fa fa-bug"></i>
 						Bu yazıyı bildir
 					</a>-->
-					@if ( $status->user()->id === Auth::id() || $status->wall_id === Auth::id() )
+					@if ( Auth::user()->isAdmin() || $status->wall_id === Auth::id() || $status->user()->id === Auth::id() )
 						<a href="#" class="item delete-post">
 							<i class="fa fa-trash"></i>
 							Sil
@@ -18,10 +18,10 @@
 			</div>
 		</div>
 		<div class="avatar">
-			<img src="{{ $status->user()->getAvatar(50) }}" alt="User Avatar">
+			<img src="{{ $status->user()->getAvatar(45) }}" alt="User Avatar">
 		</div>
 		<div class="title">
-			<a href="{{ route('profile', ['player' => $status->user()->username]) }}">{{ $status->user()->getDisplayName() }}</a>
+			<a href="{{ route('profile', ['player' => $status->user()->username]) }}"{!! $status->user()->isAdmin() ? ' style="color: #c0392b;"' : '' !!}>{{ $status->user()->getDisplayName() }}</a>
 		</div>
 		<div class="extra">
 			{{ $status->created_at->diffForHumans() }}
@@ -52,10 +52,6 @@
 					Yorum Yap
 				</button>
 			@endif
-			<button class="action action-text">
-				<i class="fa fa-share"></i>
-				Paylaş
-			</button>
 		</div>
 	</div>
 	<div data-type="comment" class="comments clear-after">

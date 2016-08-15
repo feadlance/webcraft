@@ -2,6 +2,12 @@
 
 namespace Webcraft\Http\Controllers;
 
+use Auth;
+use Config;
+use Session;
+use Response;
+use Validator;
+use MinecraftServer;
 use Webcraft\Models\User;
 use Webcraft\Models\Iconomy;
 
@@ -16,17 +22,17 @@ class AuthController extends Controller
 
   public function postSignup(Request $request)
   {
-    $validator = \Validator::make($request->all(), [
+    $validator = Validator::make($request->all(), [
       'register_username' => 'required|unique:users,username|min:3|max:16|minecraft_username',
       'register_email' => 'required|unique:users,email|max:30|email',
       'register_password' => 'required|min:6'
     ]);
 
     if ( $validator->fails() ) {
-      return \Response::json(['validations' => $validator->errors()]);
+      return Response::json(['validations' => $validator->errors()]);
     }
 
-    $encryption = \Config::get('minecraft.auth.encryption');
+    $encryption = Config::get('minecraft.auth.encryption');
     
     $username = $request->input('register_username');
     $password = $request->input('register_password');
@@ -39,35 +45,35 @@ class AuthController extends Controller
     ]);
 
     /*\Mail::send('templates.mail.verify', ['user' => $user], function ($m) use ($user) {
-        $m->to($user->email, $user->username)->subject(env('SITE_NAME'));
+        $m->to($user->email, $user->username)->subject(MinecraftServer::name());
     });*/
 
-    \Auth::login($user);
+    Auth::login($user);
 
-    return \Response::json(['success' => true]);
+    return Response::json(['success' => true]);
   }
 
   public function postSignin(Request $request)
   {
-    $validator = \Validator::make($request->all(), [
+    $validator = Validator::make($request->all(), [
       'username' => 'required|minecraft_username',
       'password' => 'required'
     ]);
 
     if ( $validator->fails() ) {
-      return \Response::json(['validations' => $validator->errors()]);
+      return Response::json(['validations' => $validator->errors()]);
     }
 
     $user = User::where('username', $request->input('username'))->first();
 
     if ( $user === null ) {
-      return \Response::json(['error' => 'Kullanıcı adı geçersiz.']);
+      return Response::json(['error' => 'Kullanıcı adı geçersiz.']);
     }
 
-    $encryption = \Config::get('minecraft.auth.encryption');
+    $encryption = Config::get('minecraft.auth.encryption');
 
     if ( $encryption === 'bcrypt' ) {
-      if ( !\Auth::attempt($request->only(['username', 'password'])) ) {
+      if ( !Auth::attempt($request->only(['username', 'password'])) ) {
         $password_wrong = true;
       }
     } else {
@@ -77,12 +83,12 @@ class AuthController extends Controller
     }
 
     if ( isset($password_wrong) === true ) {
-      return \Response::json(['error' => 'Bu kullanıcıya ait şifre yanlış.']); 
+      return Response::json(['error' => 'Bu kullanıcıya ait şifre yanlış.']); 
     }
 
-    \Auth::login($user);
+    Auth::login($user);
 
-    return \Response::json(['success' => true]);
+    return Response::json(['success' => true]);
   }
 
   public function getVerify(Request $request, $email)
@@ -92,7 +98,7 @@ class AuthController extends Controller
       $user->action_token = null;
       $user->save();
 
-      \Auth::login($user);
+      Auth::login($user);
     }
 
     return redirect()
@@ -102,7 +108,7 @@ class AuthController extends Controller
 
   public function getWelcome()
   {
-    if ( \Session::get('verify_email_ok') === null ) {
+    if ( Session::get('verify_email_ok') === null ) {
       return redirect()->route('auth.index');
     }
 
@@ -111,7 +117,7 @@ class AuthController extends Controller
 
   public function getSignout()
   {
-    \Auth::logout();
+    Auth::logout();
     return redirect()->route('auth.index');
   }
 }

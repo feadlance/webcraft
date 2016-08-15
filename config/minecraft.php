@@ -17,6 +17,7 @@ return [
   */
 
   'server' => [
+    'name' => env('SERVER_TITLE'),
   	'host' => env('SERVER_HOST', 'localhost'),
   	'port' => env('SERVER_PORT', 25565),
   ],

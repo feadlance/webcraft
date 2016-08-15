@@ -1,6 +1,6 @@
 <header>
 	<div class="logo">
-		<a href="/">{{ env('SITE_NAME') }}</a>
+		<a href="/">{{ MinecraftServer::name() }}</a>
 	</div>
 
 	<div class="container">

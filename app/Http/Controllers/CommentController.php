@@ -2,6 +2,8 @@
 
 namespace Webcraft\Http\Controllers;
 
+use Auth;
+use Response;
 use Webcraft\Models\Comment;
 use Webcraft\Models\Status;
 
@@ -14,28 +16,28 @@ class CommentController extends Controller
 		$comment = Comment::find($id);
 
 		if ( $comment === null ) {
-			return \Response::json(['error' => 'Yorum bulunamadı.']);
+			return Response::json(['error' => 'Yorum bulunamadı.']);
 		}
 
 		$status = Status::find($comment->status_id);
 
 		if ( $status === null ) {
-			return \Response::json(['error' => 'Post bulunamadı.']);
+			return Response::json(['error' => 'Post bulunamadı.']);
 		}
 
-		if ( \Auth::id() !== $status->user()->id && !\Auth::user()->isFriendsWith($status->user()) ) {
-			return \Response::json(['error' => 'Siz arkadaş değilsiniz.']);
+		if ( Auth::id() !== $status->user()->id && !Auth::user()->isFriendsWith($status->user()) ) {
+			return Response::json(['error' => 'Siz arkadaş değilsiniz.']);
 		}
 
-		if ( \Auth::user()->hasLikedComment($comment) ) {
-			$comment->likes()->where('user_id', \Auth::id())->delete();
+		if ( Auth::user()->hasLikedComment($comment) ) {
+			$comment->likes()->where('user_id', Auth::id())->delete();
 			$json = ['success' => true, 'liked' => false, 'like_count' => $comment->likes()->count()];
 		} else {
 			$like = $comment->likes()->create([]);
-			\Auth::user()->likes()->save($like);
+			Auth::user()->likes()->save($like);
 			$json = ['success' => true, 'liked' => true, 'like_count' => $comment->likes()->count()];
 		}
 
-		return \Response::json($json);
+		return Response::json($json);
 	}
 }

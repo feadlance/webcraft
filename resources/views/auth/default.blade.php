@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Aramıza Katıl - {{ env('SITE_NAME') }}</title>
+		<title>Aramıza Katıl - {{ MinecraftServer::name() }}</title>
 		<!-- CSS -->
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
 		<link rel="stylesheet" href="assets/components/bootstrap/css/bootstrap.min.css">

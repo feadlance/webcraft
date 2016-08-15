@@ -2,14 +2,15 @@
 
 namespace Webcraft\Http\Controllers;
 
-use Webcraft\Models\Stats3\Kill;
+use Auth;
 use Webcraft\Models\User;
+use Webcraft\Models\Stats3\Kill;
 
 class HomeController extends Controller
 {
 	public function getIndex()
 	{
-		$user = \Auth::user();
+		$user = Auth::user();
 		$online_users = User::where('isLogged', 1)->orderBy('id', 'desc')->limit(6)->get();
 		$top5_users = Kill::where('entityType', 'PLAYER')->orderBy('value', 'desc')->limit(5)->get();
 		$statuses = $user->getHomeStatuses()->orderBy('id', 'desc')->get();

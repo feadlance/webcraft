@@ -148,6 +148,10 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        
+        /*
+         * Custom Service Providers...
+         */
         Anchu\Ftp\FtpServiceProvider::class,
 
         /*
@@ -206,7 +210,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Ftp' => Anchu\Ftp\FtpServiceProvider::class,
         'Websend' => Webcraft\Helpers\Websend\Websend::class,
-        'MinecraftServer' => \Webcraft\Helpers\MinecraftServerStatus\MinecraftServerStatus::class,
+        'MinecraftServer' => \Webcraft\Helpers\Minecraft\Server::class,
 
     ],
 

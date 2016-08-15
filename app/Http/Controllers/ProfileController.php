@@ -3,6 +3,7 @@
 namespace Webcraft\Http\Controllers;
 
 use DB;
+use Auth;
 use Config;
 use Webcraft\Models\User;
 use Webcraft\Models\Stats3\Pvp;
@@ -17,10 +18,12 @@ class ProfileController extends Controller
 			return abort(404);
 		}
 
+		$can_post = Auth::user()->isAdmin() || (Auth::user()->isFriendsWith($user) || Auth::id() === $user->id);
 		$statuses = $user->getProfileStatuses()->orderBy('id', 'desc')->get();
 
 		return view('profile.index')
 			->with('user', $user)
+			->with('can_post', $can_post)
 			->with('statuses', $statuses);
 	}
 
