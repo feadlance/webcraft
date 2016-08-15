@@ -10,13 +10,17 @@ class Group extends Model
 
     protected $fillable = [
     	'title',
-    	'description',
     	'group',
-    	'balance'
+    	'money'
     ];
 
-    public function getBalance()
+    public function getMoney()
     {
-    	return number_format($this->balance, 2);
+    	return number_format($this->money, 2);
+    }
+
+    public function getFeatures()
+    {
+        return $this->hasMany('Webcraft\Models\GroupFeature');
     }
 }

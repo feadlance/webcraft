@@ -1,167 +1,8 @@
 $(function() {
 
-	$('.buy_product').on('click', function() {
-		var id = $(this).val();
-		var piece = $('#piece_' + id).val();
-		var balance = $(this).closest('tr').data('balance');
-		var error = false;
-
-		if ( piece <= 0 || piece > 100 || piece == '' ) {
-			swal('Hata!', 'Adet, 1 den küçük ve 100 den büyük olamaz.', 'error');
-			error = true;
-		}
-
-		if ( !error ) {
-			swal({
-			    title: "Satın alma işlemi",
-			    text: "Önemli! Lütfen satın almadan önce oyunda olduğunuzdan emin olun.\nBu ürün için " + (balance * piece) + " kredi ödüyorsunuz.",
-			    type: "warning",
-			    showCancelButton: true,
-			    confirmButtonColor: "#2185d0",
-			    confirmButtonText: "Devam et",
-			    cancelButtonText: "İptal",
-			    closeOnConfirm: false
-			}, function() {
-			    $.ajax({
-					type: 'POST',
-					url: url + '/market/esyalar/buy',
-					data: {
-						id: id,
-						piece: piece,
-						_token: token
-					},
-					success: function(respond) {
-						if ( respond.error ) {
-							swal("Hata!", respond.error, "error");
-						} else {
-							swal("Tebrikler!", "Ürün başarıyla alındı.", "success");
-						}
-					}
-				});
-			});
-		}
-	});
-
-	$('.buy_group').on('click', function() {	
-		swal({
-		    title: "Satın alma işlemi",
-		    text: "Bu grup için " + balance + " TL (gerçek para) ödüyorsunuz.",
-		    type: "warning",
-		    showCancelButton: true,
-		    confirmButtonColor: "#2185d0",
-		    confirmButtonText: "Devam et",
-		    cancelButtonText: "İptal",
-		    closeOnConfirm: false
-		}, function() {
-		    $.ajax({
-				type: 'POST',
-				url: url + '/market/gruplar/buy',
-				data: {
-					id: $(this).data('id'),
-					_token: token
-				},
-				success: function(respond) {
-					if ( respond.error ) {
-						swal("Hata!", respond.error, "error");
-					} else {
-						swal("Tebrikler!", "Grup başarıyla satın alındı.", "success");
-					}
-				}
-			});
-		});
-	});
-
-	$('#add_product').on('click', function() {
-		var title = $('#product_title input').val();
-		var code = $('#product_code input').val();
-		var balance = $('#product_balance input').val();
-		var fields = ['product_title', 'product_code', 'product_balance'];
-
-		$('#add_product_loading').addClass('active');
-
-		$.ajax({
-			type: 'POST',
-			url: url + '/product/new/ajax',
-			data: {
-				title: title,
-				code: code,
-				balance: balance,
-				_token: token
-			},
-			success: function(respond) {
-				$.each(fields, function( index, value ) {
-					$('#' + value + ' .ui.input').removeClass('error');
-					$('#' + value + ' .error-p').text('');
-				});
-
-				if ( respond.errors ) {
-					$.each(respond.errors, function( index, value ) {
-						$('#product_' + index + ' .ui.input').addClass('error');
-						$('#product_' + index + ' .error-p').text(value);
-					});
-				} else {
-					$('.products tbody').prepend('<tr> <td> <img src="assets/images/minecraft-items/' + respond.code + '.png" alt="' + respond.title + '" style="vertical-align: middle; margin-right: 4px;">' + respond.title + '</td> <td style="width: 100px;">' + respond.balance + '</td> <td style="width: 50px;"> <div class="ui input block"> <input type="text" class="input" value="1"> </div> </td> <td style="width: 150px;"> <button type="submit" class="ui block button">Sayfayı Yenileyin</button> </td> </tr>');
-					$.each(fields, function( index, value ) {
-						$('#' + value + ' .ui.input .input').val('');
-					});
-					swal("Tamam!", "Yeni ürün listeye eklendi.", "success");
-				}
-
-				$('#add_product_loading').removeClass('active');
-			}
-		});
-	});
-
-	$('#add_group').on('click', function() {
-		var title = $('#group_title input').val();
-		var description = $('#group_description textarea').val();
-		var group = $('#group_group input').val();
-		var balance = $('#group_balance input').val();
-		var game = $('#group_game input:checked').length > 0 ? 1 : 0;
-		var fields = ['group_title', 'group_description', 'group_group', 'group_balance'];
-
-		$('#add_group_loading').addClass('active');
-
-		$.ajax({
-			type: 'POST',
-			url: url + '/group/new/ajax',
-			data: {
-				title: title,
-				description: description,
-				group: group,
-				balance: balance,
-				game: game,
-				_token: token
-			},
-			success: function(respond) {
-				$.each(fields, function( index, value ) {
-					$('#' + value).removeClass('error');
-					$('#' + value + ' .error-p').text('');
-				});
-
-				if ( respond.errors ) {
-					$.each(respond.errors, function( index, value ) {
-						$('#group_' + index).addClass('error');
-						$('#group_' + index + ' .error-p').text(value);
-					});
-				} else {
-					$('.cards').prepend('<div class="card"> <a href="#" class="image"> <img src="storage/image/group/1.jpg"> </a> <div class="content"> <div class="header">' + respond.title + '</div> <div class="description"> <strong>' + respond.title + '</strong> grubu, <strong>' + respond.balance + 'TRY</strong> dir.<hr> <p>' + respond.description + '</p> </div> </div> <a class="ui bottom attached button"> <i class="refresh icon"></i> Sayfayı Yenileyin </a> </div>');
-					$.each(fields, function( index, value ) {
-						$('#' + value + ' .ui.input .input').val('');
-					});
-					$('#new_group_form').modal('hide');
-					$('#no-group-message').remove();
-					swal("Tamam!", "Yeni grup listeye eklendi.", "success");
-				}
-
-				$('#add_group_loading').removeClass('active');
-			}
-		});
-	});
-
-	$('#add_group_modal').on('click', function() {
-		$('#new_group_form').modal('show');
-	});
+	/*
+	* Friends
+	*/
 
 	$('#add_friend').on('click', function() {
 		if ( !$(this).attr('clicked') ) {
@@ -225,6 +66,10 @@ $(function() {
 			});
 		}
 	});
+
+	/*
+	* Status
+	*/
 
 	$('#submit_status').on('click', function() {
 		var body = $('#status_body');
@@ -378,6 +223,95 @@ $(function() {
 
 		return false;
 	});
+
+	/*
+	* Upgrade Groups
+	*/
+
+	$('.new-group-feature').on('submit', function () {
+		var form = this;
+
+		$.ajax({
+			type: 'POST',
+			url: url + '/group/new-feature',
+			data: {
+				id: $(this).data('id'),
+				body: $(this).find('input').val(),
+				_token: token
+			},
+			success: function(respond) {
+				if ( respond.error ) {
+					swal("Hata!", respond.error, "error");
+				} else if (respond.validations) {
+					if ( respond.validations.id ) {
+						swal("Hata!", respond.validations.id, "error");
+					} else if ( respond.validations.body ) {
+						swal("Hata!", respond.validations.body, "error");
+					}
+				} else {
+					$(form).find('input').val('');
+					$(form).closest('.card').find('.custom-extra').append('<div class="extra content text-center" style="color: #616161;">' + respond.body + '</div>');
+					$(form).closest('.card').find('.no-feature').remove();
+				}
+			}
+		});
+
+		return false;
+	});
+
+	$('#new_group').on('click', function () {
+		$('#form_new_group').modal('show');
+	});
+
+	$('#form_new_group').on('submit', function () {
+		var form = this;
+		var title = $('#group_title input').val();
+		var group = $('#group_group input').val();
+		var money = $('#group_money input').val();
+		var fields = ['group_title', 'group_group', 'group_money'];
+
+		$(this).find('.loading-panel').addClass('active');
+
+		$.ajax({
+			type: 'POST',
+			url: url + '/group/new',
+			data: {
+				title: title,
+				group: group,
+				money: money,
+				_token: token
+			},
+			success: function(respond) {
+				$.each(fields, function( index, value ) {
+					$('#' + value).removeClass('error');
+					$('#' + value + ' .error-p').text('');
+				});
+
+				if ( respond.errors ) {
+					$.each(respond.errors, function( index, value ) {
+						$('#group_' + index).addClass('error');
+						$('#group_' + index + ' .error-p').text(value);
+					});
+				} else {
+					$('.cards').append('<div class="card" style="float: left;"> <div class="content"> <div class="header titillium regular uppercase text-center" style="font-size: 20px;">' + title + '</div> </div> <div class="extra content text-center no-feature" style="color: #616161;"> Bu grubun hiç özelliği yok. </div> <div class="ui bottom attached button"> <i class="fa fa-shopping-cart" style="margin-right: 5px;"></i> Sayfayı Yenileyin </div> </div>');
+					$.each(fields, function( index, value ) {
+						$('#' + value + ' .ui.input .input').val('');
+					});
+					$('#form_new_group').modal('hide');
+					$('#no-group-message').remove();
+					swal("Tamam!", "Yeni grup listeye eklendi.", "success");
+				}
+
+				$(form).find('.loading-panel').removeClass('active');
+			}
+		});
+
+		return false;
+	});
+
+	/*
+	* Auth
+	*/
 
 	$('#signin_submit').on('click', function() {
 		var fields = ['username', 'password'];

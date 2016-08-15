@@ -22,32 +22,44 @@
 	font-family: arial !important;
 }
 
+.titillium {
+	font-family: 'Titillium Web', arial !important;
+}
+
 .uppercase {
-	text-transform: uppercase;
+	text-transform: uppercase !important;
 }
 
 .lowercase {
-	text-transform: lowercase;
+	text-transform: lowercase !important;
+}
+
+.regular {
+	font-weight: normal !important;
+}
+
+.bold {
+	font-weight: bold !important;
 }
 
 .text-center {
-	text-align: center;
+	text-align: center !important;
 }
 
 .text-right {
-	text-align: right;
+	text-align: right !important;
 }
 
 .text-left {
-	text-align: left;
+	text-align: left !important;
 }
 
 .pull-right {
-	float: right;
+	float: right !important;
 }
 
 .pull-left {
-	float: left;
+	float: left !important;
 }
 
 /*
@@ -66,6 +78,10 @@
 	margin-bottom: 10px !important;
 }
 
+.m-b-20 {
+	margin-bottom: 20px !important;
+}
+
 .m-t-0 {
 	margin-top: 0 !important;
 }
@@ -76,6 +92,14 @@
 
 .m-t-10 {
 	margin-top: 10px !important;
+}
+
+.m-t-20 {
+	margin-top: 20px !important;
+}
+
+.m-0 {
+	margin: 0 !important;
 }
 
 /*
@@ -108,6 +132,7 @@
 
 .block {
 	width: 100%;
+	display: block;
 }
 
 .clear {

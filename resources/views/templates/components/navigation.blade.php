@@ -59,7 +59,8 @@
 	<div class="widget">
 		<ul class="navigation-menu">
 			<li{!! Request::route()->getName() == 'home' ? ' class="active"' : '' !!}><a href="{{ route('home') }}">Anasayfa</a></li>
-			<li{!! Request::route()->getName() == 'market' ? ' class="active"' : '' !!}><a href="{{ route('market') }}">Market</a></li>
+			<li{!! Request::route()->getName() == 'market' ? ' class="active"' : '' !!}><a href="#">Market</a></li>
+			<li{!! Request::route()->getName() == 'upgrade' ? ' class="active"' : '' !!}><a href="{{ route('upgrade') }}">Hesabımı Yükselt</a></li>
 			<li{!! Request::route()->getName() == 'profile' ? ' class="active"' : '' !!}><a href="{{ route('profile', ['player' => Auth::user()->username]) }}">Profilim</a></li>
 			<li{!! Request::route()->getName() == 'users' ? ' class="active"' : '' !!}><a href="{{ route('users') }}">Oyuncular</a></li>
 			<li><a href="{{ route('auth.signout') }}">Çıkış Yap</a></li>

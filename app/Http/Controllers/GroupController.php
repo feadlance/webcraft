@@ -2,41 +2,69 @@
 
 namespace Webcraft\Http\Controllers;
 
+use Response;
+use Validator;
 use Webcraft\Models\Group;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-	public function postNewAjax(Request $request, \Websend $ws)
+	public function postNew(Request $request)
 	{
-		$validator = \Validator::make($request->all(), [
-			'title' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u',
-			'description' => 'min:3|max:300',
+		$validator = Validator::make($request->all(), [
+			'title' => 'required|max:100',
 			'group' => 'required|max:100|alpha_dash',
-			'balance' => 'required|regex:/^\d*(\.\d{2})?$/',
-			'game' => 'boolean'
+			'money' => 'required|regex:/^\d*(\.\d{2})?$/'
 		]);
 
 		if ( $validator->fails() ) {
-			return \Response::json(['errors' => $validator->errors()]);
+			return Response::json(['errors' => $validator->errors()]);
 		}
 
 		$group = Group::create([
 			'title' => $request->input('title'),
-			'description' => $request->input('description'),
 			'group' => $request->input('group'),
-			'balance' => $request->input('balance')
+			'money' => $request->input('money')
 		]);
 
-		if ( $request->input('game') ) {
-			$ws->console('pex group ' . $request->input('group') . ' create');
+		return Response::json(['success' => true]);
+	}
+
+	public function getDelete($id)
+	{
+		$group = Group::find($id);
+
+		if ( $group === null ) {
+			return redirect()->back();
 		}
 
-		return \Response::json([
-			'title' => $group->title,
-			'description' => $group->description,
-			'group' => $group->group,
-			'balance' => $group->getBalance()
+		$group->delete();
+		$group->getFeatures()->delete();
+
+		return redirect()->back()->with('flash_success', 'Grup başarıyla silindi.');
+	}
+
+	public function postNewFeature(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'id' => 'required|numeric|exists:groups',
+			'body' => 'required|max:100|unique:group_features'
 		]);
+
+		if ( $validator->fails() ) {
+			return Response::json(['validations' => $validator->errors()]);
+		}
+
+		$group = Group::find($request->input('id'));
+
+		if ( $group === null ) {
+			return Response::json(['error' => 'Bu özelliği eklemek istediğiniz grubu bulamadık.']);
+		}
+
+		$feature = $group->getFeatures()->create([
+			'body' => $request->input('body')
+		]);
+
+		return Response::json(['success' => true, 'body' => $feature->bodyFormat()]);
 	}
 }

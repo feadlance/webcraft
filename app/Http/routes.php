@@ -107,53 +107,41 @@ Route::put('/oyuncu/{player}/delete', [
 * Market
 */
 
-Route::get('/market', [
+/*Route::get('/market', [
   'uses' => '\Webcraft\Http\Controllers\MarketController@getIndex',
   'as' => 'market',
   'middleware' => ['auth']
-]);
-
-Route::get('/market/esyalar', [
-	'uses' => '\Webcraft\Http\Controllers\MarketController@getProducts',
-	'as' => 'market.products',
-	'middleware' => ['auth']
-]);
-
-Route::post('/market/esyalar/buy', [
-	'uses' => '\Webcraft\Http\Controllers\MarketController@postBuyProduct',
-  'as' => 'market.products.buy',
-	'middleware' => ['auth']
-]);
-
-Route::get('/market/gruplar', [
-  'uses' => '\Webcraft\Http\Controllers\MarketController@getGroups',
-  'as' => 'market.groups',
-  'middleware' => ['auth']
-]);
-
-Route::post('/market/gruplar/buy', [
-  'uses' => '\Webcraft\Http\Controllers\MarketController@postBuyGroup',
-  'as' => 'market.groups.buy',
-  'middleware' => ['auth']
-]);
+]);*/
 
 /*
-* Products
+* Upgrade Account
 */
 
-Route::post('/product/new/ajax', [
-  'uses' => '\Webcraft\Http\Controllers\ProductController@postNewAjax',
-  'as' => 'product.new.ajax',
-  'middleware' => ['auth', 'admin']
+Route::get('/hesabimi-yukselt', [
+  'uses' => '\Webcraft\Http\Controllers\UpgradeController@getIndex',
+  'as' => 'upgrade',
+  'middleware' => ['auth']
 ]);
 
 /*
 * Groups
 */
 
-Route::post('/group/new/ajax', [
-  'uses' => '\Webcraft\Http\Controllers\GroupController@postNewAjax',
-  'as' => 'group.new.ajax',
+Route::get('/group/delete/{id}', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@getDelete',
+  'as' => 'group.delete',
+  'middleware' => ['auth', 'admin']
+]);
+
+Route::post('/group/new', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@postNew',
+  'as' => 'group.new',
+  'middleware' => ['auth', 'admin']
+]);
+
+Route::post('/group/new-feature', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@postNewFeature',
+  'as' => 'group.new_feature',
   'middleware' => ['auth', 'admin']
 ]);
 
