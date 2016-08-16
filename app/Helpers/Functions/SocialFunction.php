@@ -8,7 +8,7 @@ class SocialFunction
 	{
 		$url = preg_replace(
 			'~https?://(?:[0-9A-Z-]+\.)?(?:youtu\.be/|youtube(?:-nocookie)?\.com\S*?[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*~ix',
-			'<div class="video-embed"><iframe src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe></div>',
+			'<div class="status-media col-lg-12"><iframe src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe></div>',
 			$url
 		);
 

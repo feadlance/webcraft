@@ -7,7 +7,7 @@
 		<div class="title">En iyi 100 katil</div>
 		<div class="content" style="padding-bottom: 0;">
 			@if ( $top100->count() )
-				<ul class="user-killers clear-after">
+				<ul class="user-killers clearfix">
 					@foreach ( $top100 as $user )
 						<li>
 							<a href="{{ route('profile', ['player' => $user->user()->username]) }}" title="{{ $user->user()->getDisplayName() }}">

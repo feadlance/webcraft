@@ -1,22 +1,13 @@
-<div class="panel p-relative">
-	<div class="title">Paylaş</div>
-	<div class="input-content">
-		<textarea id="status_body" placeholder="{{ Auth::id() === $user->id ? 'Ne düşünüyorsun?' : $user->getDisplayName() . ' için bir şeyler söyle...' }}"{{ isset($can_post) && !$can_post ? ' disabled' : '' }}></textarea>
+<div id="status_form" class="panel panel-custom">
+	<div class="panel-heading">
+		<div class="panel-title">Paylaş</div>
 	</div>
-	<div class="footer clear-after">
-		<!--<div class="pull-left">
-			<button class="action">
-				<i class="fa fa-camera"></i>
-			</button>
-		</div>-->
-		<div class="pull-right">
-			<button id="submit_status" class="ui blue button" style="margin: 0; border-radius: 0;">Paylaş</button>
+	<div class="panel-content">
+		<div class="form-group">
+			<textarea id="status_body" placeholder="{{ Auth::id() === $user->id ? 'Ne düşünüyorsun?' : $user->getDisplayName() . ' için bir şeyler söyle...' }}" class="form-control" rows="3"{{ isset($can_post) && !$can_post ? ' disabled' : '' }}></textarea>
 		</div>
 	</div>
-	
-	<div id="add_status_loading" class="loading-panel">
-		<div class="loading-content">
-			<i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
-		</div>
+	<div class="panel-footer clearfix">
+		<button id="submit_status" class="btn btn-primary text-uppercase">Paylaş</button>
 	</div>
 </div>

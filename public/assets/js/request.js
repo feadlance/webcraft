@@ -203,10 +203,10 @@ $(function() {
 					swal("Hata!", respond.error, "error");
 				} else {
 					if ( reply ) {
-						$(thiss).closest('.comment').find('.child-comments').prepend('<div class="comment"> <img src="' + respond.avatar_25 + '" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clear-after"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
+						$(thiss).closest('.comment').find('.child-comments').prepend('<div class="comment"> <img src="' + respond.avatar_25 + '" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clearfix"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
 						$(thiss).closest('.comment').find('.show_reply_comments_button').text('Yanıtla (' + respond.comment_count + ')');
 					} else {
-						$(thiss).closest('.comments').find('.post-comment').after('<div class="comment"> <img src="' + respond.avatar_40 + '" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clear-after"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
+						$(thiss).closest('.comments').find('.post-comment').after('<div class="comment"> <img src="' + respond.avatar_40 + '" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clearfix"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
 						$(thiss).closest('.ui.item').find('.comment-counter').text(respond.comment_count);
 					}
 

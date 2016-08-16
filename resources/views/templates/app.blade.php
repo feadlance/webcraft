@@ -8,31 +8,34 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
+		<!-- sweetalert -->
+		<link rel="stylesheet" type="text/css" href="assets/components/sweetalert/sweetalert.css">
+
 		<!-- css -->
+		<link rel="stylesheet" type="text/css" href="assets/components/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/main.css">
 
 		<!-- other -->
 		@yield('header')
 	</head>
 	<body>
-		@include ('templates.components.header')
-		@include ('templates.components.navigation')
+		@include ('templates.partials.navigation')
 
-		<main class="clear-after">
-			@yield('container')
-		</main>
+		<div class="wrapper">
+			@include ('templates.partials.header')
+
+			<!-- container -->
+			<div class="container-fluid clearfix">
+				@yield('container')
+			</div>
+		</div>
 
 		<footer>
-			<div class="footer-left">
-				Copyright, 2016
-			</div>
+			<!-- -->
 		</footer>
 
 		<!-- jquery -->
 		<script type="text/javascript" src="assets/components/jquery/jquery.min.js"></script>
-
-	    <!-- semantic ui -->
-	    <script type="text/javascript" src="assets/components/semantic-ui/semantic.min.js"></script>
 
 		<!-- app -->
 		<script type="text/javascript" src="assets/js/main.js"></script>

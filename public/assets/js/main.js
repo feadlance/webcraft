@@ -1,21 +1,7 @@
 $(function() {
 
 	/*
-	* Search Form
-	*/
-
-	$('#open-search-form').on('click', function() {
-		$('header .container .page-title, .header .container .user-control, .header .container #open-search-form').hide();
-		$('header .container .search-form').show();
-	});
-
-	$('#close-search-form').on('click', function() {
-		$('header .container .page-title, .header .container .user-control, .header .container #open-search-form').show();
-		$('header .container .search-form').hide();
-	});
-
-	/*
-	* Post Comments
+	* Status Comments
 	*/
 
 	$('.show_comments_button').on('click', function() {
@@ -29,10 +15,45 @@ $(function() {
 	});
 
 	/*
+	* Turkish Character
+	*/
+
+	function getStyle(element, style) {
+		var result;
+
+		if (document.defaultView && document.defaultView.getComputedStyle) {
+			result = document.defaultView.getComputedStyle(element, '').getPropertyValue(style);
+		} else if(element.currentStyle) {
+			style = style.replace(/\-(\w)/g, function (strMatch, p1) {
+				return p1.toUpperCase();
+			});
+			result = element.currentStyle[style];
+		}
+		return result;
+	}
+
+	function replaceRecursive(element) {
+		if (element && element.style && getStyle(element, 'text-transform') == 'uppercase') {
+			element.innerHTML = element.innerHTML.replace(/ı/g, 'I');
+			element.innerHTML = element.innerHTML.replace(/i/g, 'İ');    // replaces 'i' in tags too, regular expression should be extended if necessary
+		}
+
+		if (!element.childNodes || element.childNodes.length == 0) return;
+
+		for (var n in element.childNodes) {
+			replaceRecursive(element.childNodes[n]);
+		}
+	}
+
+	window.onload = function() {    // as appropriate 'ondomready'
+		replaceRecursive(document.getElementsByTagName('body')[0]);
+	}
+
+	/*
 	* Fix Navigation
 	*/
 
-	$(window).on('load scroll', function() {
+	/*$(window).on('load scroll', function() {
 		var st = $(this).scrollTop();
 
 		if (st > 100) {
@@ -56,6 +77,6 @@ $(function() {
 				'margin-top': 100
 			});
 		}
-	});
+	});*/
 
 });

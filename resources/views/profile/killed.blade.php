@@ -25,7 +25,7 @@
 			<div class="content">
 				<ul class="list-users">
 					@foreach ( $killed_users as $killed_user )
-						<li class="clear-after">
+						<li class="clearfix">
 							<div class="avatar">
 								<img src="{{ $killed_user->victim()->getAvatar(40) }}" alt="User Avatar">
 							</div>
@@ -55,7 +55,7 @@
 			<div class="content">
 				<ul class="list-users">
 					@foreach ( $killed_monsters as $killed_monster )
-						<li class="clear-after">
+						<li class="clearfix">
 							<div class="avatar">
 								<img src="https://minotar.net/avatar/default/40" alt="User Avatar">
 							</div>
@@ -86,7 +86,7 @@
 			<div class="content">
 				<ul class="list-users">
 					@foreach ( $killed_animals as $killed_animal )
-						<li class="clear-after">
+						<li class="clearfix">
 							<div class="avatar">
 								<img src="https://minotar.net/avatar/default/40" alt="User Avatar">
 							</div>

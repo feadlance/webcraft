@@ -11,7 +11,7 @@ class HomeController extends Controller
 	public function getIndex()
 	{
 		$user = Auth::user();
-		$online_users = User::where('isLogged', 1)->orderBy('id', 'desc')->limit(6)->get();
+		$online_users = User::where('isLogged', 1)->orderBy('id', 'desc')->limit(5)->get();
 		$top5_users = Kill::where('entityType', 'PLAYER')->orderBy('value', 'desc')->limit(5)->get();
 		$statuses = $user->getHomeStatuses()->orderBy('id', 'desc')->get();
 
