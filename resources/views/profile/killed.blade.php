@@ -11,8 +11,8 @@
 	<div class="panel">
 		<div class="content">
 			<h3 style="font-family: 'Titillium Web', arial; font-weight: normal;">
-				<strong>{{ $user->getDisplayName() }}</strong> oyuncusunun öldürdüğü canlılar
-				<small>toplam {{ $user->game()->playerKills('ALL', true) }}</small>
+				{{ TurkishGrammar::get($user->getDisplayName(), 'iyelik') }} öldürdüğü canlılar
+				<small style="display: block; color: #8a8a8a;">Toplam {{ $user->game()->playerKills('ALL', true) }}</small>
 			</h3>
 		</div>
 	</div>
@@ -20,7 +20,7 @@
 		<div style="width: 25%; margin-right: 5px; float: left;" class="panel m-t-5">
 			<div class="title">
 				Oyuncular
-				<small>({{ $user->game()->playerKills('PLAYER', true) }})</small>
+				<small style="color: #8a8a8a;">Toplam: {{ $user->game()->playerKills('PLAYER', true) }}</small>
 			</div>
 			<div class="content">
 				<ul class="list-users">
@@ -50,7 +50,7 @@
 		<div style="width: 25%; margin-right: 5px; float: left;" class="panel m-t-5">
 			<div class="title">
 				Yaratıklar
-				<small>({{ $user->game()->playerKills('MONSTERS', true) }})</small>
+				<small style="color: #8a8a8a;">Toplam: {{ $user->game()->playerKills('MONSTERS', true) }}</small>
 			</div>
 			<div class="content">
 				<ul class="list-users">
@@ -81,7 +81,7 @@
 		<div style="width: 25%; margin-right: 5px; float: left;" class="panel m-t-5">
 			<div class="title">
 				Hayvanlar
-				<small>({{ $user->game()->playerKills('ANIMALS', true) }})</small>
+				<small style="color: #8a8a8a;">Toplam: {{ $user->game()->playerKills('ANIMALS', true) }}</small>
 			</div>
 			<div class="content">
 				<ul class="list-users">
