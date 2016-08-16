@@ -208,9 +208,15 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+
+        /*
+        * Custom
+        */
+
         'Ftp' => Anchu\Ftp\FtpServiceProvider::class,
         'Websend' => Webcraft\Helpers\Websend\Websend::class,
         'MinecraftServer' => \Webcraft\Helpers\Minecraft\Server::class,
+        'TurkishGrammar' => \Webcraft\Helpers\Functions\TurkishGrammar::class
 
     ],
 
