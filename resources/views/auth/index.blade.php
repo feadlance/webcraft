@@ -58,7 +58,7 @@
 					}
 				</style>
 				<div id="login-form-error"></div>
-				<form id="login_form" class="form-bottom" autocomplete="off" onsubmit="return false;">
+				<form class="form-bottom" autocomplete="off" onsubmit="return signIn(this);">
 					<div id="username_group" class="form-group">
 						<label class="sr-only" for="username">Kullanıcı adı</label>
 						<input type="text" placeholder="Kullanıcı adı..." class="form-username form-control" id="username">
@@ -69,7 +69,7 @@
 						<input type="password" placeholder="Şifre..." class="form-password form-control" id="password">
 						<span class="help-block" style="margin: 0 0 0 5px;"></span>
 					</div>
-					<button id="signin_submit" class="btn" style="width: 100%;">Hazırım!</button>
+					<button class="btn" style="width: 100%;">Hazırım!</button>
 					<div class="loading-content">
 						<i class="fa fa-spin fa-circle-o-notch"></i>
 					</div>
@@ -104,7 +104,7 @@
 					</div>
 				</div>
 				<div id="register-form-error"></div>
-				<form id="register_form" class="form-bottom" autocomplete="off" onsubmit="return false;">
+				<form class="form-bottom" autocomplete="off" onsubmit="return signUp(this);">
 					<div id="register_email_group" class="form-group">
 						<label class="sr-only" for="register_email">e-Posta</label>
 						<input type="text" placeholder="e-Posta..." class="form-control" id="register_email">

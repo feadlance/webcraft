@@ -175,30 +175,32 @@ Route::post('/status', [
   'middleware' => ['auth']
 ]);
 
-Route::put('/status/{id}/delete', [
-  'uses' => '\Webcraft\Http\Controllers\StatusController@putDelete',
+Route::post('/status/delete', [
+  'uses' => '\Webcraft\Http\Controllers\StatusController@postDelete',
   'as' => 'status.delete',
   'middleware' => ['auth']
 ]);
 
-Route::put('/status/{id}/like', [
-  'uses' => '\Webcraft\Http\Controllers\StatusController@putLikeStatus',
+Route::post('/status/like', [
+  'uses' => '\Webcraft\Http\Controllers\StatusController@postLike',
   'as' => 'status.like',
   'middleware' => ['auth']
 ]);
 
-Route::put('/status/{id}/comment', [
-  'uses' => '\Webcraft\Http\Controllers\StatusController@putCommentStatus',
-  'as' => 'status.comment',
-  'middleware' => ['auth']
-]);
+
 
 /*
 * Comments
 */
 
-Route::put('/comment/{id}/like', [
-  'uses' => '\Webcraft\Http\Controllers\CommentController@putLike',
-  'as' => 'comment.like',
+Route::post('/status/comment', [
+  'uses' => '\Webcraft\Http\Controllers\CommentController@postComment',
+  'as' => 'status.comment',
+  'middleware' => ['auth']
+]);
+
+Route::post('/status/comment/like', [
+  'uses' => '\Webcraft\Http\Controllers\CommentController@postLike',
+  'as' => 'status.comment.like',
   'middleware' => ['auth']
 ]);

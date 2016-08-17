@@ -140,6 +140,42 @@ header > .top .page-title {
 	font-size: 15px;
 }
 
+/* -- Outline buttons -- */
+
+.btn {
+	outline: 0 !important;
+}
+
+/* -- Loading -- */
+
+.loading {
+	position: relative;
+}
+
+.loading:before {
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, .50);
+}
+
+/*.loading:after {
+	content: "\f1ce";
+	font-family: 'FontAwesome';
+	-webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+	font-size: 20px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-top: -10px;
+	margin-left: -10px;
+}*/
+
 /*
 * Homepage
 */
@@ -174,22 +210,18 @@ header > .top .page-title {
 }
 
 #statuses .status-item .status-info {
-	padding: 10px;
+	padding: 7px;
 	background: #f6f6f6;
 }
 
 #statuses .status-item .status-info .avatar {
 	float: left;
 	margin-right: 5px;
-}
-
-#statuses .status-item .status-info .avatar img {
-	border-radius: 5px;
+	height: 40px;
 }
 
 #statuses .status-item .status-info > .body {
 	float: left;
-	margin-top: 5px;
 }
 
 #statuses .status-item .status-info > .body .status-meta {
@@ -202,7 +234,7 @@ header > .top .page-title {
 	margin-right: 5px;
 }
 
-#statuses .status-item .status-info > .body .status-meta li+li:before {
+#statuses .status-item .status-info > .body .status-meta li + li:before {
 	color: #ccc;
 	content: "-";
 }
@@ -214,6 +246,7 @@ header > .top .page-title {
 
 #statuses .status-item > .status-body {
 	padding: 10px;
+	font-family: arial;
 	background: #fff;
 }
 
@@ -226,6 +259,132 @@ header > .top .page-title {
 #statuses .status-item > .status-body .status-media iframe {
 	width: 100%;
 	height: 400px;
+}
+
+#statuses .status-item > .status-footer .status-meta {
+	list-style-type: none;
+	background: #fff;
+	padding: 0 10px 10px 10px;
+}
+
+#statuses .status-item > .status-footer .status-meta li {
+	color: #9f9f9f;
+	margin-right: 10px;
+	float: left;
+}
+
+#statuses .status-item > .status-footer .status-actions {
+	background: #f6f6f6;
+	list-style-type: none;
+	border-top: 1px solid rgba(0, 0, 0, .05);
+	border-bottom: 1px solid rgba(0, 0, 0, .08);
+}
+
+#statuses .status-item > .status-footer .status-actions li {
+	float: left;
+	border-right: 1px solid rgba(0, 0, 0, .05);
+}
+
+#statuses .status-item > .status-footer .status-actions li .btn {
+	border: 0;
+	border-radius: 0;
+}
+
+#statuses .status-item > .status-footer .status-actions li .btn.liked,
+#statuses .status-item > .status-comments .comment-item .meta li.action-comment-like-counter {
+	color: #337ab7;
+}
+
+#statuses .status-item .status-post-comment {
+	display: none;
+	padding: 10px 10px 0 10px;
+	background: #f9f9f9;
+}
+
+#statuses .status-item .status-post-comment .avatar {
+	float: left;
+	height: 40px;
+}
+
+#statuses .status-item .status-post-comment .comment {
+	margin-left: 40px;
+}
+
+#statuses .status-item .status-post-comment .comment .form-control {
+	height: 40px;
+	border-radius: 0;
+	border-left: 0;
+}
+
+#statuses .status-item > .status-comments {
+	display: none;
+	background: #f9f9f9;
+	padding: 10px;
+	border-bottom: 1px solid rgba(0, 0, 0, .08);
+}
+
+#statuses .status-item > .status-comments .comment-item {
+	margin-bottom: 5px;
+}
+
+#statuses .status-item > .status-comments .comment-item .avatar {
+	float: left;
+}
+
+#statuses .status-item > .status-comments .comment-item .content {
+	margin-left: 45px;
+	font-family: arial;
+	font-size: 14px;
+}
+
+#statuses .status-item > .status-comments .comment-item .content .comment {
+	color: #656565;
+}
+
+#statuses .status-item > .status-comments .comment-item .meta {
+	list-style-type: none;
+	margin-top: 5px;
+}
+
+#statuses .status-item > .status-comments .comment-item .meta li {
+	float: left;
+	color: #afafaf;
+}
+
+#statuses .status-item > .status-comments .comment-item .meta li + li:before {
+	content: "-";
+	margin: 0 5px;
+}
+
+#statuses .status-item > .status-comments .comment-item .content > .status-post-comment {
+	margin-top: 5px;
+	padding: 0;
+}
+
+#statuses .status-item > .status-comments .comment-item .content > .status-post-comment .avatar {
+	height: 35px;
+}
+
+#statuses .status-item > .status-comments .comment-item .content > .status-post-comment .comment {
+	margin-left: 35px;
+}
+
+#statuses .status-item > .status-comments .comment-item .content > .status-post-comment .comment .form-control {
+	height: 35px;
+	padding: 6px 5px;
+}
+
+#statuses .status-item > .status-comments .comment-item .content > .sub-comments {
+	margin: 10px 0;
+	display: none;
+}
+
+#statuses .status-item > .status-comments .comment-item .content > .sub-comments .comment-item {
+	margin: 10px 0;
+}
+
+#statuses .status-item > .status-comments .comment-item .content > .sub-comments .comment-item .content {
+	margin-left: 40px;
 }
 
 /* -- List group user --  */

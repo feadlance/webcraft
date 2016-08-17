@@ -42,18 +42,13 @@ class StatusController extends Controller
 		]);
 
 		return Response::json([
-			'success' => true,
-			'username' => $status->user()->username,
-			'avatar' => $status->user()->getAvatar(50),
-			'display_name' => $status->user()->getDisplayName(),
-			'created_at' => $status->created_at->diffForHumans(),
-			'body' => $status->postFormat()
+			'success' => true
 		]);
 	}
 
-	public function putDelete($id)
+	public function postDelete(Request $request)
 	{
-		$status = Status::find($id);
+		$status = Status::find($request->input('id'));
 
 		if ( $status === null ) {
 			return Response::json(['error' => 'Post bulunamadı.']);
@@ -69,9 +64,9 @@ class StatusController extends Controller
 		return Response::json(['success' => true]);
 	}
 
-	public function putLikeStatus($id)
+	public function postLike(Request $request)
 	{
-		$status = Status::find($id);
+		$status = Status::find($request->input('id'));
 
 		if ( $status === null ) {
 			return Response::json(['error' => 'Post bulunamadı.']);
@@ -83,64 +78,13 @@ class StatusController extends Controller
 
 		if ( Auth::user()->hasLikedStatus($status) ) {
 			$status->likes()->where('user_id', Auth::id())->delete();
-			$json = ['success' => true, 'liked' => false, 'like_count' => $status->likes()->count()];
+			$json = ['success' => true, 'liked' => false, 'count' => $status->likes()->count()];
 		} else {
 			$like = $status->likes()->create([]);
 			Auth::user()->likes()->save($like);
-			$json = ['success' => true, 'liked' => true, 'like_count' => $status->likes()->count()];
+			$json = ['success' => true, 'liked' => true, 'count' => $status->likes()->count()];
 		}
 
 		return Response::json($json);
-	}
-
-	public function putCommentStatus(Request $request, $id)
-	{
-		$reply = $request->input('reply');
-		$parent_id = 0;
-
-		if ( $reply === 'true' ) {
-			$comment = Comment::find($id);
-
-			if ( $comment === null ) {
-				return Response::json(['error' => 'Yorum bulunamadı.']);
-			}
-
-			$parent_id = $comment->id;
-			$id = $comment->status_id;
-		}
-
-		$status = Status::find($id);
-
-		if ( $status === null ) {
-			return Response::json(['error' => 'Post bulunamadı.']);
-		}
-
-		if ( Auth::id() !== $status->user()->id && !Auth::user()->isFriendsWith($status->user()) ) {
-			return Response::json(['error' => 'Siz arkadaş değilsiniz.']);
-		}
-
-		$validator = Validator::make($request->all(), [
-			'body' => 'required|max:500'
-		]);
-
-		if ( $validator->fails() ) {
-			return Response::json(['error' => $validator->errors()->first('body')]);
-		}
-
-		$comments = $status->comments()->create([
-			'body' => $request->input('body'),
-			'parent_id' => $parent_id
-		]);
-
-		Auth::user()->comments()->save($comments);
-
-		return Response::json([
-			'success' => true,
-			'comment_count' => $status->comments($parent_id)->count(),
-			'username' => Auth::user()->username,
-			'avatar_25' => Auth::user()->getAvatar(25),
-			'avatar_40' => Auth::user()->getAvatar(40),
-			'display_name' => Auth::user()->getDisplayName()
-		]);
 	}
 }

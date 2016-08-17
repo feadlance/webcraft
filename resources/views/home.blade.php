@@ -65,7 +65,7 @@
 			<!-- statuses -->
 			<div id="statuses">
 				@foreach ( $statuses as $status )
-					@include('templates.status.statuses')
+					@include('templates.status.status')
 				@endforeach
 			</div>
 		</div>
@@ -75,9 +75,6 @@
 @section('scripts')
 	<script type="text/javascript" src="assets/components/autosize/autosize.min.js"></script>
 	<script type="text/javascript" src="assets/components/sweetalert/sweetalert.min.js"></script>
-	<script type="text/javascript">
-		var player = '{{ $user->username }}';
-		autosize($('#status_form .form-control'));
-	</script>
+	<script type="text/javascript">var player = '{{ $user->username }}';autosize($('#status_form .form-control'));</script>
 	<script type="text/javascript" src="assets/js/request.js"></script>
 @stop

@@ -68,163 +68,6 @@ $(function() {
 	});
 
 	/*
-	* Status
-	*/
-
-	$('#submit_status').on('click', function() {
-		var body = $('#status_body');
-		$('#add_status_loading').addClass('active');
-
-		$.ajax({
-			type: 'POST',
-			url: url + '/status',
-			data: {
-				body: body.val(),
-				player: player,
-				_token: token
-			},
-			success: function(respond) {
-				if ( respond.error ) {
-					swal("Hata!", respond.error, "error");
-				} else {
-					$('.posts').prepend('<div class="item ui"> <div class="header"> <div class="avatar"> <img src="' + respond.avatar + '" alt="User Avatar"> </div> <div class="title"> <a href="javascript:;">' + respond.display_name + '</a> </div> <div class="extra"> ' + respond.created_at + '</div> </div> <div class="content"> <p>' + respond.body + '</p> <div class="show_comments_button info"> <span>Tüm işlemler için sayfayı yenileyin.</span> </div> </div> </div>');
-					body.val('');
-				}
-
-				$('#add_status_loading').removeClass('active');
-			}
-		});
-	});
-
-	$('.delete-post').on('click', function() {
-		var thiss = this;
-
-		swal({
-		    title: "Bir post siliyorsunuz...",
-		    text: "Bu postu silmek istiyor musunuz?",
-		    type: "warning",
-		    showCancelButton: true,
-		    confirmButtonColor: "#2185d0",
-		    confirmButtonText: "Evet",
-		    cancelButtonText: "Hayır",
-		    closeOnConfirm: false
-		}, function() {
-		    $.ajax({
-				type: 'PUT',
-				url: url + '/status/' + $(thiss).closest('.ui.item').data('id') + '/delete',
-				data: {
-					_token: token
-				},
-				success: function(respond) {
-					if ( respond.error ) {
-						swal("Hata!", respond.error, "error");
-					} else {
-						swal("Bitti!", "Post başarıyla silindi.", "success")
-						$(thiss).closest('.ui.item').remove();
-					}
-				}
-			});
-		});
-
-		return false;
-	});
-
-	$('.likeable').on('click', function() {
-		var thiss = this;
-		var type = $(this).closest('.comments').data('type');
-
-		if ( type == 'comment' ) {
-			var likeable_new_url = '/comment/' + $(this).closest('.comment').data('id') + '/like';
-			$(this).html('<i class="fa fa-circle-o-notch fa-spin"></i>').parent().find('.loading-panel').addClass('active');
-		} else {
-			var likeable_new_url = '/status/' + $(this).closest('.ui.item').data('id') + '/like';
-			$(this).html('<i class="fa fa-circle-o-notch fa-spin"></i> Beğen').parent().find('.loading-panel').addClass('active');
-		}
-
-		$.ajax({
-			type: 'PUT',
-			url: url + likeable_new_url,
-			data: {
-				_token: token
-			},
-			success: function(respond) {
-				if ( respond.error ) {
-					swal("Hata!", respond.error, "error");
-				} else {
-					if ( type == 'comment' ) {
-						if ( respond.liked ) {
-							$(thiss).text('Beğenmekten Vazgeç');
-						} else {
-							$(thiss).text('Beğen');
-						}
-
-						$(thiss).closest('.comment-actions').find('.comment-likes').attr('data-likes', respond.like_count);
-						$(thiss).closest('.comment-actions').find('.comment-likes span').text(respond.like_count);
-					} else {
-						if ( respond.liked ) {
-							$(thiss).addClass('liked');
-						} else {
-							$(thiss).removeClass('liked');
-						}
-
-						$(thiss).html('<i class="fa fa-thumbs-up"></i> Beğen').parent().find('.loading-panel').removeClass('active');
-						$(thiss).closest('.ui.item').find('.like-counter').text(respond.like_count);
-					}
-				}
-			}
-		});
-
-		return false;
-	});
-
-	$('.post-comment, .post-comment-reply').on('submit', function() {
-    	var thiss = this;
-    	var body = $(this).find('.post-comment-text');
-    	var reply = $(this).data('type') === 'reply' ? true : false;
-
-    	if ( reply === true ) {
-    		$(thiss).closest('.comment').find('.loading-reply.loading-panel').addClass('active');
-    		var id = $(this).closest('.comment').data('id');
-    	} else {
-    		$(thiss).closest('.ui.item').find('.loading-comment.loading-panel').addClass('active');
-    		var id = $(this).closest('.ui.item').data('id');
-    	}
-
-	    $.ajax({
-			type: 'PUT',
-			url: url + '/status/' + id + '/comment',
-			data: {
-				body: body.val(),
-				reply: reply,
-				_token: token
-			},
-			success: function(respond) {
-				if ( respond.error ) {
-					swal("Hata!", respond.error, "error");
-				} else {
-					if ( reply ) {
-						$(thiss).closest('.comment').find('.child-comments').prepend('<div class="comment"> <img src="' + respond.avatar_25 + '" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clearfix"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
-						$(thiss).closest('.comment').find('.show_reply_comments_button').text('Yanıtla (' + respond.comment_count + ')');
-					} else {
-						$(thiss).closest('.comments').find('.post-comment').after('<div class="comment"> <img src="' + respond.avatar_40 + '" alt="User Avatar"> <div class="comment-body"> <a class="user-link">' + respond.display_name + '</a> <span class="content">' + body.val() + '</span> </div> <div class="bottom"> <ul class="comment-actions clearfix"> <li>Yorum özellikleri için sayfayı yenileyin.</li> </ul> </div> </div>');
-						$(thiss).closest('.ui.item').find('.comment-counter').text(respond.comment_count);
-					}
-
-					$(body).val('');
-				}
-
-				if ( reply ) {
-					$(thiss).closest('.comment').find('.loading-reply.loading-panel').removeClass('active');
-				} else {
-					$(thiss).closest('.ui.item').find('.loading-comment.loading-panel').removeClass('active');
-				}
-			}
-		});
-
-		return false;
-	});
-
-	/*
 	* Upgrade Groups
 	*/
 
@@ -309,85 +152,221 @@ $(function() {
 		return false;
 	});
 
-	/*
-	* Auth
-	*/
-
-	$('#signin_submit').on('click', function() {
-		var fields = ['username', 'password'];
-		$('#login_form').addClass('loading');
-
-		$.ajax({
-			type: 'POST',
-			url: url + '/signin',
-			data: {
-				username: $(this).parent().find('#username').val(),
-				password: $(this).parent().find('#password').val(),
-				_token: token
-			},
-			success: function(respond) {
-				$.each(fields, function( index, value ) {
-					$('#' + value + '_group').removeClass('has-error');
-					$('#' + value + '_group .help-block').text('');
-				});
-
-				$('#login-form-error').removeClass('active');
-
-				if ( respond.error ) {
-					$('#login-form-error').addClass('active').text(respond.error);
-				} else if ( respond.validations ) {
-					$.each(respond.validations, function( index, value ) {
-						$('#' + index + '_group').addClass('has-error');
-						$('#' + index + '_group .help-block').text(value);
-					});
-				} else {
-					$('#login-form-error').addClass('active').css('background', '#21BA45').html('<i class="fa fa-check"></i>');
-					$('#login_form').addClass('loading-ok');
-					window.location.href = url;
-				}
-
-				$('#login_form').removeClass('loading');
-			}
-		});
-	});
-
-	$('#signup_submit').on('click', function() {
-		var fields = ['register_email', 'register_username', 'register_password'];
-		$('#register_form').addClass('loading');
-
-		$.ajax({
-			type: 'POST',
-			url: url + '/signup',
-			data: {
-				register_username: $(this).parent().find('#register_username').val(),
-				register_email: $(this).parent().find('#register_email').val(),
-				register_password: $(this).parent().find('#register_password').val(),
-				_token: token
-			},
-			success: function(respond) {
-				$.each(fields, function( index, value ) {
-					$('#' + value + '_group').removeClass('has-error');
-					$('#' + value + '_group .help-block').text('');
-				});
-
-				$('#register-form-error').removeClass('active');
-
-				if ( respond.error ) {
-					$('#register-form-error').addClass('active').text(respond.error);
-				} else if ( respond.validations ) {
-					$.each(respond.validations, function( index, value ) {
-						$('#' + index + '_group').addClass('has-error');
-						$('#' + index + '_group .help-block').text(value);
-					});
-				} else {
-					$('#register-form-error').addClass('active').css('background', '#21BA45').html('<i class="fa fa-check"></i>');
-					$('#register_form').addClass('loading-ok');
-					window.location.href = url;
-				}
-
-				$('#register_form').removeClass('loading');
-			}
-		});
-	});
-
 });
+
+var signIn = function (that) {
+
+	var fields = ['username', 'password'];
+
+	$(that).addClass('loading');
+
+	$.ajax({
+		type: 'POST',
+		url: url + '/signin',
+		data: {
+			username: $(that).find('#username').val(),
+			password: $(that).find('#password').val(),
+			_token: token
+		},
+		success: function(respond) {
+			$.each(fields, function( index, value ) {
+				$('#' + value + '_group').removeClass('has-error');
+				$('#' + value + '_group .help-block').text('');
+			});
+
+			$('#login-form-error').removeClass('active');
+
+			if ( respond.error ) {
+				$('#login-form-error').addClass('active').text(respond.error);
+			} else if ( respond.validations ) {
+				$.each(respond.validations, function( index, value ) {
+					$('#' + index + '_group').addClass('has-error');
+					$('#' + index + '_group .help-block').text(value);
+				});
+			} else {
+				$('#login-form-error').addClass('active').css('background', '#21BA45').html('<i class="fa fa-check"></i>');
+				$(that).addClass('loading-ok');
+				window.location.href = url;
+			}
+
+			$(that).removeClass('loading');
+		}
+	});
+
+	return false;
+
+};
+
+var signUp = function (that) {
+
+	var fields = ['register_email', 'register_username', 'register_password'];
+
+	$(that).addClass('loading');
+
+	$.ajax({
+		type: 'POST',
+		url: url + '/signup',
+		data: {
+			register_username: $(that).find('#register_username').val(),
+			register_email: $(that).find('#register_email').val(),
+			register_password: $(that).find('#register_password').val(),
+			_token: token
+		},
+		success: function(respond) {
+			$.each(fields, function( index, value ) {
+				$('#' + value + '_group').removeClass('has-error');
+				$('#' + value + '_group .help-block').text('');
+			});
+
+			$('#register-form-error').removeClass('active');
+
+			if ( respond.error ) {
+				$('#register-form-error').addClass('active').text(respond.error);
+			} else if ( respond.validations ) {
+				$.each(respond.validations, function( index, value ) {
+					$('#' + index + '_group').addClass('has-error');
+					$('#' + index + '_group .help-block').text(value);
+				});
+			} else {
+				$('#register-form-error').addClass('active').css('background', '#21BA45').html('<i class="fa fa-check"></i>');
+				$(that).addClass('loading-ok');
+				window.location.href = url;
+			}
+
+			$(that).removeClass('loading');
+		}
+	});
+
+	return false;
+
+};
+
+var postComment = function (that, id, type) {
+
+	/* Resource */
+	var body = $(that).find('input');
+
+	/* Start Loading */
+	$(that).closest('.status-post-comment').addClass('loading');
+
+	/* Start Ajax */
+	$.ajax({
+		type: 'POST',
+		url: url + '/status/comment',
+		data: {
+			id: id,
+			body: body.val(),
+			type: type,
+			_token: token
+		},
+		success: function(respond) {
+			if ( respond.error ) {
+				swal('Hata!', respond.error, 'error');
+			} else {
+				body.val('');
+
+				if ( type === 'status' ) {
+					$(that).closest('.status-item').find('.status-comment-counter').text(respond.count);
+					var comment_field = $(that).closest('.status-item').find('.status-comments');
+				} else {
+					$(that).closest('.content').find('.comment-reply-counter').text('(' + respond.count + ')');
+					var comment_field = $(that).closest('.content').find('.sub-comments');
+				}
+
+				$(comment_field).prepend('<div class="comment-item"> <div class="avatar"> <img src="' + respond.avatar + '" alt="User Avatar"> </div> <div class="content"> <div class="comment"> <a href="' + respond.profile_link + '"> <strong>' + respond.display_name + '</strong> </a> <span>' + respond.body + '</span> </div> <ul class="meta clearfix"> <li> <i class="fa fa-refresh"></i> Tüm özellikleri için sayfayı yenileyin </li> <li>' + respond.created_at + '</li> </ul> </div> </div>');
+			}
+
+			/* Stop Loading */
+			$(that).closest('.status-post-comment').removeClass('loading');
+		}
+	});
+
+	return false;
+
+};
+
+var likeStatus = function (that, id) {
+	
+	$(that).html('<i class="fa fa-circle-o-notch fa-spin"></i> Beğen').addClass('loading');
+
+	/* Start Ajax */
+	$.ajax({
+		type: 'POST',
+		url: url + '/status/like',
+		data: {
+			id: id,
+			_token: token
+		},
+		success: function(respond) {
+			if ( respond.error ) {
+				swal('Hata!', respond.error, 'error');
+				$(that).html('<i class="fa fa-thumbs-up"></i> Beğen');
+			} else {
+				if ( respond.liked ) {
+					$(that).html('<i class="fa fa-thumbs-up"></i> Beğen').addClass('liked');
+				} else {
+					$(that).html('<i class="fa fa-thumbs-up"></i> Beğen').removeClass('liked');
+				}
+
+				$(that).closest('.status-item').find('.status-like-counter').text(respond.count);
+			}
+
+			$(that).removeClass('loading');
+		}
+	});
+
+	return false;
+
+};
+
+var likeComment = function (that, id) {
+	
+	$(that).html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+
+	/* Start Ajax */
+	$.ajax({
+		type: 'POST',
+		url: url + '/status/comment/like',
+		data: {
+			id: id,
+			_token: token
+		},
+		success: function(respond) {
+			if ( respond.error ) {
+				swal('Hata!', respond.error, 'error');
+				$(that).text('Beğen');
+			} else {
+				if ( respond.liked ) {
+					$(that).text('Beğenmekten Vazgeç');
+				} else {
+					$(that).text('Beğen');
+
+					if ( respond.count == 0 ) {
+						$(that).closest('.meta').find('.action-comment-like-counter').remove();
+					}
+				}
+
+				if ( $(that).closest('.meta').find('.action-comment-like-counter').length ) {
+					$(that).closest('.meta').find('.action-comment-like-counter > span').text(respond.count);
+				} else {
+					if ( respond.count > 0 ) {
+						$(that).closest('.meta').find('.action-ago').before('<li class="action-comment-like-counter"> <i class="fa fa-thumbs-up"></i> <span>' + respond.count + '</span> </li>');
+					}
+				}
+			}
+		}
+	});
+
+	return false;
+
+};
+
+var showComments = function (that) {
+	$(that).closest('.status-item').find('.status-comments, .status-post-comment:first').toggle();
+	return false;
+};
+
+var showCommentReplies = function (that) {
+	$(that).closest('.content').find('.sub-comments, .status-post-comment').toggle();
+	return false;
+};

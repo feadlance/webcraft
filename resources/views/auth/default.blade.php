@@ -43,10 +43,10 @@
 			</div>
 		</footer>
 		<!-- Javascript -->
-		<script src="assets/components/jquery/jquery.min.js"></script>
-		<script src="assets/components/bootstrap/js/bootstrap.min.js"></script>
-		<script src="assets/js/guest/jquery.backstretch.min.js"></script>
-		<script src="assets/components/sweetalert/sweetalert.min.js"></script>
+		<script type="text/javascript" src="assets/components/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="assets/components/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/js/guest/jquery.backstretch.min.js"></script>
+		<script type="text/javascript" src="assets/components/sweetalert/sweetalert.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
 			    $.backstretch("assets/images/auth-bg.jpg");
@@ -54,7 +54,7 @@
 
 			var token = '{{ Session::token() }}', url = '{{ url('/') }}';
 		</script>
-		<script src="assets/js/request.js"></script>
+		<script type="text/javascript" src="assets/js/request.js"></script>
 		<!--[if lt IE 10]>
 		<script src="assets/js/guest/placeholder.js"></script>
 		<![endif]-->

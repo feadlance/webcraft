@@ -18,6 +18,11 @@ class Comment extends Model
 		return $this->belongsTo('Webcraft\Models\User', 'user_id')->first();
 	}
 
+	public function status()
+	{
+		return $this->belongsTo('Webcraft\Models\Status')->first();
+	}
+
 	public function likes()
 	{
 		return $this->morphMany('Webcraft\Models\Like', 'likeable');

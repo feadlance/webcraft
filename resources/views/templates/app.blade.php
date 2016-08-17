@@ -11,6 +11,9 @@
 		<!-- sweetalert -->
 		<link rel="stylesheet" type="text/css" href="assets/components/sweetalert/sweetalert.css">
 
+		<!-- font awesome -->
+		<link rel="stylesheet" type="text/css" href="assets/components/font-awesome/css/font-awesome.min.css">
+
 		<!-- css -->
 		<link rel="stylesheet" type="text/css" href="assets/components/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/main.css">
