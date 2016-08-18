@@ -16,6 +16,7 @@ nav {
     float: left;
     width: 300px;
     height: 100%;
+    position: fixed;
     background: #fff;
 }
 
@@ -71,6 +72,9 @@ nav > .bottom {
     text-align: center;
     color: #fff;
     background: #e74c3c;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
 .wrapper {

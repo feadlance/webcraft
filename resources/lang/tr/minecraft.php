@@ -69,5 +69,7 @@ return [
     */
 
     'ARROW' => 'Ok',
+    'FALL' => 'Yüksekten Düşerek',
+    'LAVA' => 'Lavda Yanarak'
 
 ];

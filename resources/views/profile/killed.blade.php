@@ -8,102 +8,104 @@
 @stop
 
 @section('container')
-	<div class="panel">
-		<div class="content">
-			<h3 style="font-family: 'Titillium Web', arial; font-weight: normal;">
-				{{ TurkishGrammar::get($user->getDisplayName(), 'iyelik') }} öldürdüğü canlılar
-				<small style="display: block; color: #8a8a8a;">Toplam {{ $user->game()->playerKills('ALL', true) }}</small>
-			</h3>
-		</div>
-	</div>
-	@if ( $killed_users->count() )
-		<div style="width: 25%; margin-right: 5px; float: left;" class="panel m-t-5">
-			<div class="title">
-				Oyuncular
-				<small style="color: #8a8a8a;">Toplam: {{ $user->game()->playerKills('PLAYER', true) }}</small>
-			</div>
-			<div class="content">
-				<ul class="list-users">
-					@foreach ( $killed_users as $killed_user )
-						<li class="clearfix">
-							<div class="avatar">
-								<img src="{{ $killed_user->victim()->getAvatar(40) }}" alt="User Avatar">
-							</div>
-							<div class="detail">
-								<div class="title">
-									<a href="{{ route('profile', ['player' => $killed_user->victim()->username]) }}">
-										<strong>{{ $killed_user->victim()->getDisplayName() }}</strong>
-									</a>
-								</div>
-								<div class="description">
-									<strong>{{ $killed_user->total }}</strong> kez
-								</div>
-							</div>
-						</li>
-					@endforeach
-				</ul>
-			</div>
-		</div>
-	@endif
-	
-	@if ( $killed_monsters->count() )
-		<div style="width: 25%; margin-right: 5px; float: left;" class="panel m-t-5">
-			<div class="title">
-				Yaratıklar
-				<small style="color: #8a8a8a;">Toplam: {{ $user->game()->playerKills('MONSTERS', true) }}</small>
-			</div>
-			<div class="content">
-				<ul class="list-users">
-					@foreach ( $killed_monsters as $killed_monster )
-						<li class="clearfix">
-							<div class="avatar">
-								<img src="https://minotar.net/avatar/default/40" alt="User Avatar">
-							</div>
-							<div class="detail">
-								<div class="title">
-									<a href="#">
-										<strong>@lang('minecraft.' . $killed_monster->entityType)</strong>
-									</a>
-								</div>
-								<div class="description">
-									<strong>{{ $killed_monster->value }}</strong> kez
-								</div>
-							</div>
-						</li>
-					@endforeach
-				</ul>
-			</div>
-		</div>
-	@endif
-	
+	<h3 class="m-b-1">{{ TurkishGrammar::get($user->getDisplayName(), 'iyelik') }} öldürdüğü canlılar</h3>
 
-	@if ( $killed_animals->count() )
-		<div style="width: 25%; margin-right: 5px; float: left;" class="panel m-t-5">
-			<div class="title">
-				Hayvanlar
-				<small style="color: #8a8a8a;">Toplam: {{ $user->game()->playerKills('ANIMALS', true) }}</small>
+	<div class="row">
+		@if ( $killed_users->count() )
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-header">
+						Oyuncular
+						<small class="text-muted">{{ $user->game()->playerKills('PLAYER', true) }}</small>
+					</div>
+					<div class="card-block">
+						<ul class="list-group-user">
+							@foreach ( $killed_users as $killed_user )
+								<li class="list-group-user-item clearfix">
+									<div class="avatar">
+										<img src="{{ $killed_user->victim()->getAvatar(40) }}" alt="User Avatar">
+									</div>
+									<div class="content">
+										<div class="title">
+											<a href="{{ route('profile', ['player' => $killed_user->victim()->username]) }}">
+												<strong>{{ $killed_user->victim()->getDisplayName() }}</strong>
+											</a>
+										</div>
+										<div class="body">
+											{{ $killed_user->total }} kez
+										</div>
+									</div>
+								</li>
+							@endforeach
+						</ul>
+					</div>
+				</div>
 			</div>
-			<div class="content">
-				<ul class="list-users">
-					@foreach ( $killed_animals as $killed_animal )
-						<li class="clearfix">
-							<div class="avatar">
-								<img src="https://minotar.net/avatar/default/40" alt="User Avatar">
-							</div>
-							<div class="detail">
-								<div class="title">
-									<a href="#">
-										<strong>@lang('minecraft.' . $killed_animal->entityType)</strong>
-									</a>
-								</div>
-								<div class="description">
-									<strong>{{ $killed_animal->value }}</strong> kez
-								</div>
-							</div>
-						</li>
-					@endforeach
-				</ul>
+		@endif
+		
+		@if ( $killed_monsters->count() )
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-header">
+						Yaratıklar
+						<small class="text-muted">{{ $user->game()->playerKills('MONSTERS', true) }}</small>
+					</div>
+					<div class="card-block">
+						<ul class="list-group-user">
+							@foreach ( $killed_monsters as $killed_monster )
+								<li class="list-group-user-item clearfix">
+									<div class="avatar">
+										<img src="https://minotar.net/avatar/default/40" alt="User Avatar">
+									</div>
+									<div class="content">
+										<div class="title">
+											<a href="#">
+												<strong>@lang('minecraft.' . $killed_monster->entityType)</strong>
+											</a>
+										</div>
+										<div class="body">
+											{{ $killed_monster->value }} kez
+										</div>
+									</div>
+								</li>
+							@endforeach
+						</ul>
+					</div>
+				</div>
 			</div>
-		</div>
-	@endif
+		@endif
+		
+
+		@if ( $killed_animals->count() )
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-header">
+						Yaratıklar
+						<small class="text-muted">{{ $user->game()->playerKills('ANIMALS', true) }}</small>
+					</div>
+					<div class="card-block">
+						<ul class="list-group-user">
+							@foreach ( $killed_animals as $killed_animal )
+								<li class="list-group-user-item clearfix">
+									<div class="avatar">
+										<img src="https://minotar.net/avatar/default/40" alt="User Avatar">
+									</div>
+									<div class="content">
+										<div class="title">
+											<a href="#">
+												<strong>@lang('minecraft.' . $killed_animal->entityType)</strong>
+											</a>
+										</div>
+										<div class="body">
+											{{ $killed_animal->value }} kez
+										</div>
+									</div>
+								</li>
+							@endforeach
+						</ul>
+					</div>
+				</div>
+			</div>
+		@endif
+	</div>
 @stop

@@ -75,7 +75,9 @@ return [
       ],
 
       'OTHERS' => [
-        'ARROW'
+        'ARROW',
+        'FALL',
+        'LAVA'
       ]
 
   ],
