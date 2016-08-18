@@ -5,12 +5,6 @@
 @import 'https://fonts.googleapis.com/css?family=Exo|Titillium+Web:400,700';
 
 /*
-* Reset
-*/
-
-@import 'reset.css';
-
-/*
 * Main
 */
 
@@ -34,10 +28,10 @@ nav > .logo {
 nav > .logo a {
 	display: block;
 	font-size: 50px;
-	font-family: 'Titillium Web';
     text-decoration: none;
     color: #fff;
     background: #e74c3c;
+    font-family: 'Exo';
 }
 
 nav > .widget {
@@ -49,6 +43,8 @@ nav > .widget {
 
 .navigation-menu {
     list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .navigation-menu li {
@@ -61,7 +57,6 @@ nav > .widget {
     display: block;
     padding: 6px 0;
     text-decoration: none;
-    font-family: 'Titillium Web';
     border-radius: 2px;
 }
 
@@ -80,7 +75,6 @@ nav > .bottom {
 
 .wrapper {
 	color: #4a4a4a;
-	font-family: 'Titillium Web';
 	margin-left: 300px;
 }
 
@@ -101,49 +95,41 @@ header > .top .page-title {
 	font-size: 30px;
 	color: #fff;
 	float: left;
-	font-family: 'Exo';
+	font-family: 'Titillium Web', arial;
 }
 
 .breadcrumb {
-	margin-bottom: 10px;
+	overflow: hidden;
+	background: #f5f5f5;
+	margin-bottom: 0;
+	font-size: 16px;
+	font-family: 'Titillium Web', arial;
 }
 
 .breadcrumb li a {
 	color: #acb0b1;
 	text-decoration: none;
 	display: inline-block;
-	font-family: 'Titillium Web';
-	font-size: 16px;
 }
 
 .breadcrumb li a:hover {
 	color: #868686;
 }
 
+.container-fluid {
+	padding: 10px 15px;
+}
+
 /*
 * Constants
 */
 
-/* -- Custom panel -- */
-
-.panel-custom {
-	border: none;
-}
-
-.panel-custom > .panel-heading {
-	background: #f6f6f6;
-}
-
-.panel-custom > .panel-heading > .panel-title {
-	color: #656565;
-	text-transform: uppercase;
-	font-size: 15px;
-}
-
-/* -- Outline buttons -- */
+/* -- Bootstrap Outline Button -- */
 
 .btn {
 	outline: 0 !important;
+	transition: color 100ms, background 100ms;
+	-webkit-transition: color 100ms, background 100ms;
 }
 
 /* -- Loading -- */
@@ -182,14 +168,13 @@ header > .top .page-title {
 
 /* -- Status textarea style --  */
 
-#status_form .panel-footer {
+#status_form .card-block {
 	padding: 0;
-	border: 0;
 }
 
-#status_form #submit_status {
-	border-radius: 0;
-	float: right;
+#status_form .card-footer {
+	padding: 0;
+	border: 0;
 }
 
 #status_form .form-group {
@@ -201,6 +186,11 @@ header > .top .page-title {
 	border-radius: 0;
 	overflow: hidden;
 	resize: none;
+}
+
+#status_form .btn {
+	border-radius: 0;
+	float: right;
 }
 
 /* -- Statuses -- */
@@ -225,8 +215,10 @@ header > .top .page-title {
 }
 
 #statuses .status-item .status-info > .body .status-meta {
+	line-height: 1;
 	list-style-type: none;
-	margin-top: 3px;
+	margin: 0;
+	padding: 0;
 }
 
 #statuses .status-item .status-info > .body .status-meta li {
@@ -265,6 +257,7 @@ header > .top .page-title {
 	list-style-type: none;
 	background: #fff;
 	padding: 0 10px 10px 10px;
+	margin: 0;
 }
 
 #statuses .status-item > .status-footer .status-meta li {
@@ -276,6 +269,8 @@ header > .top .page-title {
 #statuses .status-item > .status-footer .status-actions {
 	background: #f6f6f6;
 	list-style-type: none;
+	margin: 0;
+	padding: 0;
 	border-top: 1px solid rgba(0, 0, 0, .05);
 	border-bottom: 1px solid rgba(0, 0, 0, .08);
 }
@@ -288,11 +283,6 @@ header > .top .page-title {
 #statuses .status-item > .status-footer .status-actions li .btn {
 	border: 0;
 	border-radius: 0;
-}
-
-#statuses .status-item > .status-footer .status-actions li .btn.liked,
-#statuses .status-item > .status-comments .comment-item .meta li.action-comment-like-counter {
-	color: #337ab7;
 }
 
 #statuses .status-item .status-post-comment {
@@ -343,12 +333,17 @@ header > .top .page-title {
 
 #statuses .status-item > .status-comments .comment-item .meta {
 	list-style-type: none;
-	margin-top: 5px;
+	margin: 0;
+	padding: 0;
 }
 
 #statuses .status-item > .status-comments .comment-item .meta li {
 	float: left;
 	color: #afafaf;
+}
+
+#statuses .status-item > .status-comments .comment-item .meta li.action-comment-like-counter {
+	color: #0275d8;
 }
 
 #statuses .status-item > .status-comments .comment-item .meta li + li:before {
@@ -387,22 +382,27 @@ header > .top .page-title {
 	margin-left: 40px;
 }
 
+#statuses .status-item > .status-comments .comment-item .content > .sub-comments .comment-item .content .meta {
+	font-size: 13px;
+	margin-top: -2px;
+}
+
 /* -- List group user --  */
 
 .list-group-user {
 	list-style-type: none;
+	margin: 0;
+	padding: 0;
 }
 
 .list-group-user-item {
-	border-bottom: 1px solid rgba(0, 0, 0, .06);
-	margin-bottom: 5px;
-	padding-bottom: 5px;
+	margin-bottom: 7px;
+	padding-bottom: 7px;
 }
 
 .list-group-user-item:last-child {
 	margin: 0;
 	padding: 0;
-	border: 0;
 }
 
 .list-group-user-item .avatar {
@@ -411,9 +411,153 @@ header > .top .page-title {
 }
 
 .list-group-user-item .content {
+	line-height: 1.2;
 	float: left;
 }
 
-.list-group-user-item .content .body {
-	margin-top: 5px;
+/*
+* Profile Page
+*/
+
+/* -- User Profile Card -- */
+
+#user-profile-card {
+	margin-bottom: 10px;
+}
+
+#user-profile-card .card-cover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .30);
+}
+
+#user-profile-card .card-cover {
+	height: 140px;
+	overflow: hidden;
+	position: relative;
+}
+
+#user-profile-card .card-cover img {
+	width: 100%;
+}
+
+#user-profile-card .card-content {
+	margin-top: 25px;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 0;
+}
+
+#user-profile-card .card-content .left {
+	text-align: center;
+	margin-left: 50px;
+	float: left;
+}
+
+#user-profile-card .card-content .right {
+	float: right;
+	margin-top: 30px;
+	margin-right: 50px;
+}
+
+#user-profile-card .card-content .avatar {
+	margin-bottom: 5px;
+}
+
+#user-profile-card .card-content .avatar img {
+	border-radius: 100%;
+	border: 3px solid #fff;
+}
+
+#user-profile-card .card-content .title {
+	color: #fff;
+	font-weight: bold;
+	font-size: 17px;
+}
+
+#user-profile-card .card-content .right button {
+	display: block;
+	margin-bottom: 5px;
+}
+
+#user-profile-card .card-content .right button i {
+	margin-right: 2px;
+}
+
+#user-profile-card .card-footer {
+	color: #646464;
+	background: #fff;
+	font-size: 15px;
+	padding: 0;
+}
+
+#user-profile-card .card-footer .top {
+	padding: 15px;
+	border-bottom: 1px solid rgba(0, 0, 0, .10);
+}
+
+#user-profile-card .card-footer .bottom {
+	padding: 15px;
+}
+
+/* -- Stats -- */
+
+#game-stats .card-block {
+	padding: 0;
+}
+
+.stats-section {
+	width: 100%;
+	background: #fdfdfd;
+	padding: 10px;
+	text-align: center;
+	border-bottom: 1px solid rgba(0, 0, 0, .07);
+	border-right: 1px solid rgba(0, 0, 0, .07);
+}
+
+.stats-inline .stats-section {
+	float: left;
+	width: 50%;
+}
+
+.stats-section span {
+	display: block;
+	text-transform: uppercase;
+	color: #919191;
+	margin-bottom: 3px;
+	font-size: 14px;
+}
+
+.stats-section a {
+	display: block;
+	text-decoration: none;
+	color: #333;
+	margin: -10px;
+	padding: 10px;
+	transition: color 100ms, background 100ms;
+}
+
+.stats-section a:hover {
+	background: #eeeeee;
+}
+
+/*
+* Upgrade Account Page
+*/
+
+/* -- Cards -- */
+
+#groupCards .list-group-item .pull-right {
+	display: none;
+	margin-right: 10px;
+}
+
+#groupCards .list-group-item:hover .pull-right {
+	display: block;
 }

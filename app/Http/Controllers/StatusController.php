@@ -42,7 +42,15 @@ class StatusController extends Controller
 		]);
 
 		return Response::json([
-			'success' => true
+			'success' => true,
+			'data' => [
+				'id' => $status->id,
+				'avatar' => $status->user()->getAvatar(40),
+				'display_name' => $status->user()->getDisplayName(),
+				'profile_link' => route('profile', ['player' => $status->user()->username]),
+				'created_at' => $status->created_at->diffForHumans(),
+				'body' => $status->postFormat()
+			]
 		]);
 	}
 

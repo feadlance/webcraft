@@ -1,6 +1,12 @@
 $(function() {
 
 	/*
+	* Active Tooltip
+	*/
+
+	$('[data-toggle="tooltip"]').tooltip();
+
+	/*
 	* Status Comments
 	*/
 

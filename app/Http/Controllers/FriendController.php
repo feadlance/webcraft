@@ -2,67 +2,66 @@
 
 namespace Webcraft\Http\Controllers;
 
+use Auth;
+use Response;
 use Webcraft\Models\User;
+
 use Illuminate\Http\Request;
 
 class FriendController extends Controller
 {
-	public function putAddFriend(Request $request, $player)
+	public function postAddFriend(Request $request)
 	{
-		$user = User::where('username', $player)->first();
+		$user = User::find($request->input('id'));
 
 		if ( $user === null ) {
 			return \Response::json(['error' => 'Arkadaş olarak eklemek istediğiniz oyuncuyu bulamadık.']);
 		}
 
-		if ( \Auth::id() === $user->id ) {
-			return \Response::json(['error' => 'Kendinize istek gönderemezsiniz.']);
+		if ( Auth::id() === $user->id ) {
+			return Response::json(['error' => 'Kendinize istek gönderemezsiniz.']);
 		}
 
-		if ( \Auth::user()->hasFriendRequestPending($user) || $user->hasFriendRequestPending(\Auth::user()) ) {
-			return \Response::json(['error' => 'Arkadaşlık isteği zaten gönderilmişti.']);
+		if ( Auth::user()->hasFriendRequestPending($user) || $user->hasFriendRequestPending(Auth::user()) ) {
+			return Response::json(['error' => 'Arkadaşlık isteği zaten gönderilmişti.']);
 		}
 
-		if ( \Auth::user()->isFriendsWith($user) ) {
-			return \Response::json(['error' => 'Siz zaten arkadaşsınız.']);
+		if ( Auth::user()->isFriendsWith($user) ) {
+			return Response::json(['error' => 'Siz zaten arkadaşsınız.']);
 		}
 
-		\Auth::user()->addFriend($user);
+		Auth::user()->addFriend($user);
 
-		return \Response::json(['success' => true]);
+		return Response::json(['success' => true]);
 	}
 
-	public function putAcceptFriend(Request $request, $player)
+	public function postAcceptFriend(Request $request)
 	{
-		$user = User::where('username', $player)->first();
+		$user = User::find($request->input('id'));
 
 		if ( $user === null ) {
-			return \Response::json(['error' => 'Arkadaşlığını kabul etmek istediğiniz oyuncuyu bulamadık.']);
+			return Response::json(['error' => 'Arkadaşlığını kabul etmek istediğiniz oyuncuyu bulamadık.']);
 		}
 
-		if ( !\Auth::user()->hasFriendRequestReceived($user) ) {
-			return \Response::json(['error' => 'Bunu yapmayın.']);
+		if ( !Auth::user()->hasFriendRequestReceived($user) ) {
+			return Response::json(['error' => 'Bunu yapmayın.']);
 		}
 
-		\Auth::user()->acceptFriendRequest($user);
+		Auth::user()->acceptFriendRequest($user);
 
-		return \Response::json(['success' => true]);
+		return Response::json(['success' => true]);
 	}
 
-	public function putDeleteFriend(Request $request, $player)
+	public function postDeleteFriend(Request $request)
 	{
-		$user = User::where('username', $player)->first();
+		$user = User::find($request->input('id'));
 
 		if ( $user === null ) {
-			return \Response::json(['error' => 'Arkadaşlıktan çıkartmak istediğiniz oyuncuyu bulamadık.']);
+			return Response::json(['error' => 'Arkadaşlıktan çıkartmak istediğiniz oyuncuyu bulamadık.']);
 		}
 
-		if ( !\Auth::user()->isFriendsWith($user) ) {
-			return \Response::json(['error' => 'Siz zaten arkadaş değilsiniz.']);
-		}
+		Auth::user()->deleteFriend($user);
 
-		\Auth::user()->deleteFriend($user);
-
-		return \Response::json(['success' => true]);
+		return Response::json(['success' => true]);
 	}
 }

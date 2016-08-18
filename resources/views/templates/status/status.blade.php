@@ -28,7 +28,7 @@
 		</ul>
 		<ul class="status-actions clearfix">
 			<li>
-				<button class="btn btn-default{{ Auth::user()->hasLikedStatus($status) ? ' liked' : '' }}" onclick="return likeStatus(this, {{ $status->id }});">
+				<button class="btn {{ Auth::user()->hasLikedStatus($status) ? 'btn-primary' : 'btn-default' }}" onclick="return likeStatus(this, {{ $status->id }});">
 					<i class="fa fa-thumbs-up"></i>
 					Beğen
 				</button>
@@ -42,14 +42,13 @@
 		</ul>
 	</div>
 	@include('templates.status.post_comment')
-	
-	@if ( $status->comments()->count() )
-		<div class="status-comments">
-			@foreach ( $status->comments()->get() as $comment )
-				@include('templates.status.comment')
-			@endforeach
-		</div>
-	@else
-		<div class="status-comments" style="padding: 5px;"></div>
-	@endif
+
+	<div class="status-comments">
+		@foreach ( $status->comments()->get() as $comment )
+			@include('templates.status.comment')
+		@endforeach
+	</div>
 </div>
+
+
+

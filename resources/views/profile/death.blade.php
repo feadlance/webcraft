@@ -3,8 +3,8 @@
 @section('title', 'Ölüm Detayları')
 
 @section('breadcrumb')
-	<li><a href="{{ route('users') }}">Oyuncular</a></li>
-	<li><a href="{{ route('profile', ['player' => $user->username]) }}">{{ $user->getDisplayName() }}</a></li>
+	<li class="breadcrumb-item"><a href="{{ route('users') }}">Oyuncular</a></li>
+	<li class="breadcrumb-item"><a href="{{ route('profile', ['player' => $user->username]) }}">{{ $user->getDisplayName() }}</a></li>
 @stop
 
 @section('container')

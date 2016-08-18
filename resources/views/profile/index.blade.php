@@ -3,123 +3,136 @@
 @section('title', $user->getDisplayName())
 
 @section('breadcrumb')
-	<li><a href="{{ route('users') }}">Oyuncular</a></li>
+	<li class="breadcrumb-item"><a href="{{ route('users') }}">Oyuncular</a></li>
 @stop
 
 @section('container')
-	<div class="profile-detail">
-		<div class="header">
-			<img class="cover" src="assets/images/cover.jpg" alt="Cover">
-			<img class="avatar" src="{{ $user->getAvatar(70) }}" alt="User Avatar">
-			<span class="title">{{ $user->getDisplayName() }}</span>
-			@if ( Auth::id() !== $user->id )
-				<div class="friend-actions">
-					@if ( Auth::user()->hasFriendRequestPending($user) )
-						<button class="ui blue transparent button" style="cursor: text;">
-							<i class="fa fa-check" style="margin-right: 5px;"></i>
-							İstek gönderildi
-						</button>
-					@elseif ( Auth::user()->hasFriendRequestReceived($user) )
-						<button id="accept_friend" class="ui yellow transparent button">
-							<i class="fa fa-thumbs-up" style="margin-right: 5px;"></i>
-							İsteği kabul et
-						</button>
-					@elseif ( Auth::user()->isFriendsWith($user) )
-						<button id="delete_friend" class="ui red transparent button">
-							<i class="fa fa-times" style="margin-right: 5px;"></i>
-							Arkadaşlıktan çıkar
-						</button>
-					@else
-						<button id="add_friend" class="ui red transparent button">
-							<i class="fa fa-user-plus" style="margin-right: 5px;"></i>
-							Arkadaş olarak ekle
-						</button>
+	<div class="row">
+		<div class="col-lg-3">
+			<div id="user-profile-card">
+				<div class="card-cover">
+					<img src="assets/images/cover.jpg" alt="User Cover">
+				</div>
+				<div class="card-content">
+					<div class="left">
+						<div class="avatar">
+							<img src="{{ $user->getAvatar(60) }}" alt="User Avatar">
+						</div>
+						<div class="title">
+							{{ $user->getDisplayName() }}
+						</div>
+					</div>
+					<div class="right">
+						<div class="friend-actions">
+							@if ( Auth::user()->hasFriendRequestPending($user) )
+								<div class="btn-group">
+									<button class="btn btn-outline-secondary">
+										<i class="fa fa-check"></i>
+										İstek Gönderildi
+									</button>
+									<button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+										<span class="caret"></span>
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="#" onclick="return deleteFriend(this, {{ $user->id }});">İsteği İptal Et</a>
+										</li>
+									</ul>
+								</div>
+							@elseif ( Auth::user()->hasFriendRequestReceived($user) )
+								<button class="btn btn-outline-secondary" onclick="return acceptFriend(this, {{ $user->id }});">
+									<i class="fa fa-thumbs-up"></i>
+									İsteği Kabul Et
+								</button>
+							@elseif ( Auth::user()->isFriendsWith($user) )
+								<div class="btn-group">
+									<button class="btn btn-outline-secondary">
+										<i class="fa fa-check"></i>
+										Arkadaşsınız
+									</button>
+									<button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+										<span class="caret"></span>
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="#" onclick="return deleteFriend(this, {{ $user->id }});">Arkadaşlıktan Çıkart</a>
+										</li>
+									</ul>
+								</div>
+							@elseif ( Auth::id() !== $user->id )
+								<button class="btn btn-outline-secondary" onclick="return addFriend(this, {{ $user->id }});">
+									<i class="fa fa-user-plus"></i>
+									Arkadaşlık İsteği Gönder
+								</button>
+							@endif
+						</div>
+					</div>
+				</div>
+				<div class="card-footer">
+					@if ( $user->city || $user->getSex() )
+						<div class="top">
+							{{ $user->city ? $user->city . ', ' : '' }}
+							{{ $user->getSex() ? $user->getSex() : '' }}
+						</div>
+					@endif
+					@if ( $user->about )
+						<div class="bottom">
+							{{ $user->about }}
+						</div>
 					@endif
 				</div>
-			@endif
-		</div>
-		<ul class="panel-content-list">
-			<li>
-				<span>Şuanda {!! $user->game() && $user->game()->online() ? '<strong style="color: green;">oyunda.</strong>' : '<strong>oyunda değil.</strong>' !!}</span>
-			</li>
-			<li>
-				<span>Hakkında</span>
-				@if ( $user->about )
-					{{ $user->about }}
-				@else
-					<i class="fa fa-minus"></i>
-				@endif
-			</li>
-			<li>
-				<span>Şehir</span>
-				@if ( $user->city )
-					{{ $user->city }}
-				@else
-					<i class="fa fa-minus"></i>
-				@endif
-			</li>
-			<li>
-				<span>Cinsiyet</span>
-				@if ( $user->getSex() )
-					{{ $user->getSex() }}
-				@else
-					<i class="fa fa-minus"></i>
-				@endif
-			</li>
-		</ul>
-		<!--<div class="panel m-t-5">
-			<div class="title">Medya</div>
-			<div class="content" style="padding: 5px 5px 0 5px;">
-				<ul class="media">
-					<li><img src="" alt=""></li>
-				</ul>
 			</div>
-		</div>-->
-		<div class="panel" style="margin-top: 5px;">
-			<div class="title">Oyun İstatistikleri</div>
-			@if ( $user->game() )
-				<ul class="content">
-					<li>
-						<span>
-							Öldürme
-							<small><a href="{{ route('profile.killed', ['player' => $user->username]) }}">(detaylı)</a></small>
-						</span>
-						{{ $user->game()->playerKills('ALL', true) }} oyuncu - yaratık - hayvan
-					</li>
-					<li>
-						<span>
-							Ölüm
-							<small><a href="{{ route('profile.death', ['player' => $user->username]) }}">(detaylı)</a></small>
-						</span>
-						{{ $user->game()->playerDeaths('ALL', true) }} kez
-					</li>
-					<li>
-						<span>Oynama Süresi</span>
-						{{ $user->game()->playTime() }} saniye
-					</li>
-				</ul>
-			@else
-				<div class="content" style="padding: 10px; color: #afafaf;">
-					Hiç veri yok.
+			<div id="game-stats" class="card">
+				<div class="card-header">Oyun İstatistikleri</div>
+				<div class="card-block">
+					@if ( $user->game() )
+						<div class="stats-inline clearfix">
+							<div class="stats-section">
+								<a href="{{ route('profile.killed', ['player' => $user->username]) }}" data-toggle="tooltip" data-html="true" title="{{ $user->game()->playerKills('PLAYER', true) }} oyuncu<br>{{ $user->game()->playerKills('MONSTERS', true) }} yaratık<br>{{ $user->game()->playerKills('ANIMALS', true) }} hayvan">
+									<span>Öldürme</span>
+									{{ $user->game()->playerKills('ALL', true) }}
+								</a>
+							</div>
+							<div class="stats-section">
+								<a href="{{ route('profile.death', ['player' => $user->username]) }}" data-toggle="tooltip" title="Tüm Detaylar">
+									<span>Ölüm</span>
+									{{ $user->game()->playerDeaths('ALL', true) }}
+								</a>
+							</div>
+						</div>
+						<div class="stats-inline clearfix">
+							<div class="stats-section">
+								<span>Oyun Parası</span>
+								{{ $user->getBalance(true) }}
+							</div>
+							<div class="stats-section">
+								<span>Oynama Süresi</span>
+								{{ $user->game()->playTime() }}
+							</div>
+						</div>
+					@else
+						<span style="color: #afafaf;">Hiç veri yok.</span>
+					@endif
 				</div>
-			@endif
+			</div>
 		</div>
-	</div>
-	<div class="profile-post">
-		@include('templates.status.share')
-		<div class="posts">
-			@foreach ( $statuses as $status )
-				@include('templates.status.statuses')
-			@endforeach
+		<div class="col-lg-5">
+			@include('templates.status.share')
+
+			<div id="statuses">
+				@foreach ( $statuses as $status )
+					@include('templates.status.status')
+				@endforeach
+			</div>
 		</div>
 	</div>
 @stop
 
 @section('scripts')
-	<script type="text/javascript">
-		$('.ui.dropdown').dropdown();
-		var player = '{{ $user->username }}';
-	</script>
+	<script type="text/javascript" src="assets/components/autosize/autosize.min.js"></script>
 	<script type="text/javascript" src="assets/components/sweetalert/sweetalert.min.js"></script>
+	<script type="text/javascript">var player = '{{ $user->username }}', avatar = '{{ Auth::user()->getAvatar(40) }}', avatar_35 = '{{ Auth::user()->getAvatar(35) }}';autosize($('#status_form .form-control'));</script>
 	<script type="text/javascript" src="assets/js/request.js"></script>
 @stop

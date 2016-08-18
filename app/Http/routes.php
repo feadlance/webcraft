@@ -85,20 +85,20 @@ Route::get('/oyuncu/{player}/olum-detaylari', [
 * Friend
 */
 
-Route::put('/oyuncu/{player}/add', [
-  'uses' => '\Webcraft\Http\Controllers\FriendController@putAddFriend',
+Route::post('/oyuncu/arkadas/ekle', [
+  'uses' => '\Webcraft\Http\Controllers\FriendController@postAddFriend',
   'as' => 'friend.add',
   'middleware' => ['auth']
 ]);
 
-Route::put('/oyuncu/{player}/accept', [
-  'uses' => '\Webcraft\Http\Controllers\FriendController@putAcceptFriend',
+Route::post('/oyuncu/arkadas/kabul-et', [
+  'uses' => '\Webcraft\Http\Controllers\FriendController@postAcceptFriend',
   'as' => 'friend.accept',
   'middleware' => ['auth']
 ]);
 
-Route::put('/oyuncu/{player}/delete', [
-  'uses' => '\Webcraft\Http\Controllers\FriendController@putDeleteFriend',
+Route::post('/oyuncu/arkadas/sil', [
+  'uses' => '\Webcraft\Http\Controllers\FriendController@postDeleteFriend',
   'as' => 'friend.delete',
   'middleware' => ['auth']
 ]);
@@ -127,21 +127,27 @@ Route::get('/hesabimi-yukselt', [
 * Groups
 */
 
-Route::get('/group/delete/{id}', [
-  'uses' => '\Webcraft\Http\Controllers\GroupController@getDelete',
-  'as' => 'group.delete',
-  'middleware' => ['auth', 'admin']
-]);
-
 Route::post('/group/new', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@postNew',
   'as' => 'group.new',
   'middleware' => ['auth', 'admin']
 ]);
 
-Route::post('/group/new-feature', [
+Route::get('/group/delete/{id}', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@getDelete',
+  'as' => 'group.delete',
+  'middleware' => ['auth', 'admin']
+]);
+
+Route::post('/group/new/feature', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@postNewFeature',
   'as' => 'group.new_feature',
+  'middleware' => ['auth', 'admin']
+]);
+
+Route::get('/group/delete/feature/{id}', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@getDeleteFeature',
+  'as' => 'group.delete.feature',
   'middleware' => ['auth', 'admin']
 ]);
 

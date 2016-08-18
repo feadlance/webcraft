@@ -4,14 +4,12 @@
 	<div class="row">
 		<div class="col-lg-3">
 			@if ( $online_users->count() )
-				<div class="panel panel-custom">
-					<div class="panel-heading">
-						<div class="panel-title">
-							Çevrimiçi Oyuncular
-							<small>({{ $online_users->count() }})</small>
-						</div>
+				<div class="card">
+					<div class="card-header">
+						Çevrimiçi Oyuncular
+						<small>({{ $online_users->count() }})</small>
 					</div>
-					<div class="panel-body">
+					<div class="card-block">
 						@foreach ( $online_users as $online_user )
 							<div class="col-lg-2" title="{{ $online_user->username }}">
 								<a href="{{ route('profile', ['player' => $online_user->username]) }}">
@@ -30,11 +28,9 @@
 				</div>
 			@endif
 			@if ( $top5_users->count() )
-				<div class="panel panel-custom">
-					<div class="panel-heading">
-						<div class="panel-title">En iyi 5 katil</div>
-					</div>
-					<div class="panel-body">
+				<div class="card">
+					<div class="card-header">En iyi 5 katil</div>
+					<div class="card-block">
 						<ul class="list-group-user">
 							@foreach ( $top5_users as $top5_user )
 								<li class="list-group-user-item clearfix">
@@ -75,6 +71,6 @@
 @section('scripts')
 	<script type="text/javascript" src="assets/components/autosize/autosize.min.js"></script>
 	<script type="text/javascript" src="assets/components/sweetalert/sweetalert.min.js"></script>
-	<script type="text/javascript">var player = '{{ $user->username }}';autosize($('#status_form .form-control'));</script>
+	<script type="text/javascript">var player = '', avatar = '{{ Auth::user()->getAvatar(40) }}', avatar_35 = '{{ Auth::user()->getAvatar(35) }}';autosize($('#status_form .form-control'));</script>
 	<script type="text/javascript" src="assets/js/request.js"></script>
 @stop

@@ -8,10 +8,10 @@
 	
 	<!-- bottom -->
 	<div class="bottom">
-		<ul class="breadcrumb">
-			<li><a href="/">{{ MinecraftServer::name() }}</a></li>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">{{ MinecraftServer::name() }}</a></li>
 			@yield('breadcrumb')
-			<li>@yield('title', 'Anasayfa')</li>
-		</ul>
+			<li class="breadcrumb-item active">@yield('title', 'Anasayfa')</li>
+		</ol>
 	</div>
 </header>

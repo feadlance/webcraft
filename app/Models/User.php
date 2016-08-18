@@ -119,10 +119,6 @@ class User extends Authenticatable
 	public function getProfileStatuses()
 	{
 	    return Status::where(function ($query) {
-	        return $query->where('user_id', $this->id)->where(function($query){
-	            return $query->where('wall_id', $this->id)->orWhere('wall_id', 0);
-	        });
-	    })->orWhere(function ($query) {
 	        return $query->where('wall_id', $this->id)->whereIn('user_id', $this->friends()->lists('id'));
 	    })->orWhere(function ($query) {
 	    	return $query->where('wall_id', $this->id)->whereIn('user_id', User::where('isAdmin', 1)->lists('id'));
@@ -132,10 +128,8 @@ class User extends Authenticatable
 	public function getHomeStatuses()
 	{
 	    return Status::where(function ($query) {
-	        return $query->where('user_id', $this->id)
-	        	->orWhere('user_id', 0)
-	            ->orWhereIn('user_id', $this->friends()->lists('id'));
-	    });
+	        return $query->where('user_id', $this->id)->orWhereIn('user_id', $this->friends()->lists('id'));
+	    })->where('wall_id', 0);
 	}
 
 	public function hasLikedStatus(Status $status)

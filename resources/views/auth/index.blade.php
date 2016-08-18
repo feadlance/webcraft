@@ -62,12 +62,12 @@
 					<div id="username_group" class="form-group">
 						<label class="sr-only" for="username">Kullanıcı adı</label>
 						<input type="text" placeholder="Kullanıcı adı..." class="form-username form-control" id="username">
-						<span class="help-block" style="margin: 0 0 0 5px;"></span>
+						<span class="form-control-feedback"></span>
 					</div>
 					<div id="password_group" class="form-group">
 						<label class="sr-only" for="password">Şifre</label>
 						<input type="password" placeholder="Şifre..." class="form-password form-control" id="password">
-						<span class="help-block" style="margin: 0 0 0 5px;"></span>
+						<span class="form-control-feedback"></span>
 					</div>
 					<button class="btn" style="width: 100%;">Hazırım!</button>
 					<div class="loading-content">
@@ -108,17 +108,17 @@
 					<div id="register_email_group" class="form-group">
 						<label class="sr-only" for="register_email">e-Posta</label>
 						<input type="text" placeholder="e-Posta..." class="form-control" id="register_email">
-						<span class="help-block" style="margin: 0 0 0 5px;"></span>
+						<span class="form-control-feedback"></span>
 					</div>
 					<div id="register_username_group" class="form-group">
 						<label class="sr-only" for="register_username">Kullanıcı Adı</label>
 						<input type="text" placeholder="Kullanıcı adı..." class="form-control" id="register_username">
-						<span class="help-block" style="margin: 0 0 0 5px;"></span>
+						<span class="form-control-feedback"></span>
 					</div>
 					<div id="register_password_group" class="form-group">
 						<label class="sr-only" for="register_password">Şifre</label>
 						<input type="password" placeholder="Şifre..." class="form-control" id="register_password">
-						<span class="help-block" style="margin: 0 0 0 5px;"></span>
+						<span class="form-control-feedback"></span>
 					</div>
 					<button id="signup_submit" type="submit" class="btn" style="width: 100%;">
 						<i class="fa fa-check" style="margin-right: 5px;"></i>

@@ -55,12 +55,15 @@ class CommentController extends Controller
 
 		return Response::json([
 			'success' => true,
-			'count' => $status->comments($parent_id)->count(),
-			'avatar' => $request->input('type') === 'status' ? $comment->user()->getAvatar(40) : $comment->user()->getAvatar(35),
-			'profile_link' => route('profile', ['player' => $comment->user()->username]),
-			'display_name' => $comment->user()->getDisplayName(),
-			'body' => $comment->body,
-			'created_at' => $comment->created_at->diffForHumans()
+			'data' => [
+				'id' => $comment->id,
+				'count' => $status->comments($parent_id)->count(),
+				'avatar' => $request->input('type') === 'status' ? $comment->user()->getAvatar(40) : $comment->user()->getAvatar(35),
+				'profile_link' => route('profile', ['player' => $comment->user()->username]),
+				'display_name' => $comment->user()->getDisplayName(),
+				'body' => $comment->body,
+				'created_at' => $comment->created_at->diffForHumans()
+			]
 		]);
 	}
 
