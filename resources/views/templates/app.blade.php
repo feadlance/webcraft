@@ -37,13 +37,10 @@
 			<!-- -->
 		</footer>
 
-		<!-- jquery -->
-		<script type="text/javascript" src="assets/components/jquery/jquery.min.js"></script>
-
-		<!-- bootstrap -->
-		<script type="text/javascript" src="assets/components/bootstrap/js/bootstrap.min.js"></script>
-
 		<!-- app -->
+		<script type="text/javascript" src="assets/components/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="assets/components/tether/tether.min.js"></script>
+		<script type="text/javascript" src="assets/components/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="assets/js/main.js"></script>
 
 		<!-- other -->
