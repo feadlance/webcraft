@@ -11,7 +11,7 @@ class UserController extends Controller
 	{
 		$filter = $request->input('filtrele');
 
-		$users = User::orderBy('lastlogin', 'desc')->where('id', '!=', \Auth::id());
+		$users = User::orderBy('lastlogin', 'desc');
 
 		if ( $filter === 'oyunda' ) {
 			$users = $users->where('isLogged', 1);

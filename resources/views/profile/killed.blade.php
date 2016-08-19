@@ -92,7 +92,7 @@
 			<div class="col-lg-4">
 				<div class="card">
 					<div class="card-header">
-						Yaratıklar
+						Hayvanlar
 						<small class="text-muted">{{ $user->game()->playerKills('ANIMALS', true) }}</small>
 					</div>
 					<div class="card-block">

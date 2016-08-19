@@ -68,7 +68,7 @@ return [
     * OTHERS
     */
 
-    'ARROW' => 'Ok',
+    'ARROW' => 'Ok Tarafından',
     'FALL' => 'Yüksekten Düşerek',
     'LAVA' => 'Lavda Yanarak'
 
