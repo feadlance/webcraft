@@ -263,7 +263,7 @@ var addFriend = function (that, id) {
 			if ( respond.error ) {
 				swal("Hata!", respond.error, "error");
 			} else {
-				$(that).before('<div class="btn-group"> <button class="btn btn-default"> <i class="fa fa-check"></i> İstek Gönderildi </button> <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button> <ul class="dropdown-menu"> <li> <a href="#" onclick="return deleteFriend(this, ' + id + ');">İsteği İptal Et</a> </li> </ul> </div>');
+				$(that).before('<div class="btn-group"> <button class="btn btn-secondary"> <i class="fa fa-check"></i> İstek Gönderildi </button> <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="sr-only">Toggle Dropdown</span> </button> <div class="dropdown-menu"> <a href="#" onclick="return deleteFriend(this, ' + id + ');" class="dropdown-item">İsteği İptal Et</a> </div> </div>');
 				$(that).remove();
 			}
 		}
@@ -284,7 +284,7 @@ var deleteFriend = function (that, id) {
 			if ( respond.error ) {
 				swal("Hata!", respond.error, "error");
 			} else {
-				$(that).closest('.btn-group').before('<button class="btn btn-default-outline" onclick="return addFriend(this, ' + id + ');"> <i class="fa fa-user-plus"></i> Arkadaşlık İsteği Gönder </button>');
+				$(that).closest('.btn-group').before('<button class="btn btn-secondary" onclick="return addFriend(this, ' + id + ');"> <i class="fa fa-user-plus"></i> Arkadaşlık İsteği Gönder </button>');
 				$(that).closest('.btn-group').remove();
 			}
 		}
@@ -305,7 +305,7 @@ var acceptFriend = function (that, id) {
 			if ( respond.error ) {
 				swal("Hata!", respond.error, "error");
 			} else {
-				$(that).before('<div class="btn-group"> <button class="btn btn-default"> <i class="fa fa-check"></i> Arkadaşsınız </button> <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button> <ul class="dropdown-menu"> <li> <a href="#" onclick="return deleteFriend(this, ' + id + ');">Arkadaşlıktan Çıkart</a> </li> </ul> </div>');
+				$(that).before('<div class="btn-group"> <button class="btn btn-secondary"> <i class="fa fa-check"></i> Arkadaşsınız </button> <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="sr-only">Toggle Dropdown</span> </button> <div class="dropdown-menu"> <a href="#" onclick="return deleteFriend(this, ' + id + ');" class="dropdown-item">Arkadaşlıktan Çıkart</a> </div> </div>');
 				$(that).remove();
 			}
 		}

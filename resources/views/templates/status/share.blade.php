@@ -7,7 +7,7 @@
 			</div>
 		</div>
 		<div class="card-footer clearfix">
-			<button class="btn btn-primary text-uppercase">Paylaş</button>
+			<button class="btn btn-primary text-uppercase"{!! isset($can_post) && !$can_post ? ' data-toggle="tooltip" title="Bu duvarda paylaşım yapmak için sahibiyle arkadaş olmalısın."': '' !!}>Paylaş</button>
 		</div>
 	</form>
 </div>

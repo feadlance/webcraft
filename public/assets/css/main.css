@@ -9,15 +9,31 @@
 */
 
 body {
+	overflow-x: hidden;
     background: #ecf0f1;
 }
 
+body.dark:after {
+	content: "";
+	display: block;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 5;
+	background: rgba(0, 0, 0, .30);
+}
+
 nav {
-    float: left;
     width: 300px;
     height: 100%;
     position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
     background: #fff;
+    transition: right 300ms;
 }
 
 nav > .logo {
@@ -83,6 +99,7 @@ nav > .bottom {
 }
 
 header > .top {
+	padding: 25px 0;
 	background: #c0392b;
 	height: 100px;
 }
@@ -93,13 +110,35 @@ header > .bottom {
 }
 
 header > .top .page-title {
-	max-width: 400px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 	margin: 0 20px;
-	line-height: 100px;
 	font-size: 30px;
 	color: #fff;
 	float: left;
 	font-family: 'Titillium Web', arial;
+}
+
+header .pull-right > .header-item {
+	float: left;
+	color: #fff;
+	background: #ab382c;
+	margin: -25px 0;
+	padding: 31px 10px;
+	transition: background 100ms;
+}
+
+header .pull-right > .header-item:hover {
+	background: #ab0909;
+}
+
+header .pull-right > .header-item #mobileMenu {
+	color: #fff;
+	display: block;
+	border: 0;
+	border-radius: 0;
+	outline: 0;
 }
 
 .breadcrumb {
@@ -122,6 +161,45 @@ header > .top .page-title {
 
 .container-fluid {
 	padding: 10px 15px;
+}
+
+/*
+* Responsive
+*/
+
+@media (max-width: 991px) {
+	nav {
+		right: -300px;
+		left: unset;
+	}
+
+	.wrapper {
+		margin-left: 0;
+	}
+
+	header > .top .page-title {
+		max-width: 600px;
+	}
+}
+
+@media (max-width: 767px) {
+	header > .top .page-title {
+		max-width: 300px;
+	}
+}
+
+@media (max-width: 543px) {
+	header > .top .page-title {
+		max-width: 250px;
+	}
+}
+
+@media (max-width: 360px) {
+	header > .top .page-title {
+		max-width: 200px;
+		font-size: 20px;
+		margin-top: 10px;
+	}
 }
 
 /*
@@ -402,6 +480,11 @@ header > .top .page-title {
 .list-group-user-item {
 	margin-bottom: 7px;
 	padding-bottom: 7px;
+}
+
+.list-group-user-item.inline {
+	padding-left: 15px !important;
+	margin-bottom: 0 !important;
 }
 
 .list-group-user-item:last-child {

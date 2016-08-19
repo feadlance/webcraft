@@ -8,9 +8,21 @@
 @stop
 
 @section('container')
-	<h3 class="m-b-1">{{ TurkishGrammar::get($user->getDisplayName(), 'i') }} öldüren canlılar</h3>
+	<h3 class="m-b-1">{{ TurkishGrammar::get($user->getDisplayName(), 'i') }} öldürenler</h3>
 
 	<div class="row">
+		@if ( !$from_players->count() && !$from_monsters->count() && !$from_others->count() )
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-block">
+						<span class="text-muted">
+							Henüz {{ TurkishGrammar::get($user->getDisplayName('firstname'), 'i') }} öldürebilen kimse olmamış.<br>
+						</span>
+					</div>
+				</div>
+			</div>
+		@endif
+
 		@if ( $from_players->count() )
 			<div class="col-lg-4">
 				<div class="card">

@@ -50,9 +50,17 @@ class User extends Authenticatable
 	* Personal Informations
 	*/
 
-	public function getDisplayName()
+	public function getDisplayName($filter = null)
 	{
-	    return $this->realname ?: $this->username;
+		$displayName = $this->realname ?: $this->username;
+
+		$filter = explode('|', $filter);
+
+		if ( in_array('firstname', $filter) ) {
+			$displayName = strtok($displayName, ' ');
+		}
+
+		return $displayName;
 	}
 
 	public function getAvatar($size = 60)
@@ -118,11 +126,15 @@ class User extends Authenticatable
 
 	public function getProfileStatuses()
 	{
-	    return Status::where(function ($query) {
+		// Displayed admins and friends
+	    /*return Status::where(function ($query) {
 	        return $query->where('wall_id', $this->id)->whereIn('user_id', $this->friends()->lists('id'));
 	    })->orWhere(function ($query) {
 	    	return $query->where('wall_id', $this->id)->whereIn('user_id', User::where('isAdmin', 1)->lists('id'));
-	    });
+	    });*/
+
+	    // Displayed all users
+	    return new Status;
 	}
 
 	public function getHomeStatuses()
@@ -166,10 +178,12 @@ class User extends Authenticatable
 		$balance = $this->belongsTo('Webcraft\Models\Iconomy', 'username', 'username')->first();
 		
 		if ( $balance === null ) {
-			return false;
+			$balance = 0;
+		} else {
+			$balance = $balance->balance;
 		}
 
-		return $format === true ? number_format($balance->balance, 2) : $balance->balance;
+		return $format === true ? number_format($balance, 2) : $balance;
 	}
 
 	public function giveBalance($ws, $balance)

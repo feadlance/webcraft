@@ -53,7 +53,7 @@
 	<div class="row">
 		<div class="col-lg-8 offset-lg-2 text-xs-center">
 			@if ( $groups->count() )
-				<div id="groupCards" class="cards center-block">
+				<div id="groupCards">
 					@foreach ( $groups as $group )
 						<div class="col-lg-4">
 							<div class="card">

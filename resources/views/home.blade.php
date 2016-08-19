@@ -10,20 +10,22 @@
 						<small>({{ $online_users->count() }})</small>
 					</div>
 					<div class="card-block">
-						@foreach ( $online_users as $online_user )
-							<div class="col-lg-2" title="{{ $online_user->username }}">
-								<a href="{{ route('profile', ['player' => $online_user->username]) }}">
-									<img src="{{ $online_user->getAvatar(66) }}" alt="User Avatar">
-								</a>
-							</div>
-						@endforeach
-						@if ( $online_users->count() >= 5 )
-							<div class="col-lg-2" title="Tüm Çevrimiçi Oyuncular">
-								<a href="{{ route('users', ['filtrele' => 'oyunda']) }}">
-									<i class="fa fa-arrow-right"></i>
-								</a>
-							</div>
-						@endif
+						<div class="row">
+							@foreach ( $online_users as $online_user )
+								<div class="col-lg-2">
+									<a href="{{ route('profile', ['player' => $online_user->username]) }}" data-toggle="tooltip" title="{{ $online_user->getDisplayName() }}" style="display: block; text-align: center;">
+										<img src="{{ $online_user->getAvatar(57) }}" alt="User Avatar" style="border-radius: 5px;">
+									</a>
+								</div>
+							@endforeach
+							@if ( $online_users->count() >= 5 )
+								<div class="col-lg-2">
+									<a href="{{ route('users', ['filtrele' => 'oyunda']) }}">
+										<i class="fa fa-arrow-right"></i>
+									</a>
+								</div>
+							@endif
+						</div>
 					</div>
 				</div>
 			@endif

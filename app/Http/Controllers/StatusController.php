@@ -22,14 +22,13 @@ class StatusController extends Controller
 		$player = $request->input('player');
 
 		$wall = User::where('username', $player)->first();
-		$wall_id = 0;
 
 		if ( $wall !== null ) {
 			$wall_id = $wall->id;
-		}
-
-		if ( !Auth::user()->isAdmin() && (Auth::id() !== $wall_id && !Auth::user()->isFriendsWith($wall)) ) {
-			return Response::json(['error' => 'Bu profilde paylaşım yapmak istiyorsan onunla arkadaş olmalısın.']);
+			
+			if ( !Auth::user()->isAdmin() && (Auth::id() !== $wall_id && !Auth::user()->isFriendsWith($wall)) ) {
+				return Response::json(['error' => 'Bu duvarda paylaşım yapmak için sahibiyle arkadaş olmalısın.']);
+			}
 		}
 
 		if ( $validator->fails() ) {

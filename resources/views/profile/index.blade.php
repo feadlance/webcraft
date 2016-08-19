@@ -26,43 +26,37 @@
 						<div class="friend-actions">
 							@if ( Auth::user()->hasFriendRequestPending($user) )
 								<div class="btn-group">
-									<button class="btn btn-outline-secondary">
+									<button class="btn btn-secondary">
 										<i class="fa fa-check"></i>
 										İstek Gönderildi
 									</button>
-									<button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-										<span class="caret"></span>
+									<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="sr-only">Toggle Dropdown</span>
 									</button>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="#" onclick="return deleteFriend(this, {{ $user->id }});">İsteği İptal Et</a>
-										</li>
-									</ul>
+									<div class="dropdown-menu">
+										<a href="#" onclick="return deleteFriend(this, {{ $user->id }});" class="dropdown-item">İsteği İptal Et</a>
+									</div>
 								</div>
 							@elseif ( Auth::user()->hasFriendRequestReceived($user) )
-								<button class="btn btn-outline-secondary" onclick="return acceptFriend(this, {{ $user->id }});">
+								<button class="btn btn-danger" onclick="return acceptFriend(this, {{ $user->id }});">
 									<i class="fa fa-thumbs-up"></i>
 									İsteği Kabul Et
 								</button>
 							@elseif ( Auth::user()->isFriendsWith($user) )
 								<div class="btn-group">
-									<button class="btn btn-outline-secondary">
+									<button class="btn btn-secondary">
 										<i class="fa fa-check"></i>
 										Arkadaşsınız
 									</button>
-									<button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-										<span class="caret"></span>
+									<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="sr-only">Toggle Dropdown</span>
 									</button>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="#" onclick="return deleteFriend(this, {{ $user->id }});">Arkadaşlıktan Çıkart</a>
-										</li>
-									</ul>
+									<div class="dropdown-menu">
+										<a href="#" onclick="return deleteFriend(this, {{ $user->id }});" class="dropdown-item">Arkadaşlıktan Çıkart</a>
+									</div>
 								</div>
 							@elseif ( Auth::id() !== $user->id )
-								<button class="btn btn-outline-secondary" onclick="return addFriend(this, {{ $user->id }});">
+								<button class="btn btn-secondary" onclick="return addFriend(this, {{ $user->id }});">
 									<i class="fa fa-user-plus"></i>
 									Arkadaşlık İsteği Gönder
 								</button>
@@ -113,7 +107,7 @@
 							</div>
 						</div>
 					@else
-						<span style="color: #afafaf;">Hiç veri yok.</span>
+						<span style="color: #afafaf; padding: 1.25rem; display: block;">Oyun verisi henüz oluşmamış.</span>
 					@endif
 				</div>
 			</div>
