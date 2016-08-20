@@ -106,6 +106,10 @@
 								{{ $user->game()->playTime() }}
 							</div>
 						</div>
+						<div class="stats-section">
+							<span>Oyun Puanı</span>
+							{{ $user->game()->point }}
+						</div>
 					@else
 						<span style="color: #afafaf; padding: 1.25rem; display: block;">Oyun verisi henüz oluşmamış.</span>
 					@endif

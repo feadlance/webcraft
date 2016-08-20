@@ -10,6 +10,31 @@ class Player extends Model
 {
 	protected $table = 'stats3_players';
 
+	/*
+	* Attributes
+	*/
+
+	public function getPointAttribute()
+	{
+		$point = $this->playerKills('PLAYER', true) * 2;
+		$point = ($this->playerKills('MONSTERS', true) * 0.5) + $point;
+		$point = ($this->playTime() / 900) + $point;
+
+		$point = $point - ($this->playerDeaths('PLAYER', true) * 3);
+		$point = $point - ($this->playerDeaths('OTHERS', true) * 0.5);
+		$point = $point - $this->playerDeaths('MONSTERS', true);
+
+		if ( $point < 0 ) {
+			$point = 0;
+		}
+
+		return number_format($point, 2);
+	}
+
+	/*
+	* Others
+	*/
+
 	public function getUser()
 	{
 		return $this->belongsTo('Webcraft\Models\User', 'name', 'username')->first();

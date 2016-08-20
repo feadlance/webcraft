@@ -2,15 +2,15 @@
 
 namespace Webcraft\Http\Controllers;
 
-use Webcraft\Models\Stats3\Kill;
+use Webcraft\Models\Stats3\Player;
 
 class HitController extends Controller
 {
-	public function getTopKillers()
+	public function getBest100()
 	{
-		$top100 = Kill::where('entityType', 'PLAYER')->orderBy('value', 'desc')->limit(100)->get();
+		$bestUsers = Player::limit(100)->get()->sortByDesc('point');
 
-		return view('top.killers')
-			->with('top100', $top100);
+		return view('top.best')
+			->with('bestUsers', $bestUsers);
 	}
 }

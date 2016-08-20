@@ -165,9 +165,9 @@ Route::get('/oyuncular', [
 * Top 100
 */
 
-Route::get('/hit/en-iyi-katiller', [
-  'uses' => '\Webcraft\Http\Controllers\HitController@getTopKillers',
-  'as' => 'top.killers',
+Route::get('/hit/en-iyiler', [
+  'uses' => '\Webcraft\Http\Controllers\HitController@getBest100',
+  'as' => 'top.best',
   'middleware' => ['auth']
 ]);
 

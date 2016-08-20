@@ -52,14 +52,14 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-8 offset-lg-2 text-xs-center">
-			@if ( $groups->count() )
-				<div id="groupCards">
+			<div id="groupCards">
+				@if ( $groups->count() )
 					@foreach ( $groups as $group )
 						<div class="col-lg-4">
 							<div class="card">
 								<div class="card-block">
 									<h4 class="card-title">{{ $group->title }}</h4>
-									<p class="card-text">{{ TurkishGrammar::get($group->title, 'iyelik') }} fiyatı {{ $group->getMoney() }} Türk Lirası'dir.</p>
+									<p class="card-text">{{ TurkishGrammar::get($group->title, 'iyelik') }} fiyatı {{ $group->getMoney() }} Türk Lirası'dır.</p>
 								</div>
 								<ul class="list-group list-group-flush">
 									@foreach ( $group->getFeatures()->get() as $feature )
@@ -79,7 +79,7 @@
 										<li class="list-group-item">
 											<form role="form" onsubmit="return addGroupFeature(this, {{ $group->id }});">
 												<div class="form-group m-b-0">
-													<input type="text" name="" id="" placeholder="Yeni özellik..." class="form-control">
+													<input type="text" placeholder="Yeni özellik..." class="form-control">
 												</div>
 											</form>
 										</li>
@@ -94,13 +94,13 @@
 							</div>
 						</div>
 					@endforeach
-				</div>
-			@else
-				<div class="alert alert-warning text-center">
-					<strong>Oops!</strong>
-					<p>Admin hiç grup eklememiş.</p>
-				</div>
-			@endif
+				@else
+					<div class="alert alert-warning text-center">
+						<strong>Oops!</strong>
+						<p>Admin hiç grup eklememiş.</p>
+					</div>
+				@endif
+			</div>
 		</div>
 	</div>
 @stop

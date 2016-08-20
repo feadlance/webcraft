@@ -348,6 +348,8 @@ var addGroup = function (that) {
 				});
 			} else {
 				$('#newGroupModal').modal('hide');
+				$('#groupCards').find('.alert').remove();
+				$('#groupCards').append('<div class="col-lg-4"> <div class="card"> <div class="card-block"> <h4 class="card-title">' + respond.data.title + '</h4> <p class="card-text">' + respond.data.description + '</p> </div> <ul class="list-group list-group-flush"> <li class="list-group-item"> <form role="form" onsubmit="return addGroupFeature(this, ' + respond.data.id + ');"> <div class="form-group m-b-0"> <input type="text" placeholder="Yeni özellik..." class="form-control"> </div> </form> </li> </ul> <div class="card-block"> <a href="#" class="btn btn-outline-primary card-link">Satın Al</a> <a href="' + respond.data.delete_link + '" class="btn btn-outline-danger card-link">Grubu Sil</a> </div> </div> </div>');
 				$.each(fields, function( index, value ) {
 					$(that).closest('.modal-body').find('input').val('');
 				});
@@ -381,6 +383,7 @@ var addGroupFeature = function(that, id) {
 				}
 			} else {
 				$(that).find('input').val('');
+				$(that).closest('.list-group').find('.list-group-item:last').before('<li class="list-group-item"> ' + respond.data.body + '<div class="pull-right"> <a href="' + respond.data.delete_link + '" class="text-danger"> <i class="fa fa-times"></i> </a> </div> </li>');	
 			}
 		}
 	});

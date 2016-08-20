@@ -4,6 +4,7 @@ namespace Webcraft\Http\Controllers;
 
 use Response;
 use Validator;
+use TurkishGrammar;
 use Webcraft\Models\Group;
 use Webcraft\Models\GroupFeature;
 use Illuminate\Http\Request;
@@ -34,7 +35,15 @@ class GroupController extends Controller
 			'money' => $request->input('money')
 		]);
 
-		return Response::json(['success' => true]);
+		return Response::json([
+			'success' => true,
+			'data' => [
+				'id' => $group->id,
+				'title' => $group->title,
+				'description' => TurkishGrammar::get($group->title, 'iyelik') . ' fiyatı ' . $group->getMoney() . ' Türk Lirası\'dır.',
+				'delete_link' => route('group.delete', ['id' => $group->id])
+			]
+		]);
 	}
 
 	public function getDelete($id)
@@ -76,7 +85,13 @@ class GroupController extends Controller
 			'body' => $request->input('body')
 		]);
 
-		return Response::json(['success' => true, 'body' => $feature->bodyFormat()]);
+		return Response::json([
+			'success' => true,
+			'data' =>[
+				'body' => $feature->bodyFormat(),
+				'delete_link' => route('group.delete.feature', ['id' => $feature->id])
+			]
+		]);
 	}
 
 	public function getDeleteFeature($id)
