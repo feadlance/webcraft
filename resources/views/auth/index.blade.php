@@ -23,40 +23,6 @@
 						<i class="fa fa-key"></i>
 					</div>
 				</div>
-				<style>
-					.loading-ok, .loading {
-						position: relative;
-						opacity: .7;
-					}
-
-					.loading-content {
-						width: 100%;
-						height: 100%;
-						position: absolute;
-						left: 0;
-						top: 0;
-						display: none;
-					}
-
-					.loading-ok .loading-content, .loading .loading-content {
-						display: block;
-					}
-
-					.loading-content i {
-						position: absolute;
-						top: 50%;
-						left: 50%;
-						margin-left: -25px;
-						margin-top: -50px;
-						font-size: 50px;
-					}
-
-					#login-form-error.active, #register-form-error.active {
-						color: #fff;
-						padding: 5px 0;
-						background: #db2828;
-					}
-				</style>
 				<div id="login-form-error"></div>
 				<form class="form-bottom" autocomplete="off" onsubmit="return signIn(this);">
 					<div id="username_group" class="form-group">

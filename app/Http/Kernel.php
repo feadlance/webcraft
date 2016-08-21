@@ -50,5 +50,7 @@ class Kernel extends HttpKernel
         'guest' => \Webcraft\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => \Webcraft\Http\Middleware\Admin::class,
+        'old_login' => \Webcraft\Http\Middleware\OldLogin::class,
+        'first_login' => \Webcraft\Http\Middleware\FirstLogin::class,
     ];
 }

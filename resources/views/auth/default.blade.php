@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Aramıza Katıl - {{ MinecraftServer::name() }}</title>
+		<title>@yield('title', 'Aramıza Katıl') - {{ MinecraftServer::name() }}</title>
 		<!-- CSS -->
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
 		<link rel="stylesheet" href="assets/components/bootstrap/css/bootstrap.min.css">
@@ -19,6 +19,41 @@
 		<![endif]-->
 		<!-- Favicon and touch icons -->
 		<link rel="shortcut icon" href="favicon.ico">
+
+		<style>
+			.loading-ok, .loading {
+				position: relative;
+				opacity: .7;
+			}
+
+			.loading-content {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				display: none;
+			}
+
+			.loading-ok .loading-content, .loading .loading-content {
+				display: block;
+			}
+
+			.loading-content i {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-left: -25px;
+				margin-top: -50px;
+				font-size: 50px;
+			}
+
+			#login-form-error.active, #register-form-error.active {
+				color: #fff;
+				padding: 5px 0;
+				background: #db2828;
+			}
+		</style>
 	</head>
 	<body>
 		<!-- Top content -->
@@ -33,7 +68,7 @@
 		<footer>
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-8 col-sm-offset-2">
+					<div class="col-sm-12">
 						<div class="footer-border"></div>
 						<p>
 							Bu site, <a href="http://davutabi.com" style="border-bottom: 1px dotted #fff;">Davutabi</a> tarafından değerli takipçileri için hediye niteliğinde yapılmıştır.

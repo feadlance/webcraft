@@ -126,15 +126,7 @@ class User extends Authenticatable
 
 	public function getProfileStatuses()
 	{
-		// Displayed admins and friends
-	    /*return Status::where(function ($query) {
-	        return $query->where('wall_id', $this->id)->whereIn('user_id', $this->friends()->lists('id'));
-	    })->orWhere(function ($query) {
-	    	return $query->where('wall_id', $this->id)->whereIn('user_id', User::where('isAdmin', 1)->lists('id'));
-	    });*/
-
-	    // Displayed all users
-	    return new Status;
+	    return Status::where('wall_id', $this->id);
 	}
 
 	public function getHomeStatuses()

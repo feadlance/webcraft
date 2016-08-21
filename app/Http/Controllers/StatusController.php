@@ -19,6 +19,10 @@ class StatusController extends Controller
 			'body' => 'required|max:1000'
 		]);
 
+		$validator->setAttributeNames([
+			'body' => 'Bir yazı yazmanız'
+		]);
+
 		$player = $request->input('player');
 
 		$wall = User::where('username', $player)->first();

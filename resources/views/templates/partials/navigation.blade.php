@@ -70,14 +70,17 @@
 			<li{!! Request::route()->getName() == 'market' ? ' class="active"' : '' !!}>
 				<a href="#">Market</a>
 			</li>
-			<li{!! Request::route()->getName() == 'upgrade' ? ' class="active"' : '' !!}>
-				<a href="{{ route('upgrade') }}">Hesabımı Yükselt</a>
-			</li>
 			<li{!! Request::route()->getName() == 'profile' ? ' class="active"' : '' !!}>
 				<a href="{{ route('profile', ['player' => Auth::user()->username]) }}">Profilim</a>
 			</li>
 			<li{!! Request::route()->getName() == 'users' ? ' class="active"' : '' !!}>
 				<a href="{{ route('users') }}">Oyuncular</a>
+			</li>
+			<li{!! Request::route()->getName() == 'payment' ? ' class="active"' : '' !!}>
+				<a href="{{ route('payment') }}">Kredi Yükle</a>
+			</li>
+			<li{!! Request::route()->getName() == 'upgrade' ? ' class="active"' : '' !!}>
+				<a href="{{ route('upgrade') }}">Hesabımı Yükselt</a>
 			</li>
 			<li>
 				<a href="{{ route('auth.signout') }}">Çıkış Yap</a>

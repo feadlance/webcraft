@@ -29,6 +29,8 @@
 
 			<!-- container -->
 			<div class="container-fluid clearfix">
+				@include('templates.partials.flash')
+				
 				@yield('container')
 			</div>
 		</div>

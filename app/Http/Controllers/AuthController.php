@@ -15,109 +15,145 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-  public function getIndex()
-  {
-    return view('auth.index');
-  }
+	public function getIndex()
+	{
+		return view('auth.index');
+	}
 
-  public function postSignup(Request $request)
-  {
-    $validator = Validator::make($request->all(), [
-      'register_username' => 'required|unique:users,username|min:3|max:16|minecraft_username',
-      'register_email' => 'required|unique:users,email|max:30|email',
-      'register_password' => 'required|min:6'
-    ]);
+	public function postSignup(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'register_username' => 'required|unique:users,username|min:3|max:16|minecraft_username',
+			'register_email' => 'required|unique:users,email|max:30|email',
+			'register_password' => 'required|min:6'
+		]);
 
-    if ( $validator->fails() ) {
-      return Response::json(['validations' => $validator->errors()]);
-    }
+		$validator->setAttributeNames([
+			'register_username' => 'Kullanıcı adı',
+			'register_email' => 'e-Posta',
+			'register_password' => 'Şifre'
+		]);
 
-    $encryption = Config::get('minecraft.auth.encryption');
-    
-    $username = $request->input('register_username');
-    $password = $request->input('register_password');
+		if ( $validator->fails() ) {
+			return Response::json(['validations' => $validator->errors()]);
+		}
 
-    $user = User::create([
-      'username' => $username,
-      'email' => $request->input('register_email'),
-      'password' => $encryption === 'bcrypt' ? bcrypt($password) : md5($password),
-      'action_token' => md5(uniqid($username, true))
-    ]);
+		$encryption = Config::get('minecraft.auth.encryption');
+		
+		$username = $request->input('register_username');
+		$password = $request->input('register_password');
 
-    /*\Mail::send('templates.mail.verify', ['user' => $user], function ($m) use ($user) {
-        $m->to($user->email, $user->username)->subject(MinecraftServer::name());
-    });*/
+		$user = User::create([
+			'username' => $username,
+			'email' => $request->input('register_email'),
+			'password' => $encryption === 'bcrypt' ? bcrypt($password) : md5($password),
+			'action_token' => md5(uniqid($username, true))
+		]);
 
-    Auth::login($user);
+		/*\Mail::send('templates.mail.verify', ['user' => $user], function ($m) use ($user) {
+		    $m->to($user->email, $user->username)->subject(MinecraftServer::name());
+		});*/
 
-    return Response::json(['success' => true]);
-  }
+		Auth::login($user);
 
-  public function postSignin(Request $request)
-  {
-    $validator = Validator::make($request->all(), [
-      'username' => 'required|minecraft_username',
-      'password' => 'required'
-    ]);
+		return Response::json(['success' => true]);
+	}
 
-    if ( $validator->fails() ) {
-      return Response::json(['validations' => $validator->errors()]);
-    }
+	public function postSignin(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'username' => 'required|minecraft_username',
+			'password' => 'required'
+		]);
 
-    $user = User::where('username', $request->input('username'))->first();
+		$validator->setAttributeNames([
+			'username' => 'Kullanıcı adı',
+			'password' => 'Şifre'
+		]);
 
-    if ( $user === null ) {
-      return Response::json(['error' => 'Kullanıcı adı geçersiz.']);
-    }
+		if ( $validator->fails() ) {
+			return Response::json(['validations' => $validator->errors()]);
+		}
 
-    $encryption = Config::get('minecraft.auth.encryption');
+		$user = User::where('username', $request->input('username'))->first();
 
-    if ( $encryption === 'bcrypt' ) {
-      if ( !Auth::attempt($request->only(['username', 'password'])) ) {
-        $password_wrong = true;
-      }
-    } else {
-      if ( $user->password !== md5($request->input('password')) ) {
-        $password_wrong = true;
-      }
-    }
+		if ( $user === null ) {
+			return Response::json(['error' => 'Kullanıcı adı geçersiz.']);
+		}
 
-    if ( isset($password_wrong) === true ) {
-      return Response::json(['error' => 'Bu kullanıcıya ait şifre yanlış.']); 
-    }
+		$encryption = Config::get('minecraft.auth.encryption');
 
-    Auth::login($user);
+		if ( $encryption === 'bcrypt' ) {
+			if ( !Auth::attempt($request->only(['username', 'password'])) ) {
+				$password_wrong = true;
+			}
+		} else {
+			if ( $user->password !== md5($request->input('password')) ) {
+				$password_wrong = true;
+			}
+		}
 
-    return Response::json(['success' => true]);
-  }
+		if ( isset($password_wrong) === true ) {
+			return Response::json(['error' => 'Bu kullanıcıya ait şifre yanlış.']); 
+		}
 
-  public function getVerify(Request $request, $email)
-  {
-    if ( $user = User::where('email', $email)->where('action_token', $request->input('token'))->first() ) {
-      $user->isVerified = 1;
-      $user->action_token = null;
-      $user->save();
+		Auth::login($user);
 
-      Auth::login($user);
-    }
+		return Response::json(['success' => true]);
+	}
 
-    return redirect()
-      ->route('auth.welcome')
-      ->with('verify_email_ok', true);
-  }
+	public function getVerify(Request $request, $email)
+	{
+		if ( $user = User::where('email', $email)->where('action_token', $request->input('token'))->first() ) {
+			$user->isVerified = 1;
+			$user->action_token = null;
+			$user->save();
 
-  public function getWelcome()
-  {
-    if ( Session::get('verify_email_ok') === null ) {
-      return redirect()->route('auth.index');
-    }
+			Auth::login($user);
+		}
 
-    return view('auth.welcome');
-  }
+		return redirect()
+			->route('auth.welcome')
+			->with('verify_email_ok', true);
+	}
 
-  public function getSignout()
-  {
-    Auth::logout();
-    return redirect()->route('auth.index');
-  }
+	public function getWelcome()
+	{
+		if ( Session::get('verify_email_ok') === null ) {
+			return redirect()->route('auth.index');
+		}
+
+		return view('auth.welcome');
+	}
+
+	public function getEmail()
+	{
+		return view('auth.email');
+	}
+
+	public function postEmail(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|email|unique:users'
+		]);
+
+		$validator->setAttributeNames([
+			'email' => 'e-Posta'
+		]);
+
+		if ( $validator->fails() ) {
+			return redirect()->route('auth.email')->withErrors($validator)->withInput();
+		}
+
+		Auth::user()->email = $request->input('email');
+		Auth::user()->save();
+
+		return redirect()->route('home');
+	}
+
+	public function getSignout()
+	{
+		Auth::logout();
+		return redirect()->route('auth.index');
+	}
 }
