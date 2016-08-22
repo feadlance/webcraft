@@ -124,9 +124,13 @@ Route::get('/kredi-yukle', [
   'middleware' => ['auth', 'old_login']
 ]);
 
-Route::post('/payment/listener', [
+Route::get('/payment/listener', [
   'uses' => '\Webcraft\Http\Controllers\PaymentController@getListener',
   'as' => 'payment.listener'
+]);
+
+Route::post('/payment/listener', [
+  'uses' => '\Webcraft\Http\Controllers\PaymentController@postListener'
 ]);
 
 Route::get('/odeme/basarili', [
