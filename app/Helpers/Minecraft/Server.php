@@ -3,9 +3,24 @@
 namespace Webcraft\Helpers\Minecraft;
 
 use Config;
+use MinecraftQuery;
 
-class Server
+class Server extends Query
 {
+	public function __construct()
+	{
+		/*
+		$query = new MinecraftQuery(Config::get('minecraft'));
+
+		if ( $query->connect() ) {
+			$this->info = $query->get_info();
+			$query->disconnect();
+		}
+
+		return false;
+		*/
+	}
+
 	public static function name()
 	{
 		return Config::get('minecraft.server.name');
@@ -23,21 +38,41 @@ class Server
 
 	public static function fullHost()
 	{
-		return self::port() !== '25565' ? self::host() . ':' . self::port() : self::host();
+		return $this->port() !== '25565' ? $this->host() . ':' . $this->port() : $this->host();
 	}
 
-	public static function motd()
+	public function motd()
 	{
-		return 'test';
+		//return $this->info['description'];
 	}
 
-	public static function version()
+	public function plugins()
 	{
-		return 1.9;
+		//return $this->info['plugins'];
+	}
+
+	public function version()
+	{
+		//return $this->info['version'];
 	}
 
 	public static function favicon()
 	{
 		return 'assets/images/default-logo.svg';
+	}
+
+	public function players()
+	{
+		//return $this->info['players'];
+	}
+
+	public function slot()
+	{
+		//return $this->info['maxplayers'];
+	}
+
+	public function playerCount()
+	{
+		//return $this->info['numplayers'];
 	}
 }

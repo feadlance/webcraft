@@ -30,8 +30,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-      $this->app->singleton(\Webcraft\Helpers\Websend\Websend::class, function ($app) {
-          return new \Websend(config('minecraft'));
+      $this->app->singleton(\Webcraft\Helpers\Minecraft\Query::class, function ($app) {
+          return new \MinecraftQuery(config('minecraft'));
+      });
+
+      $this->app->singleton(\Webcraft\Helpers\Minecraft\Rcon::class, function ($app) {
+          return new \MinecraftRcon(config('minecraft'));
       });
     }
 }

@@ -214,8 +214,10 @@ return [
         */
 
         'Ftp' => Anchu\Ftp\FtpServiceProvider::class,
-        'Websend' => Webcraft\Helpers\Websend\Websend::class,
+        'MinecraftColor' => \Webcraft\Helpers\Minecraft\Color::class,
         'MinecraftServer' => \Webcraft\Helpers\Minecraft\Server::class,
+        'MinecraftQuery' => \Webcraft\Helpers\Minecraft\Query::class,
+        'MinecraftRcon' => \Webcraft\Helpers\Minecraft\Rcon::class,
         'TurkishGrammar' => \Webcraft\Helpers\Functions\TurkishGrammar::class
 
     ],

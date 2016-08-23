@@ -3,13 +3,20 @@
 return [
 
   /*
-  * Websend: Sunucunuzla web sitesi arasında bağlantı kuran eklentidir.
+  * Sunucu Rcon
   */
-  
-  'websend' => [
-    'host' => env('WEBSEND_HOST', 'localhost'),
-    'port' => env('WEBSEND_PORT', 4445),
-    'password' => env('WEBSEND_PASSWORD'),
+
+  'rcon' => [
+    'port' => env('RCON_PORT', 25575),
+    'password' => env('RCON_PASSWORD')
+  ],
+
+  /*
+  * Query Portu
+  */
+
+  'query' => [
+    'port' => 25585
   ],
 
   /*
@@ -19,7 +26,15 @@ return [
   'server' => [
     'name' => env('SERVER_TITLE'),
   	'host' => env('SERVER_HOST', 'localhost'),
-  	'port' => env('SERVER_PORT', 25565),
+  	'port' => env('SERVER_PORT', 25565)
+  ],
+
+  /*
+  * Üyelik şifreleme methodu: bcrypt, md5
+  */
+
+  'auth' => [
+    'encryption' => 'bcrypt'
   ],
 
   /*
@@ -80,14 +95,6 @@ return [
         'LAVA'
       ]
 
-  ],
-
-  /*
-  * Üyelik şifreleme methodu: bcrypt, md5
-  */
-
-  'auth' => [
-    'encryption' => 'bcrypt'
   ]
 
 ];
