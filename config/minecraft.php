@@ -16,7 +16,7 @@ return [
   */
 
   'query' => [
-    'port' => 25585
+    'port' => env('QUERY_PORT', 25585)
   ],
 
   /*
