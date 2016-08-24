@@ -68,7 +68,7 @@
 		<footer>
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-12">
+					<div class="col-sm-8 offset-sm-2">
 						<div class="footer-border"></div>
 						<p>
 							Bu site, <a href="http://davutabi.com" style="border-bottom: 1px dotted #fff;">Davutabi</a> tarafından değerli takipçileri için hediye niteliğinde yapılmıştır.
@@ -79,7 +79,6 @@
 		</footer>
 		<!-- Javascript -->
 		<script type="text/javascript" src="assets/components/jquery/jquery.min.js"></script>
-		<script type="text/javascript" src="assets/components/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="assets/js/guest/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="assets/components/sweetalert/sweetalert.min.js"></script>
 		<script type="text/javascript">

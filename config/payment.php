@@ -7,7 +7,8 @@ return [
 	'methods' => [
 
 		'batihost' => [
-			'id' => 1962
+			'id' => env('BATIHOST_ID'),
+			'token' => env('BATIHOST_TOKEN')
 		]
 
 	]

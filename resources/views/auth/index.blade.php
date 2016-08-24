@@ -2,7 +2,7 @@
 
 @section('container')
 	<div class="row">
-		<div class="col-sm-8 col-sm-offset-2 text">
+		<div class="col-sm-8 offset-sm-2 text">
 			<h1><strong>Sunucumuza</strong> sizi de davet ediyoruz</h1>
 			<div class="description">
 				<p>
@@ -27,12 +27,12 @@
 				<form class="form-bottom" autocomplete="off" onsubmit="return signIn(this);">
 					<div id="username_group" class="form-group">
 						<label class="sr-only" for="username">Kullanıcı adı</label>
-						<input type="text" placeholder="Kullanıcı adı..." class="form-username form-control" id="username">
+						<input type="text" placeholder="Kullanıcı adı..." class="form-username form-control" name="username" id="username">
 						<span class="form-control-feedback"></span>
 					</div>
 					<div id="password_group" class="form-group">
 						<label class="sr-only" for="password">Şifre</label>
-						<input type="password" placeholder="Şifre..." class="form-password form-control" id="password">
+						<input type="password" placeholder="Şifre..." class="form-password form-control" name="password" id="password">
 						<span class="form-control-feedback"></span>
 					</div>
 					<button class="btn" style="width: 100%;">Hazırım!</button>
@@ -84,6 +84,15 @@
 					<div id="register_password_group" class="form-group">
 						<label class="sr-only" for="register_password">Şifre</label>
 						<input type="password" placeholder="Şifre..." class="form-control" id="register_password">
+						<span class="form-control-feedback"></span>
+					</div>
+					<div id="register_password_confirm_group" class="form-group">
+						<label class="sr-only" for="register_password_confirm">Şifre</label>
+						<input type="password" placeholder="Şifrenizin Tekrarı..." class="form-control" id="register_password_confirm">
+						<span class="form-control-feedback"></span>
+					</div>
+					<div id="register_captcha_group" class="form-group">
+						{!! app('captcha')->display(); !!}
 						<span class="form-control-feedback"></span>
 					</div>
 					<button id="signup_submit" type="submit" class="btn" style="width: 100%;">

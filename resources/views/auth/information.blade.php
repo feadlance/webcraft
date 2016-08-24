@@ -1,13 +1,15 @@
 @extends('auth.default')
 
+@section('title', 'Kayıt Onayı')
+
 @section('container')
 	<div class="row">
-		<div class="col-sm-8 col-sm-offset-2">
+		<div class="col-sm-8 offset-sm-2">
 			<div class="form-box">
 				<div class="form-top">
 					<div class="form-top-left">
 						<h3>Kayıt onayı</h3>
-						<p>Robot olmadığınızı bize gösterin.</p>
+						<p>Robot olmadığınızı bize kanıtlayın.</p>
 					</div>
 					<div class="form-top-right">
 						<i class="fa fa-user"></i>

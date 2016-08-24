@@ -2,6 +2,8 @@
 
 namespace Webcraft\Http\Controllers;
 
+use Mail;
+use Hash;
 use Auth;
 use Config;
 use Session;
@@ -25,13 +27,17 @@ class AuthController extends Controller
 		$validator = Validator::make($request->all(), [
 			'register_username' => 'required|unique:users,username|min:3|max:16|minecraft_username',
 			'register_email' => 'required|unique:users,email|max:30|email',
-			'register_password' => 'required|min:6'
+			'register_password' => 'required|min:6',
+			'register_password_confirm' => 'required|same:register_password',
+			'register_captcha' => 'required|captcha'
 		]);
 
 		$validator->setAttributeNames([
 			'register_username' => 'Kullanıcı adı',
 			'register_email' => 'e-Posta',
-			'register_password' => 'Şifre'
+			'register_password' => 'Şifre',
+			'register_password_confirm' => 'Şifre Tekrarı',
+			'register_captcha' => 'İnsan olmak'
 		]);
 
 		if ( $validator->fails() ) {
@@ -50,13 +56,18 @@ class AuthController extends Controller
 			'action_token' => md5(uniqid($username, true))
 		]);
 
-		/*\Mail::send('templates.mail.verify', ['user' => $user], function ($m) use ($user) {
+		Mail::send('templates.mail.verify', ['user' => $user], function ($m) use ($user) {
 		    $m->to($user->email, $user->username)->subject(MinecraftServer::name());
-		});*/
+		});
 
-		Auth::login($user);
+		$request->session()->flash('verify_email', $user->email);
 
-		return Response::json(['success' => true]);
+		return Response::json([
+			'success' => true,
+			'data' => [
+				'redirect' => route('auth.verify')
+			]
+		]);
 	}
 
 	public function postSignin(Request $request)
@@ -84,7 +95,7 @@ class AuthController extends Controller
 		$encryption = Config::get('minecraft.auth.encryption');
 
 		if ( $encryption === 'bcrypt' ) {
-			if ( !Auth::attempt($request->only(['username', 'password'])) ) {
+			if ( !Hash::check($request->input('password'), $user->password) ) {
 				$password_wrong = true;
 			}
 		} else {
@@ -97,41 +108,93 @@ class AuthController extends Controller
 			return Response::json(['error' => 'Bu kullanıcıya ait şifre yanlış.']); 
 		}
 
-		Auth::login($user);
+		if ( empty($user->email) ) {
+			if ( !$request->input('email') ) {
+				return Response::json([
+					'email_field' => true
+				]);
+			}
 
-		return Response::json(['success' => true]);
-	}
+			$validator = Validator::make($request->all(), [
+				'email' => 'required|unique:users|max:30|email'
+			]);
 
-	public function getVerify(Request $request, $email)
-	{
-		if ( $user = User::where('email', $email)->where('action_token', $request->input('token'))->first() ) {
-			$user->isVerified = 1;
-			$user->action_token = null;
+			$validator->setAttributeNames([
+				'email' => 'e-Posta'
+			]);
+
+			if ( $validator->fails() ) {
+				return Response::json(['validations' => $validator->errors()]);
+			}
+
+			$user->email = $request->input('email');
 			$user->save();
-
-			Auth::login($user);
 		}
 
-		return redirect()
-			->route('auth.welcome')
-			->with('verify_email_ok', true);
+		if ( $user->isVerified() ) {
+			Auth::login($user);
+			return Response::json(['success' => true]);
+		}
+
+		Mail::send('templates.mail.verify', ['user' => $user], function ($m) use ($user) {
+		    $m->to($user->email, $user->username)->subject(MinecraftServer::name());
+		});
+
+		$request->session()->flash('verify_email', $user->email);
+
+		return Response::json([
+			'success' => true,
+			'data' => [
+				'redirect' => route('auth.verify')
+			]
+		]);
+	}
+
+	public function getInformation()
+	{
+		if ( !Session::has('verify_email') ) {
+			return redirect()->route('auth.index');
+		}
+
+		return view('auth.information');
+	}
+
+	public function getVerify(Request $request, $email = null)
+	{
+		if ( empty($email) ) {
+			return $this->getInformation();
+		}
+
+		$user = User::where('email', $email)->where('action_token', $request->input('token'))->first();
+
+		if ( $user === null ) {
+			return redirect()->route('auth.index');
+		}
+
+		$user->isVerified = 1;
+		$user->action_token = null;
+		$user->save();
+
+		Auth::login($user);
+
+		return redirect()->route('auth.welcome')->with('verify_email_ok', true);
 	}
 
 	public function getWelcome()
 	{
-		if ( Session::get('verify_email_ok') === null ) {
+		if ( !Session::has('verify_email_ok') ) {
 			return redirect()->route('auth.index');
 		}
 
 		return view('auth.welcome');
-	}
+	}	
 
-	public function getEmail()
+	public function getNewEmail()
 	{
 		return view('auth.email');
 	}
 
-	public function postEmail(Request $request)
+	public function postNewEmail(Request $request)
 	{
 		$validator = Validator::make($request->all(), [
 			'email' => 'required|email|unique:users'

@@ -18,7 +18,7 @@
 Route::get('/', [
   'uses' => '\Webcraft\Http\Controllers\HomeController@getIndex',
   'as' => 'home',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 /*
@@ -31,18 +31,7 @@ Route::get('/aramiza-katil', [
   'middleware' => ['guest']
 ]);
 
-Route::get('/yeni-email', [
-  'uses' => '\Webcraft\Http\Controllers\AuthController@getEmail',
-  'as' => 'auth.email',
-  'middleware' => ['auth', 'first_login']
-]);
-
-Route::post('/yeni-email', [
-  'uses' => '\Webcraft\Http\Controllers\AuthController@postEmail',
-  'middleware' => ['auth', 'first_login']
-]);
-
-Route::get('/kaydi-onayla/{email}', [
+Route::get('/kaydi-onayla/{email?}', [
   'uses' => '\Webcraft\Http\Controllers\AuthController@getVerify',
   'as' => 'auth.verify'
 ]);
@@ -77,19 +66,19 @@ Route::get('/cikis-yap', [
 Route::get('/oyuncu/{player}', [
   'uses' => '\Webcraft\Http\Controllers\ProfileController@getIndex',
   'as' => 'profile',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 Route::get('/oyuncu/{player}/oldurme-detaylari', [
   'uses' => '\Webcraft\Http\Controllers\ProfileController@getDetailKill',
   'as' => 'profile.killed',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 Route::get('/oyuncu/{player}/olum-detaylari', [
   'uses' => '\Webcraft\Http\Controllers\ProfileController@getDetailDeath',
   'as' => 'profile.death',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 /*
@@ -99,19 +88,19 @@ Route::get('/oyuncu/{player}/olum-detaylari', [
 Route::post('/oyuncu/arkadas/ekle', [
   'uses' => '\Webcraft\Http\Controllers\FriendController@postAddFriend',
   'as' => 'friend.add',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 Route::post('/oyuncu/arkadas/kabul-et', [
   'uses' => '\Webcraft\Http\Controllers\FriendController@postAcceptFriend',
   'as' => 'friend.accept',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 Route::post('/oyuncu/arkadas/sil', [
   'uses' => '\Webcraft\Http\Controllers\FriendController@postDeleteFriend',
   'as' => 'friend.delete',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 /*
@@ -121,7 +110,7 @@ Route::post('/oyuncu/arkadas/sil', [
 Route::get('/kredi-yukle', [
   'uses' => '\Webcraft\Http\Controllers\PaymentController@getIndex',
   'as' => 'payment',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 Route::get('/payment/listener', [
@@ -136,13 +125,13 @@ Route::post('/payment/listener', [
 Route::get('/odeme/basarili', [
   'uses' => '\Webcraft\Http\Controllers\PaymentController@getSuccess',
   'as' => 'payment.success',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 Route::get('/odeme/basarisiz', [
   'uses' => '\Webcraft\Http\Controllers\PaymentController@getError',
   'as' => 'payment.error',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 /*
@@ -162,7 +151,7 @@ Route::get('/odeme/basarisiz', [
 Route::get('/hesabimi-yukselt', [
   'uses' => '\Webcraft\Http\Controllers\UpgradeController@getIndex',
   'as' => 'upgrade',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 /*
@@ -172,25 +161,25 @@ Route::get('/hesabimi-yukselt', [
 Route::post('/group/new', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@postNew',
   'as' => 'group.new',
-  'middleware' => ['auth', 'admin', 'old_login']
+  'middleware' => ['auth', 'admin']
 ]);
 
 Route::get('/group/delete/{id}', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@getDelete',
   'as' => 'group.delete',
-  'middleware' => ['auth', 'admin', 'old_login']
+  'middleware' => ['auth', 'admin']
 ]);
 
 Route::post('/group/new/feature', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@postNewFeature',
   'as' => 'group.new_feature',
-  'middleware' => ['auth', 'admin', 'old_login']
+  'middleware' => ['auth', 'admin']
 ]);
 
 Route::get('/group/delete/feature/{id}', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@getDeleteFeature',
   'as' => 'group.delete.feature',
-  'middleware' => ['auth', 'admin', 'old_login']
+  'middleware' => ['auth', 'admin']
 ]);
 
 /*
@@ -200,7 +189,7 @@ Route::get('/group/delete/feature/{id}', [
 Route::get('/oyuncular', [
   'uses' => '\Webcraft\Http\Controllers\UserController@getUsers',
   'as' => 'users',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 /*
@@ -210,7 +199,7 @@ Route::get('/oyuncular', [
 Route::get('/hit/en-iyiler', [
   'uses' => '\Webcraft\Http\Controllers\HitController@getBest100',
   'as' => 'top.best',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 /*
@@ -220,19 +209,19 @@ Route::get('/hit/en-iyiler', [
 Route::post('/status', [
   'uses' => '\Webcraft\Http\Controllers\StatusController@postStatus',
   'as' => 'status.post',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 Route::post('/status/delete', [
   'uses' => '\Webcraft\Http\Controllers\StatusController@postDelete',
   'as' => 'status.delete',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 Route::post('/status/like', [
   'uses' => '\Webcraft\Http\Controllers\StatusController@postLike',
   'as' => 'status.like',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 
@@ -244,11 +233,11 @@ Route::post('/status/like', [
 Route::post('/status/comment', [
   'uses' => '\Webcraft\Http\Controllers\CommentController@postComment',
   'as' => 'status.comment',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);
 
 Route::post('/status/comment/like', [
   'uses' => '\Webcraft\Http\Controllers\CommentController@postLike',
   'as' => 'status.comment.like',
-  'middleware' => ['auth', 'old_login']
+  'middleware' => ['auth']
 ]);

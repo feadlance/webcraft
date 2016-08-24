@@ -5,17 +5,14 @@
 var signIn = function (that) {
 
 	var fields = ['username', 'password'];
+	var data = $('.form-bottom').serialize() + '&_token=' + token;
 
 	$(that).addClass('loading');
 
 	$.ajax({
 		type: 'POST',
 		url: url + '/signin',
-		data: {
-			username: $(that).find('#username').val(),
-			password: $(that).find('#password').val(),
-			_token: token
-		},
+		data: data,
 		success: function(respond) {
 			$.each(fields, function( index, value ) {
 				$('#' + value + '_group').removeClass('has-danger');
@@ -33,10 +30,21 @@ var signIn = function (that) {
 					$('#' + index + '_group input').addClass('form-control-danger');
 					$('#' + index + '_group .form-control-feedback').text(value);
 				});
+			} else if ( respond.email_field ) {
+				if ( !$('#email_group').length ) {
+					$('#password_group').after('<div id="email_group" class="form-group"> <label class="sr-only" for="email">Hesabınızın bir e-postası olmalı</label> <input type="text" placeholder="e-Posta..." class="form-email form-control" name="email" id="email"> <span class="form-control-feedback">Hesabınızın bir e-posta adresi olmalı</span> </div>');
+					$('#login-form-error').removeClass('active').text('');
+					$('#email_group').find('input').focus();
+				}
 			} else {
 				$('#login-form-error').addClass('active').css('background', '#21BA45').html('<i class="fa fa-check"></i>');
 				$(that).addClass('loading-ok');
-				window.location.href = url;
+				
+				if ( respond.data && respond.data.redirect ) {
+					window.location.href = respond.data.redirect;
+				} else {
+					window.location.href = url;
+				}
 			}
 
 			$(that).removeClass('loading');
@@ -49,7 +57,7 @@ var signIn = function (that) {
 
 var signUp = function (that) {
 
-	var fields = ['register_email', 'register_username', 'register_password'];
+	var fields = ['register_email', 'register_username', 'register_password', 'register_password_confirm'];
 
 	$(that).addClass('loading');
 
@@ -60,6 +68,8 @@ var signUp = function (that) {
 			register_username: $(that).find('#register_username').val(),
 			register_email: $(that).find('#register_email').val(),
 			register_password: $(that).find('#register_password').val(),
+			register_password_confirm: $(that).find('#register_password_confirm').val(),
+			register_captcha: grecaptcha.getResponse(),
 			_token: token
 		},
 		success: function(respond) {
@@ -82,7 +92,7 @@ var signUp = function (that) {
 			} else {
 				$('#register-form-error').addClass('active').css('background', '#21BA45').html('<i class="fa fa-check"></i>');
 				$(that).addClass('loading-ok');
-				window.location.href = url;
+				window.location.href = respond.data.redirect;
 			}
 
 			$(that).removeClass('loading');

@@ -153,6 +153,7 @@ return [
          * Custom Service Providers...
          */
         Anchu\Ftp\FtpServiceProvider::class,
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -214,11 +215,12 @@ return [
         */
 
         'Ftp' => Anchu\Ftp\FtpServiceProvider::class,
-        'MinecraftColor' => \Webcraft\Helpers\Minecraft\Color::class,
-        'MinecraftServer' => \Webcraft\Helpers\Minecraft\Server::class,
-        'MinecraftQuery' => \Webcraft\Helpers\Minecraft\Query::class,
-        'MinecraftRcon' => \Webcraft\Helpers\Minecraft\Rcon::class,
-        'TurkishGrammar' => \Webcraft\Helpers\Functions\TurkishGrammar::class
+        'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+        'TurkishGrammar' => Webcraft\Helpers\Functions\TurkishGrammar::class,
+        'MinecraftColor' => Webcraft\Helpers\Minecraft\Color::class,
+        'MinecraftServer' => Webcraft\Helpers\Minecraft\Server::class,
+        'MinecraftQuery' => Webcraft\Helpers\Minecraft\Query::class,
+        'MinecraftRcon' => Webcraft\Helpers\Minecraft\Rcon::class,
 
     ],
 

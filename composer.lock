@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2c19315836042e7d628aadc85c7afa3c",
-    "content-hash": "8f586f48d4452e30c9dcb084eb2a3cde",
+    "hash": "ff5b19c39275eec73a5fc7f12e7e67b0",
+    "content-hash": "bb61299130101a3ce70684755a3d71bf",
     "packages": [
         {
             "name": "anchu/ftp",
@@ -50,6 +50,51 @@
                 "service provider"
             ],
             "time": "2015-05-16 18:29:29"
+        },
+        {
+            "name": "anhskohbo/no-captcha",
+            "version": "2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/anhskohbo/no-captcha.git",
+                "reference": "cdf18fea985e6176c9663619a39d0de78b007deb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anhskohbo/no-captcha/zipball/cdf18fea985e6176c9663619a39d0de78b007deb",
+                "reference": "cdf18fea985e6176c9663619a39d0de78b007deb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.0.*|5.1.*|5.2.*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Anhskohbo\\NoCaptcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "anhskohbo",
+                    "email": "anhskohbo@gmail.com"
+                }
+            ],
+            "description": "No CAPTCHA reCAPTCHA For Laravel.",
+            "keywords": [
+                "captcha",
+                "laravel",
+                "laravel4",
+                "laravel5",
+                "no-captcha",
+                "recaptcha"
+            ],
+            "time": "2015-12-27 16:44:09"
         },
         {
             "name": "classpreloader/classpreloader",
