@@ -34,7 +34,7 @@ return [
   */
 
   'auth' => [
-    'encryption' => 'bcrypt'
+    'encryption' => env('AUTH_ENCRYPTION', 'md5')
   ],
 
   /*

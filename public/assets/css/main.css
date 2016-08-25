@@ -495,7 +495,16 @@ header .pull-right > .header-item #mobileMenu {
 .list-group-user-item .avatar {
 	float: left;
 	margin-right: 5px;
+	width: 40px;
+	height: 40px;
+	overflow: hidden;
 }
+
+.list-group-user-item .avatar img {
+	width: 40px;
+	height: 40px;
+}
+
 
 .list-group-user-item .content {
 	line-height: 1.2;

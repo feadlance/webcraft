@@ -67,7 +67,7 @@
 							@foreach ( $from_monsters as $from_monster )
 								<li class="list-group-user-item clearfix">
 									<div class="avatar">
-										<img src="https://minotar.net/avatar/default/40" alt="User Avatar">
+										<img src="{{ $from_monster->getMobAvatar(40) }}" alt="User Avatar">
 									</div>
 									<div class="content">
 										<div class="title">
