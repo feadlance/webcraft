@@ -103,6 +103,87 @@ var signUp = function (that) {
 
 };
 
+var forgotPassword = function (that) {
+
+	$(that).addClass('loading');
+
+	$.ajax({
+		type: 'POST',
+		url: url + '/sifremi-unuttum',
+		data: {
+			email: $(that).find('input').val(),
+			_token: token
+		},
+		success: function(respond) {
+			$('#email_group').removeClass('has-danger');
+			$('#email_group input').removeClass('form-control-danger');
+			$('#email_group .form-control-feedback').text('');
+			
+			$('#forgot-form-error').removeClass('active');
+
+			if ( respond.error ) {
+				$('#forgot-form-error').addClass('active').text(respond.error);
+			} else if ( respond.validations ) {
+				$('#email_group').addClass('has-danger');
+				$('#email_group input').addClass('form-control-danger');
+				$('#email_group .form-control-feedback').text(respond.validations.email);
+			} else {
+				$('#forgot-form-error').addClass('active').css('background', '#21BA45').html('<i class="fa fa-check"></i>');
+				swal('Hey!', 'Girdiğiniz e-posta doğruysa, yeni şifrenizi bu mail adresine gönderdik.', 'info');
+			}
+
+			$(that).removeClass('loading');
+		}
+	});
+
+	return false;
+};
+
+var forgotNewPassword = function (that) {
+
+	var fields = ['password', 'password_confirm'];
+
+	$(that).addClass('loading');
+
+	$.ajax({
+		type: 'POST',
+		url: url + '/sifremi-unuttum/yeni',
+		data: {
+			password: $(that).find('#password').val(),
+			password_confirm: $(that).find('#password_confirm').val(),
+			email: $(that).find('#email').val(),
+			token: $(that).find('#token').val(),
+			_token: token
+		},
+		success: function(respond) {
+			$.each(fields, function( index, value ) {
+				$('#' + value + '_group').removeClass('has-danger');
+				$('#' + value + '_group input').removeClass('form-control-danger');
+				$('#' + value + '_group .form-control-feedback').text('');
+			});
+
+			$('#forgot-form-error').removeClass('active');
+
+			if ( respond.error ) {
+				$('#forgot-form-error').addClass('active').text(respond.error);
+			} else if ( respond.validations ) {
+				$.each(respond.validations, function( index, value ) {
+					$('#' + index + '_group').addClass('has-danger');
+					$('#' + index + '_group input').addClass('form-control-danger');
+					$('#' + index + '_group .form-control-feedback').text(value);
+				});
+			} else {
+				$('#forgot-form-error').addClass('active').css('background', '#21BA45').html('<i class="fa fa-check"></i>');
+				window.location.href = url;
+			}
+
+			$(that).removeClass('loading');
+		}
+	});
+
+	return false;
+};
+
 /*
 * Status
 */

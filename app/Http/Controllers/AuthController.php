@@ -53,7 +53,7 @@ class AuthController extends Controller
 			'username' => $username,
 			'email' => $request->input('register_email'),
 			'password' => $encryption === 'bcrypt' ? bcrypt($password) : md5($password),
-			'action_token' => md5(uniqid($username, true))
+			'action_token' => str_random(64)
 		]);
 
 		Mail::send('templates.mail.verify', ['user' => $user], function ($m) use ($user) {
@@ -148,6 +148,89 @@ class AuthController extends Controller
 				'redirect' => route('auth.verify')
 			]
 		]);
+	}
+
+	public function getForgotPassword()
+	{
+		return view('auth.forgot_password');
+	}
+
+	public function postForgotPassword(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|max:30|email'
+		]);
+
+		$validator->setAttributeNames([
+			'email' => 'e-Posta'
+		]);
+
+		if ( $validator->fails() ) {
+			return Response::json(['validations' => $validator->errors()]);
+		}
+
+		$user = User::where('email', $request->input('email'))->first();
+
+		if ( $user === null ) {
+			sleep(2);
+			return;
+		}
+
+		$user->action_token = str_random(64);
+		$user->save();
+
+		Mail::send('templates.mail.forgot_password', ['user' => $user], function ($m) use ($user) {
+		    $m->to($user->email, $user->username)->subject(MinecraftServer::name());
+		});
+
+		return Response::json(['success' => true]);
+	}
+
+	public function getForgotNewPassword(Request $request, $email)
+	{
+		$user = User::where('email', $email)->first();
+
+		if ( $user === null || $user->action_token !== $request->input('token') ) {
+			return redirect()->route('auth.index');
+		}
+
+		return view('auth.new_password')->with('email', $email);
+	}
+
+	public function postForgotNewPassword(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'password' => 'required|min:6',
+			'password_confirm' => 'required|same:password'
+		]);
+
+		$validator->setAttributeNames([
+			'password' => 'Şifre',
+			'password_confirm' => 'Şifre tekrarı'
+		]);
+
+		if ( $validator->fails() ) {
+			return Response::json(['validations' => $validator->errors()]);
+		}
+
+		$user = User::where('email', $request->input('email'))->first();
+
+		if ( $user === null ) {
+			return Response::json(['error' => 'Bu kullanıcı sistemimizde kayıtlı değil.']);
+		}
+
+		if ( $request->input('token') !== $user->action_token ) {
+			return Response::json(['error' => 'Hatalı istek.']);
+		}
+
+		$password = $request->input('password');
+		$encryption = config('minecraft.auth.encryption');
+
+		$user->action_token = null;
+		$user->password = $encryption === 'bcrypt' ? bcrypt($password) : md5($password);
+		$user->save();
+
+		return Response::json(['success' => true]);
 	}
 
 	public function getInformation()

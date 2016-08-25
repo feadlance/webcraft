@@ -35,6 +35,9 @@
 						<input type="password" placeholder="Şifre..." class="form-password form-control" name="password" id="password">
 						<span class="form-control-feedback"></span>
 					</div>
+					<div class="form-group">
+						<a href="{{ route('auth.forgot_password') }}">Şifremi hatırlamıyorum</a>
+					</div>
 					<button class="btn" style="width: 100%;">Hazırım!</button>
 					<div class="loading-content">
 						<i class="fa fa-spin fa-circle-o-notch"></i>

@@ -31,6 +31,28 @@ Route::get('/aramiza-katil', [
   'middleware' => ['guest']
 ]);
 
+Route::get('/sifremi-unuttum', [
+  'uses' => '\Webcraft\Http\Controllers\AuthController@getForgotPassword',
+  'as' => 'auth.forgot_password',
+  'middleware' => ['guest']
+]);
+
+Route::post('/sifremi-unuttum', [
+  'uses' => '\Webcraft\Http\Controllers\AuthController@postForgotPassword',
+  'middleware' => ['guest']
+]);
+
+Route::get('/sifremi-unuttum/yeni/{email}', [
+  'uses' => '\Webcraft\Http\Controllers\AuthController@getForgotNewPassword',
+  'as' => 'auth.forgot_password.new',
+  'middleware' => ['guest']
+]);
+
+Route::post('/sifremi-unuttum/yeni', [
+  'uses' => '\Webcraft\Http\Controllers\AuthController@postForgotNewPassword',
+  'middleware' => ['guest']
+]);
+
 Route::get('/kaydi-onayla/{email?}', [
   'uses' => '\Webcraft\Http\Controllers\AuthController@getVerify',
   'as' => 'auth.verify'
