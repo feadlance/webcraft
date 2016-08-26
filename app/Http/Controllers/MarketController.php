@@ -11,6 +11,6 @@ class MarketController extends Controller
 {
 	public function getIndex()
 	{
-		return view('market.index');
+		return view(app('template') . '.market.index');
 	}
 }

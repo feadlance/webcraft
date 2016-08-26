@@ -17,7 +17,7 @@ class UserController extends Controller
 			$users = $users->where('isLogged', 1);
 		}
 
-		return view('user.index')
+		return view(app('template') . '.user.index')
 			->with('users', $users->get());
 	}
 }

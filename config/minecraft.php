@@ -38,6 +38,12 @@ return [
   ],
 
   /*
+  * Site Teması
+  */
+
+  'template' => env('SITE_TEMPLATE', 'default'),
+
+  /*
   * Mob Türleri
   */
 

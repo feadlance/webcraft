@@ -10,7 +10,7 @@ class PaymentController extends Controller
 	public function getIndex()
 	{
 		if ( config('payment.type') === 'batihost' && config('payment.methods.batihost.id') ) {
-			return view('credit.batihost');
+			return view(app('template') . '.credit.batihost');
 		}
 
 		return redirect()->back()->with('flash.info', 'Siteye henüz bir ödeme yöntemi eklenmemiş.');

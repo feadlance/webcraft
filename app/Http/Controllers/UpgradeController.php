@@ -11,7 +11,7 @@ class UpgradeController extends Controller
 	{
 		$groups = Group::orderBy('money', 'desc')->get();
 
-		return view('upgrade.index')
+		return view(app('template') . '.upgrade.index')
 			->with('groups', $groups)
 			->with('color', new Color);
 	}

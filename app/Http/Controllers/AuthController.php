@@ -19,7 +19,7 @@ class AuthController extends Controller
 {
 	public function getIndex()
 	{
-		return view('auth.index');
+		return view(app('template') . '.auth.index');
 	}
 
 	public function postSignup(Request $request)
@@ -56,7 +56,7 @@ class AuthController extends Controller
 			'action_token' => str_random(64)
 		]);
 
-		Mail::send('templates.mail.verify', ['user' => $user], function ($m) use ($user) {
+		Mail::send(app('template') . '.partials.mail.verify', ['user' => $user], function ($m) use ($user) {
 		    $m->to($user->email, $user->username)->subject(MinecraftServer::name());
 		});
 
@@ -136,7 +136,7 @@ class AuthController extends Controller
 			return Response::json(['success' => true]);
 		}
 
-		Mail::send('templates.mail.verify', ['user' => $user], function ($m) use ($user) {
+		Mail::send(app('template') . '.partials.mail.verify', ['user' => $user], function ($m) use ($user) {
 		    $m->to($user->email, $user->username)->subject(MinecraftServer::name());
 		});
 
@@ -152,7 +152,7 @@ class AuthController extends Controller
 
 	public function getForgotPassword()
 	{
-		return view('auth.forgot_password');
+		return view(app('template') . '.auth.forgot_password');
 	}
 
 	public function postForgotPassword(Request $request)
@@ -179,7 +179,7 @@ class AuthController extends Controller
 		$user->action_token = str_random(64);
 		$user->save();
 
-		Mail::send('templates.mail.forgot_password', ['user' => $user], function ($m) use ($user) {
+		Mail::send(app('template') . '.partials.mail.forgot_password', ['user' => $user], function ($m) use ($user) {
 		    $m->to($user->email, $user->username)->subject(MinecraftServer::name());
 		});
 
@@ -194,7 +194,7 @@ class AuthController extends Controller
 			return redirect()->route('auth.index');
 		}
 
-		return view('auth.new_password')->with('email', $email);
+		return view(app('template') . '.auth.new_password')->with('email', $email);
 	}
 
 	public function postForgotNewPassword(Request $request)
@@ -239,7 +239,7 @@ class AuthController extends Controller
 			return redirect()->route('auth.index');
 		}
 
-		return view('auth.information');
+		return view(app('template') . '.auth.information');
 	}
 
 	public function getVerify(Request $request, $email = null)
@@ -269,12 +269,12 @@ class AuthController extends Controller
 			return redirect()->route('auth.index');
 		}
 
-		return view('auth.welcome');
+		return view(app('template') . '.auth.welcome');
 	}	
 
 	public function getNewEmail()
 	{
-		return view('auth.email');
+		return view(app('template') . '.auth.email');
 	}
 
 	public function postNewEmail(Request $request)

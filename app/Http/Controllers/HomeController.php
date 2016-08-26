@@ -15,7 +15,7 @@ class HomeController extends Controller
 		$top5_users = Kill::where('entityType', 'PLAYER')->orderBy('value', 'desc')->limit(5)->get();
 		$statuses = $user->getHomeStatuses()->orderBy('id', 'desc')->get();
 
-		return view('home')
+		return view(app('template') . '.home')
 			->with('user', $user)
 			->with('online_users', $online_users)
 			->with('top5_users', $top5_users)

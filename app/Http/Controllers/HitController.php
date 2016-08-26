@@ -10,7 +10,7 @@ class HitController extends Controller
 	{
 		$bestUsers = Player::limit(100)->get()->sortByDesc('point');
 
-		return view('top.best')
+		return view(app('template') . '.top.best')
 			->with('bestUsers', $bestUsers);
 	}
 }

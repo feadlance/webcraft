@@ -21,7 +21,7 @@ class ProfileController extends Controller
 		$can_post = Auth::user()->isAdmin() || (Auth::user()->isFriendsWith($user) || Auth::id() === $user->id);
 		$statuses = $user->getProfileStatuses()->orderBy('id', 'desc')->get();
 
-		return view('profile.index')
+		return view(app('template') . '.profile.index')
 			->with('user', $user)
 			->with('can_post', $can_post)
 			->with('statuses', $statuses);
@@ -52,7 +52,7 @@ class ProfileController extends Controller
 			->orderBy('value', 'desc')
 			->get();
 
-		return view('profile.killed')
+		return view(app('template') . '.profile.killed')
 				->with('user', $user)
 				->with('killed_users', $killed_users)
 				->with('killed_monsters', $killed_monsters)
@@ -84,7 +84,7 @@ class ProfileController extends Controller
 			->orderBy('value', 'desc')
 			->get();
 
-		return view('profile.death')
+		return view(app('template') . '.profile.death')
 			->with('user', $user)
 			->with('from_players', $from_players)
 			->with('from_monsters', $from_monsters)
