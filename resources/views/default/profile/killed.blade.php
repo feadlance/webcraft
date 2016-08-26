@@ -75,9 +75,7 @@
 									</div>
 									<div class="content">
 										<div class="title">
-											<a href="#">
-												<strong>@lang('minecraft.' . $killed_monster->entityType)</strong>
-											</a>
+											<strong>@lang('minecraft.' . $killed_monster->entityType)</strong>
 										</div>
 										<div class="body">
 											{{ $killed_monster->value }} kez
@@ -108,9 +106,7 @@
 									</div>
 									<div class="content">
 										<div class="title">
-											<a href="#">
-												<strong>@lang('minecraft.' . $killed_animal->entityType)</strong>
-											</a>
+											<strong>@lang('minecraft.' . $killed_animal->entityType)</strong>
 										</div>
 										<div class="body">
 											{{ $killed_animal->value }} kez

@@ -75,9 +75,7 @@
 									</div>
 									<div class="content">
 										<div class="title">
-											<a href="#">
-												<strong>@lang('minecraft.' . $from_monster->cause)</strong>
-											</a>
+											<strong>@lang('minecraft.' . $from_monster->cause)</strong>
 										</div>
 										<div class="body">
 											{{ $from_monster->value }} kez
@@ -108,9 +106,7 @@
 									</div>
 									<div class="content">
 										<div class="title">
-											<a href="#">
-												<strong>@lang('minecraft.' . $from_other->cause)</strong>
-											</a>
+											<strong>@lang('minecraft.' . $from_other->cause)</strong>
 										</div>
 										<div class="body">
 											{{ $from_other->value }} kez
