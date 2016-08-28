@@ -26,6 +26,7 @@ class StatusController extends Controller
 		$player = $request->input('player');
 
 		$wall = User::where('username', $player)->first();
+		$wall_id = 0;
 
 		if ( $wall !== null ) {
 			$wall_id = $wall->id;

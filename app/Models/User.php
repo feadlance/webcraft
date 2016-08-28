@@ -132,7 +132,7 @@ class User extends Authenticatable
 	public function getHomeStatuses()
 	{
 	    return Status::where(function ($query) {
-	        return $query->where('user_id', $this->id)->orWhereIn('user_id', $this->friends()->lists('id'));
+	        return $query->where('user_id', $this->id)->orWhereIn('user_id', $this->friends()->pluck('id'));
 	    })->where('wall_id', 0);
 	}
 

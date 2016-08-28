@@ -51,7 +51,7 @@ class PaymentController extends Controller
 
 			$user->money = $user->money + $request->input('credit');
 			$user->save();
-
+			
 		}
 	}
 }

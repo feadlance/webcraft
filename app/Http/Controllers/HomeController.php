@@ -22,3 +22,4 @@ class HomeController extends Controller
 			->with('statuses', $statuses);
 	}
 }
+
