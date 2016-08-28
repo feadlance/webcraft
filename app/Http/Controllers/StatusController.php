@@ -5,9 +5,12 @@ namespace Webcraft\Http\Controllers;
 use Auth;
 use Response;
 use Validator;
+
 use Webcraft\Models\User;
-use Webcraft\Models\Comment;
 use Webcraft\Models\Status;
+use Webcraft\Models\Comment;
+use Webcraft\Notifications\LikeStatus;
+use Webcraft\Notifications\PostStatusOnProfile;
 
 use Illuminate\Http\Request;
 
@@ -44,6 +47,10 @@ class StatusController extends Controller
 			'body' => $request->input('body'),
 			'wall_id' => $wall_id
 		]);
+
+		if ( $wall !== null ) {
+			$wall->notify(new PostStatusOnProfile(Auth::user()));
+		}
 
 		return Response::json([
 			'success' => true,
@@ -84,16 +91,18 @@ class StatusController extends Controller
 			return Response::json(['error' => 'Post bulunamadı.']);
 		}
 
-		if ( Auth::id() !== $status->user()->id && !Auth::user()->isFriendsWith($status->user()) ) {
-			return Response::json(['error' => 'Siz arkadaş değilsiniz.']);
-		}
-
 		if ( Auth::user()->hasLikedStatus($status) ) {
 			$status->likes()->where('user_id', Auth::id())->delete();
 			$json = ['success' => true, 'liked' => false, 'count' => $status->likes()->count()];
 		} else {
 			$like = $status->likes()->create([]);
+
 			Auth::user()->likes()->save($like);
+			
+			if ( Auth::id() !== $status->user()->id ) {
+				$status->user()->notify(new LikeStatus(Auth::user(), $status));
+			}
+
 			$json = ['success' => true, 'liked' => true, 'count' => $status->likes()->count()];
 		}
 

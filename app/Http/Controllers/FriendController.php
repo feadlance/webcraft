@@ -4,7 +4,10 @@ namespace Webcraft\Http\Controllers;
 
 use Auth;
 use Response;
+
 use Webcraft\Models\User;
+use Webcraft\Notifications\AddFriend;
+use Webcraft\Notifications\AcceptFriend;
 
 use Illuminate\Http\Request;
 
@@ -32,6 +35,8 @@ class FriendController extends Controller
 
 		Auth::user()->addFriend($user);
 
+		$user->notify(new AddFriend(Auth::user()));
+
 		return Response::json(['success' => true]);
 	}
 
@@ -48,6 +53,8 @@ class FriendController extends Controller
 		}
 
 		Auth::user()->acceptFriendRequest($user);
+
+		$user->notify(new AcceptFriend(Auth::user()));
 
 		return Response::json(['success' => true]);
 	}

@@ -24,7 +24,7 @@ return [
   */
 
   'server' => [
-    'name' => env('SERVER_TITLE'),
+    'name' => env('SERVER_TITLE', 'WebCraft'),
   	'host' => env('SERVER_HOST', 'localhost'),
   	'port' => env('SERVER_PORT', 25565)
   ],

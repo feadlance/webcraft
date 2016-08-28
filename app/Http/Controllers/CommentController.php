@@ -5,8 +5,12 @@ namespace Webcraft\Http\Controllers;
 use Auth;
 use Response;
 use Validator;
+
 use Webcraft\Models\Comment;
 use Webcraft\Models\Status;
+use Webcraft\Notifications\LikeComment;
+use Webcraft\Notifications\ReplyComment;
+use Webcraft\Notifications\CommentStatus;
 
 use Illuminate\Http\Request;
 
@@ -46,23 +50,33 @@ class CommentController extends Controller
 			return Response::json(['error' => $validator->errors()->first('body')]);
 		}
 
-		$comment = $status->comments()->create([
+		$insertComment = $status->comments()->create([
 			'body' => $request->input('body'),
 			'parent_id' => $parent_id
 		]);
 
-		Auth::user()->comments()->save($comment);
+		Auth::user()->comments()->save($insertComment);
+
+		if ( $request->input('type') === 'comment' ) {
+			if ( Auth::id() !== $comment->user()->id ) {
+				$comment->user()->notify(new ReplyComment(Auth::user(), $comment));
+			}
+		} else {
+			if ( Auth::id() !== $status->user()->id ) {
+				$status->user()->notify(new CommentStatus(Auth::user(), $status));
+			}
+		}
 
 		return Response::json([
 			'success' => true,
 			'data' => [
-				'id' => $comment->id,
+				'id' => $insertComment->id,
 				'count' => $status->comments($parent_id)->count(),
-				'avatar' => $request->input('type') === 'status' ? $comment->user()->getAvatar(40) : $comment->user()->getAvatar(35),
-				'profile_link' => route('profile', ['player' => $comment->user()->username]),
-				'display_name' => $comment->user()->getDisplayName(),
-				'body' => $comment->body,
-				'created_at' => $comment->created_at->diffForHumans()
+				'avatar' => $request->input('type') === 'status' ? $insertComment->user()->getAvatar(40) : $insertComment->user()->getAvatar(35),
+				'profile_link' => route('profile', ['player' => $insertComment->user()->username]),
+				'display_name' => $insertComment->user()->getDisplayName(),
+				'body' => $insertComment->body,
+				'created_at' => $insertComment->created_at->diffForHumans()
 			]
 		]);
 	}
@@ -90,7 +104,13 @@ class CommentController extends Controller
 			$json = ['success' => true, 'liked' => false, 'count' => $comment->likes()->count()];
 		} else {
 			$like = $comment->likes()->create([]);
+
 			Auth::user()->likes()->save($like);
+
+			if ( Auth::id() !== $comment->user()->id ) {
+				$comment->user()->notify(new LikeComment(Auth::user(), $comment));
+			}
+
 			$json = ['success' => true, 'liked' => true, 'count' => $comment->likes()->count()];
 		}
 

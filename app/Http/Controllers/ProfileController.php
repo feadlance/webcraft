@@ -90,4 +90,9 @@ class ProfileController extends Controller
 			->with('from_monsters', $from_monsters)
 			->with('from_others', $from_others);
 	}
+
+	public function getNotifications()
+	{
+		return view(app('template') . '.profile.notifications');
+	}
 }

@@ -45,7 +45,7 @@
 
 	<div class="status-comments">
 		@foreach ( $status->comments()->get() as $comment )
-			@include($template . '.templates.status.comment')
+			@include($template . '.partials.status.comment')
 		@endforeach
 	</div>
 </div>
