@@ -1,17 +1,6 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
-/*
 * Homepage
 */
 
@@ -100,6 +89,16 @@ Route::get('/oyuncu/{player}/oldurme-detaylari', [
 Route::get('/oyuncu/{player}/olum-detaylari', [
   'uses' => '\Webcraft\Http\Controllers\ProfileController@getDetailDeath',
   'as' => 'profile.death',
+  'middleware' => ['auth']
+]);
+
+/*
+* Account
+*/
+
+Route::get('/hesap/bildirimler', [
+  'uses' => '\Webcraft\Http\Controllers\ProfileController@getNotifications',
+  'as' => 'profile.notifications',
   'middleware' => ['auth']
 ]);
 
