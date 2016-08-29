@@ -63,7 +63,7 @@ class CommentController extends Controller
 			}
 		} else {
 			if ( Auth::id() !== $status->user()->id ) {
-				$status->user()->notify(new CommentStatus(Auth::user(), $status));
+				$status->user()->notify(new CommentStatus(Auth::user(), $status, $insertComment));
 			}
 		}
 

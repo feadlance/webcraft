@@ -27,6 +27,14 @@ $(function() {
 	});
 
 	/*
+	* Selected Comment
+	*/
+
+	setTimeout(function() {
+		$('#statuses .status-item > .status-comments .comment-item.selected').delay(2000).css('background', 'transparent');
+	}, 1000);
+
+	/*
 	* Turkish Character
 	*/
 

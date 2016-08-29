@@ -9,7 +9,7 @@
 			</a>
 			<ul class="status-meta clearfix">
 				<li>
-					<a href="#">{{ $status->created_at->diffForHumans() }}</a>
+					<a href="{{ route('status', ['id' => $status->id]) }}">{{ $status->created_at->diffForHumans() }}</a>
 				</li>
 			</ul>
 		</div>
@@ -41,9 +41,9 @@
 			</li>
 		</ul>
 	</div>
-	@include($template . '.partials.status.post_comment')
+	@include($template . '.partials.status.post_comment', ['open' => $open ?? false])
 
-	<div class="status-comments">
+	<div class="status-comments"{!! isset($open) && $open ? ' style="display: block;"' : '' !!}>
 		@foreach ( $status->comments()->get() as $comment )
 			@include($template . '.partials.status.comment')
 		@endforeach

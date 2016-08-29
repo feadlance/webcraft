@@ -4,6 +4,7 @@ namespace Webcraft\Notifications;
 
 use Webcraft\Models\User;
 use Webcraft\Models\Status;
+use Webcraft\Models\Comment;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -19,10 +20,11 @@ class CommentStatus extends Notification
      *
      * @return void
      */
-    public function __construct(User $user, Status $status)
+    public function __construct(User $user, Status $status, Comment $comment)
     {
         $this->user = $user;
         $this->status = $status;
+        $this->comment = $comment;
     }
 
     /**
@@ -46,7 +48,8 @@ class CommentStatus extends Notification
     {
         return [
             'user_id' => $this->user->id,
-            'status_id' => $this->status->id
+            'status_id' => $this->status->id,
+            'comment_id' => $this->comment->id
         ];
     }
 }

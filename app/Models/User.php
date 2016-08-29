@@ -129,7 +129,9 @@ class User extends Authenticatable
 
 	public function getProfileStatuses()
 	{
-	    return Status::where('wall_id', $this->id);
+	    return Status::where(function($query) {
+	    	return $query->where('wall_id', $this->id)->orWhere('wall_id', 0);
+	    })->orWhere('user_id', $this->id);
 	}
 
 	public function getHomeStatuses()

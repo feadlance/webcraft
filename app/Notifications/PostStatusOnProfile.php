@@ -3,6 +3,7 @@
 namespace Webcraft\Notifications;
 
 use Webcraft\Models\User;
+use Webcraft\Models\Status;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -18,9 +19,10 @@ class PostStatusOnProfile extends Notification
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, Status $status)
     {
         $this->user = $user;
+        $this->status = $status;
     }
 
     /**
@@ -43,7 +45,8 @@ class PostStatusOnProfile extends Notification
     public function toArray($notifiable)
     {
         return [
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'status_id' => $this->status->id
         ];
     }
 }

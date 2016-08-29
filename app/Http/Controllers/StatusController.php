@@ -16,6 +16,18 @@ use Illuminate\Http\Request;
 
 class StatusController extends Controller
 {
+	public function getStatus($id)
+	{
+		$status = Status::find($id);
+
+		if ( $status === null ) {
+			return abort(404);
+		}
+
+		return view(app('template') . '.status.one')
+			->with('status', $status);
+	}
+
 	public function postStatus(Request $request)
 	{
 		$validator = Validator::make($request->all(), [
@@ -49,7 +61,7 @@ class StatusController extends Controller
 		]);
 
 		if ( $wall !== null ) {
-			$wall->notify(new PostStatusOnProfile(Auth::user()));
+			$wall->notify(new PostStatusOnProfile(Auth::user(), $status));
 		}
 
 		return Response::json([

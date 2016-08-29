@@ -96,9 +96,15 @@ Route::get('/oyuncu/{player}/olum-detaylari', [
 * Account
 */
 
+Route::get('/hesap', [
+  'uses' => '\Webcraft\Http\Controllers\AccountController@getAccount',
+  'as' => 'account',
+  'middleware' => ['auth']
+]);
+
 Route::get('/hesap/bildirimler', [
-  'uses' => '\Webcraft\Http\Controllers\ProfileController@getNotifications',
-  'as' => 'profile.notifications',
+  'uses' => '\Webcraft\Http\Controllers\AccountController@getNotifications',
+  'as' => 'account.notifications',
   'middleware' => ['auth']
 ]);
 
@@ -227,6 +233,12 @@ Route::get('/hit/en-iyiler', [
 * Statuses
 */
 
+Route::get('/status/{id}', [
+  'uses' => '\Webcraft\Http\Controllers\StatusController@getStatus',
+  'as' => 'status',
+  'middleware' => ['auth']
+]);
+
 Route::post('/status', [
   'uses' => '\Webcraft\Http\Controllers\StatusController@postStatus',
   'as' => 'status.post',
@@ -244,8 +256,6 @@ Route::post('/status/like', [
   'as' => 'status.like',
   'middleware' => ['auth']
 ]);
-
-
 
 /*
 * Comments

@@ -70,8 +70,8 @@
 			<li{!! Request::route()->getName() == 'market' ? ' class="active"' : '' !!}>
 				<a href="#">Market</a>
 			</li>
-			<li{!! Request::route()->getName() == 'profile' ? ' class="active"' : '' !!}>
-				<a href="{{ route('profile', ['player' => Auth::user()->username]) }}">Profilim</a>
+			<li{!! Request::route()->getName() == 'account' ? ' class="active"' : '' !!}>
+				<a href="{{ route('account') }}">Profilim</a>
 			</li>
 			<li{!! Request::route()->getName() == 'users' ? ' class="active"' : '' !!}>
 				<a href="{{ route('users') }}">Oyuncular</a>

@@ -1,4 +1,4 @@
-<div class="status-post-comment clearfix">
+<div class="status-post-comment clearfix"{!! !isset($type) && $open ? ' style="display: block;"' : '' !!}>
 	<div class="avatar">
 		<img src="{{ Auth::user()->getAvatar(isset($type) ? 35 : 40) }}" alt="User Avatar">
 	</div>

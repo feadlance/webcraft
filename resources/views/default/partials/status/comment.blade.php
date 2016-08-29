@@ -1,4 +1,4 @@
-<div class="comment-item">
+<div class="comment-item{{ request('comment') == $comment->id ? ' selected' : '' }}">
 	<div class="avatar">
 		<img src="{{ $comment->user()->getAvatar(isset($sub) ? 35 : 40) }}" alt="User Avatar">
 	</div>

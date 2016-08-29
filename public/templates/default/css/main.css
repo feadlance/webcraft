@@ -399,6 +399,11 @@ header .pull-right > .header-item #mobileMenu {
 	margin-bottom: 5px;
 }
 
+#statuses .status-item > .status-comments .comment-item.selected {
+	background: #ffed98;
+	transition: background 500ms;
+}
+
 #statuses .status-item > .status-comments .comment-item .avatar {
 	float: left;
 }
@@ -475,6 +480,15 @@ header .pull-right > .header-item #mobileMenu {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
+}
+
+.list-group-user.notification .list-group-user-item {
+	padding: 5px;
+	
+}
+
+.list-group-user.notification .list-group-user-item.not_read {
+	background: #e5e5e5;
 }
 
 .list-group-user-item {
