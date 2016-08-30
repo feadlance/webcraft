@@ -5,7 +5,10 @@
 @section('container')
 	<div class="col-lg-8 offset-lg-2">
 		<div class="card">
-			<div class="card-header">Oyuncular</div>
+			<div class="card-header">
+				Oyuncular
+				<small class="text-muted">{{ $users->count() }}</small>
+			</div>
 			<div class="card-block">
 				@if ( $users->count() )
 					<ul class="list-group-user">

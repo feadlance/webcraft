@@ -45,7 +45,7 @@ class Player extends Model
 		$kills = $this->belongsTo('Webcraft\Models\Stats3\\' . $table, 'uuid', 'uuid');
 
 		if ( $type === 'ALL' ) {
-			return $sum === true ? $kills->sum('value') : $kills;
+			return $sum === true ? $kills->sum('value') ?: 0 : $kills;
 		}
 
 		if ( Config::has('minecraft.mobs.' . $type) ) {
@@ -54,7 +54,7 @@ class Player extends Model
 			$kills = $kills->where($column, $type);
 		}
 
-		return $sum === true ? $kills->sum('value') : $kills;
+		return $sum === true ? $kills->sum('value') ?: 0 : $kills;
 	}
 
 	public function playerDeaths($type, $sum = false)
@@ -69,12 +69,12 @@ class Player extends Model
 
 	public function playTime()
 	{
-		return $this->belongsTo('Webcraft\Models\Stats3\Playtime', 'uuid', 'uuid')->first()->value ?: null;
+		return $this->belongsTo('Webcraft\Models\Stats3\Playtime', 'uuid', 'uuid')->first()->value ?: 0;
 	}
 
 	public function totalJoin()
 	{
-		return $this->belongsTo('Webcraft\Models\Stats3\Join', 'uuid', 'uuid')->first()->value ?: null;
+		return $this->belongsTo('Webcraft\Models\Stats3\Join', 'uuid', 'uuid')->first()->value ?: 0;
 	}
 
 	public function lastLogin()

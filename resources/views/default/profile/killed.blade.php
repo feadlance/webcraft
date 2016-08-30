@@ -11,7 +11,7 @@
 	<h3 class="m-b-1">{{ TurkishGrammar::get($user->getDisplayName(), 'iyelik') }} öldürdükleri</h3>
 
 	<div class="row">
-		@if ( !$killed_users->count() && !$killed_monsters->count() && !$killed_animals->count() )
+		@if ( !$user->game()->playerKills('PLAYER', true) && !$killed_monsters->count() && !$killed_animals->count() )
 			<div class="col-lg-12">
 				<div class="card">
 					<div class="card-block">
@@ -23,7 +23,7 @@
 			</div>
 		@endif
 
-		@if ( $killed_users->count() )
+		@if ( $user->game()->playerKills('PLAYER', true) )
 			<div class="col-lg-4">
 				<div class="card">
 					<div class="card-header">
@@ -33,25 +33,21 @@
 					<div class="card-block">
 						<ul class="list-group-user">
 							@foreach ( $killed_users as $killed_user )
-								@if ( $killed_user->victim() )
-									<li class="list-group-user-item clearfix">
-										<div class="avatar">
-											<img src="{{ $killed_user->victim()->getAvatar(40) }}" alt="User Avatar">
+								<li class="list-group-user-item clearfix">
+									<div class="avatar">
+										<img src="{{ $killed_user->victim()->getAvatar(40) }}" alt="User Avatar">
+									</div>
+									<div class="content">
+										<div class="title">
+											<a href="{{ route('profile', ['player' => $killed_user->victim()->username]) }}">
+												<strong>{{ $killed_user->victim()->getDisplayName() }}</strong>
+											</a>
 										</div>
-										<div class="content">
-											<div class="title">
-												<a href="{{ route('profile', ['player' => $killed_user->victim()->username]) }}">
-													<strong>{{ $killed_user->victim()->getDisplayName() }}</strong>
-												</a>
-											</div>
-											<div class="body">
-												{{ $killed_user->total }} kez
-											</div>
+										<div class="body">
+											{{ $killed_user->total }} kez
 										</div>
-									</li>
-								@else
-									<p class="text-muted m-b-0">Öldürdüğün oyuncuların kaydı silinmiş.</p>
-								@endif
+									</div>
+								</li>
 							@endforeach
 						</ul>
 					</div>

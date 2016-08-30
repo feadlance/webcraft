@@ -46,6 +46,25 @@ nav > .widget {
     border-bottom: 1px solid #ddd;
 }
 
+nav > .widget .user-card .card-block {
+	text-align: center;
+	padding: 10px;
+}
+
+nav > .widget .user-card .avatar {
+	margin-bottom: 5px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid rgba(0, 0, 0, .10);
+}
+
+nav > .widget .user-card .line {
+	display: block;
+}
+
+nav > .widget .user-card .card-block.footer {
+	border-top: 1px solid rgba(0, 0, 0, .10);
+}
+
 .navigation-menu {
     list-style-type: none;
     margin: 0;
