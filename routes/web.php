@@ -165,11 +165,11 @@ Route::get('/odeme/basarisiz', [
 * Market
 */
 
-/*Route::get('/market', [
+Route::get('/market', [
   'uses' => '\Webcraft\Http\Controllers\MarketController@getIndex',
   'as' => 'market',
   'middleware' => ['auth']
-]);*/
+]);
 
 /*
 * Upgrade Account

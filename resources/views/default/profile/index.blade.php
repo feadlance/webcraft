@@ -2,9 +2,9 @@
 
 @section('title', $user->getDisplayName())
 
-@section('breadcrumb')
-	<li class="breadcrumb-item"><a href="{{ route('users') }}">Oyuncular</a></li>
-@stop
+@section('breadcrumb', [
+	[route('users'), 'Oyuncular']
+])
 
 @section('container')
 	<div class="row">
@@ -99,7 +99,7 @@
 						<div class="stats-inline clearfix">
 							<div class="stats-section">
 								<span>Oyun Parası</span>
-								{{ $user->getBalance(true) }}
+								{{ $user->game()->balance(true) }}
 							</div>
 							<div class="stats-section">
 								<span>Oynama Süresi</span>

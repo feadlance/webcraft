@@ -2,9 +2,9 @@
 
 @section('title', 'Bildirimler')
 
-@section('breadcrumb')
-	<li class="breadcrumb-item"><a href="{{ route('profile', ['player' => Auth::user()->username]) }}">Hesap</a></li>
-@stop
+@section('breadcrumb', [
+	[route('account'), 'Hesap']
+])
 
 @section('container')	
 	<div class="row">

@@ -2,10 +2,10 @@
 
 @section('title', 'Ölüm Detayları')
 
-@section('breadcrumb')
-	<li class="breadcrumb-item"><a href="{{ route('users') }}">Oyuncular</a></li>
-	<li class="breadcrumb-item"><a href="{{ route('profile', ['player' => $user->username]) }}">{{ $user->getDisplayName() }}</a></li>
-@stop
+@section('breadcrumb', [
+	[route('users'), 'Oyuncular'],
+	[route('profile', ['player' => $user->username]), $user->getDisplayName()]
+])
 
 @section('container')
 	<h3 class="m-b-1">{{ TurkishGrammar::get($user->getDisplayName(), 'i') }} öldürenler</h3>

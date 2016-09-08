@@ -19,7 +19,13 @@
 	<div class="bottom">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="/">{{ MinecraftServer::name() }}</a></li>
-			@yield('breadcrumb')
+			@if ( is_array($__env->yieldContent('breadcrumb')) )
+				@foreach ( $__env->yieldContent('breadcrumb') as $value )
+					@if ( isset($value[0]) && isset($value[1]) )
+						<li class="breadcrumb-item"><a href="{{ $value[0] }}">{{ $value[1] }}</a></li>
+					@endif
+				@endforeach
+			@endif
 			<li class="breadcrumb-item active">@yield('title', 'Anasayfa')</li>
 		</ol>
 	</div>

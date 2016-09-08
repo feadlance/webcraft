@@ -92,7 +92,7 @@ class User extends Authenticatable
 
 	public function giveMoney($money)
 	{
-	    return $this->update([
+	    return $this->update([ 
 	        'money' => $this->money + $money
 	    ]);
 	}
@@ -168,39 +168,6 @@ class User extends Authenticatable
 	public function game()
 	{
 		return $this->belongsTo('Webcraft\Models\Stats3\Player', 'username', 'name')->first();
-	}
-
-	public function getBalance($format = false)
-	{
-		$balance = $this->belongsTo('Webcraft\Models\Iconomy', 'username', 'username')->first();
-		
-		if ( $balance === null ) {
-			$balance = 0;
-		} else {
-			$balance = $balance->balance;
-		}
-
-		return $format === true ? number_format($balance, 2) : $balance;
-	}
-
-	public function giveBalance($ws, $balance)
-	{
-		return $ws->console('money give ' . $this->username . ' ' . $balance);
-	}
-
-	public function takeBalance($ws, $balance)
-	{
-		return $ws->console('money take ' . $this->username . ' ' . $balance);
-	}
-
-	public function giveItem($ws, $item, $piece)
-	{
-		return $ws->console('give ' . $this->username . ' ' . $item . ' ' . $piece);
-	}
-
-	public function setGroup($ws, $group)
-	{
-		return $ws->console('pex user ' . $this->username . ' group set ' . $group);
 	}
 
 	/*

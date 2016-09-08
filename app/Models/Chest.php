@@ -9,13 +9,16 @@ class Chest extends Model
 	protected $table = 'chests';
 
 	protected $fillable = [
-		'uuid',
+		'username',
 		'number',
-		'inventory'
+		'inventory',
+		'opened'
 	];
+
+	public $timestamps = false;
 
 	public function user()
 	{
-		return $this->belongsTo('Webcraft\Models\User', 'uuid', 'username')->first();
+		return $this->belongsTo('Webcraft\Models\User', 'username')->first();
 	}
 }

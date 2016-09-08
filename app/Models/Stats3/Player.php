@@ -84,6 +84,25 @@ class Player extends Model
 
 	public function online()
 	{
+		if ( $this->getUser() === null ) {
+			return 0;
+		}
+		
 		return $this->getUser()->isLogged === 1;
+	}
+
+	public function balance($format = false)
+	{
+		$user = $this->getUser();
+
+		if ( $user === null ) {
+			return $format ? 0.00 : 0;
+		}
+
+		$balance = $this->getUser()->belongsTo('Webcraft\Models\Iconomy', 'username', 'username')->first();
+
+		$balance = $balance !== null ? $balance->balance : 0;
+
+		return $format === true ? number_format($balance, 2) : $balance;
 	}
 }

@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('SERVER_TITLE', 'My Application'),
+    'name' => env('APP_NAME', 'WebCraft'),
 
     /*
     |--------------------------------------------------------------------------
