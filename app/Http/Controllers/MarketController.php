@@ -2,15 +2,17 @@
 
 namespace Webcraft\Http\Controllers;
 
+use DB;
+use Webcraft\Models\Community_Market;
 use Illuminate\Http\Request;
-use Webcraft\Helpers\Minecraft\Materials\Material;
 
 class MarketController extends Controller
 {
 	public function getIndex()
 	{
-		dd(Material::find('WOOD', 3));
-		dd();
-		return view(app('template') . '.market.index');
+		$materials = Community_Market::groupBy('item')->get();
+
+		return view(app('template') . '.market.community.index')
+			->with('materials', $materials);
 	}
 }

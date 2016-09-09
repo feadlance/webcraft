@@ -29,45 +29,41 @@ class Material
 		return json_decode($materials_json);
 	}
 
-	public static function find($material, $meta = 0)
+	public static function find($material, $meta = 0, $split = ':')
 	{
 		$material_format = strtolower($material);
+		$meta = (int) $meta;
 
 		$material = array_where(self::get(), function ($value, $key) use ($material_format, $meta) {
-			return $value->text_type === $material_format && $value->meta === $meta;
+			if ( is_numeric($material_format) ) {
+				$material_format = (int) $material_format;
+			}
+
+			return ($value->text_type === $material_format || $value->type === $material_format) && $value->meta === $meta;
 		});
 
 		foreach ( $material as $key => $value ) {
-			$value->code = $value->meta !== 0 ? $value->type . ':' . $value->meta : $value->type;
+			$value->code = $value->meta !== 0 ? $value->type . $split . $value->meta : $value->type;
 		}
 
-		if ( isset($value) !== true ) {
-			$material_format = str_replace(['_', ' '], null, $material_format);
+		if ( isset($value) === true ) {
+			return $value;
+		}
+
+		$material_format = str_replace(['_', ' '], null, $material_format);
 			
-			foreach (self::get('txt') as $key => $value) {
-				if ( $value['name'] === $material_format ) {
-					$stdClass = new stdClass;
-					$stdClass->type = $value['item'];
-					$stdClass->meta = $value['meta'];
-					$stdClass->name = null;
-					$stdClass->text_type = $material_format;
-					$stdClass->code = $value['meta'] != 0 ? $value['item'] . ':' . $value['meta'] : $value['item'];
-					$value = $stdClass;
-					break;
-				}
-			}
-		}
-
-		$material_name_format = strtolower($value->name);
-		$material_name_format = str_replace(['_', ' '], null, $material_name_format);
-
-		$material_type_format = strtolower($value->text_type);
-		$material_type_format = str_replace(['_', ' '], null, $material_type_format);
-
 		foreach (self::get('txt') as $key => $value) {
-			if ( $value['meta'] == $meta && ($value['name'] === $material_type_format || $value['name'] === $material_name_format) ) {
-				return $value;
+			if ( $value['name'] === $material_format ) {
+				$stdClass = new stdClass;
+				$stdClass->type = (int) $value['item'];
+				$stdClass->meta = (int) $meta;
+				$stdClass->name = self::find($value['item'], $meta)->name;
+				$stdClass->text_type = $material_format;
+				$stdClass->code = $meta != 0 ? $value['item'] . $split . $meta : (int) $value['item'];
+				break;
 			}
 		}
+
+		return isset($stdClass) ? $stdClass : null;
 	}
 }

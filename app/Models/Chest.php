@@ -19,6 +19,6 @@ class Chest extends Model
 
 	public function user()
 	{
-		return $this->belongsTo('Webcraft\Models\User', 'username')->first();
+		return $this->belongsTo('Webcraft\Models\User', 'username', 'username')->first();
 	}
 }

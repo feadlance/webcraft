@@ -17,6 +17,7 @@ class CreateCommunityMarketTable extends Migration
             $table->increments('id');
             $table->string('username');
             $table->string('item', 10);
+            $table->float('price');
             $table->integer('piece');
             $table->integer('durability')->default(0);
             $table->text('skills')->nullable();

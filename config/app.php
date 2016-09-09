@@ -235,6 +235,7 @@ return [
         'MinecraftServer' => Webcraft\Helpers\Minecraft\Server::class,
         'MinecraftQuery' => Webcraft\Helpers\Minecraft\Query::class,
         'MinecraftRcon' => Webcraft\Helpers\Minecraft\Rcon::class,
+        'MinecraftMaterial' => Webcraft\Helpers\Minecraft\Materials\Material::class,
 
     ],
 
