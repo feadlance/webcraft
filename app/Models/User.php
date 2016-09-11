@@ -170,6 +170,11 @@ class User extends Authenticatable
 		return $this->belongsTo('Webcraft\Models\Stats3\Player', 'username', 'name')->first();
 	}
 
+	public function chests()
+	{
+		return $this->hasMany('Webcraft\Models\Chest', 'username', 'username');
+	}
+
 	/*
 	* Friends
 	*/

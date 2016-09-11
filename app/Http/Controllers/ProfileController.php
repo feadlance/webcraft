@@ -99,7 +99,10 @@ class ProfileController extends Controller
 			return abort(404);
 		}
 
+		$inventories = $user->chests()->orderBy('number', 'asc')->get();
+
 		return view(app('template') . '.profile.chest')
-			->with('user', $user);
+			->with('user', $user)
+			->with('inventories', $inventories);
 	}
 }
