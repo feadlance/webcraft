@@ -1,0 +1,13 @@
+/*
+* Player Inventory
+*/
+
+.player-inventory .inv-row {
+	width: 648px;
+}
+
+.player-inventory .inv-block {
+	background: url('../images/minecraft/inv-block.png') no-repeat;
+	padding: 36px;
+	float: left;
+}

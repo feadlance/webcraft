@@ -15,6 +15,7 @@
 		<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/font-awesome/css/font-awesome.min.css">
 
 		<!-- css -->
+		<link rel="stylesheet" type="text/css" href="global/css/app.css">
 		<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/css/main.css">
 

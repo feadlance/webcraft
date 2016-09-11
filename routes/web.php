@@ -92,6 +92,12 @@ Route::get('/oyuncu/{player}/olum-detaylari', [
   'middleware' => ['auth']
 ]);
 
+Route::get('/oyuncu/{player}/chest', [
+  'uses' => '\Webcraft\Http\Controllers\ProfileController@getChest',
+  'as' => 'profile.chest',
+  'middleware' => ['auth']
+]);
+
 /*
 * Account
 */
