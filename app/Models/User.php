@@ -68,12 +68,12 @@ class User extends Authenticatable
 
 	public function getAvatar($size = 60)
 	{
-		return 'https://minotar.net/avatar/' . $this->username . '/' . $size;
+		return 'http://mcapi.ca/avatar/2d/' . $this->username . '/' . $size . '/true';
 	}
 
 	public function getSkin($size = 100)
 	{
-		return 'https://minotar.net/body/' . $this->username . '/' . $size;
+		return 'https://mcapi.ca/skin/2d/' . $this->username . '/' . $size . '/true';
 	}
 
 	public function getSex()
