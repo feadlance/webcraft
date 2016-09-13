@@ -175,6 +175,11 @@ class User extends Authenticatable
 		return $this->hasMany('Webcraft\Models\Chest', 'username', 'username');
 	}
 
+	public function market()
+	{
+		return $this->hasMany('Webcraft\Models\Community_Market', 'user_id');
+	}
+
 	/*
 	* Friends
 	*/

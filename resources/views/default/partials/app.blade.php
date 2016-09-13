@@ -8,9 +8,6 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<!-- sweetalert -->
-		<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/sweetalert/sweetalert.css">
-
 		<!-- font awesome -->
 		<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/font-awesome/css/font-awesome.min.css">
 

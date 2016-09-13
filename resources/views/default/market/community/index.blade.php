@@ -14,10 +14,10 @@
 									<img width="50" src="{{ $material->icon() }}" alt="Material Icon">
 								</div>
 								<h4 class="card-title">{{ $material->material()->name or $material->material()->text_type }}</h4>
-								<h6 class="card-subtitle text-muted">Bu ürün için <strong>{{ Webcraft\Models\Community_Market::where('item', $material->item)->count() }}</strong> satış mevcut.</h6>
+								<h6 class="card-subtitle text-muted">Bu ürün için <strong>{{ Webcraft\Models\Community_Market::where('type', $material->type)->where('meta', $material->meta)->count() }}</strong> satış mevcut.</h6>
 							</div>
 							<ul class="list-group list-group-flush">
-								@foreach ( Webcraft\Models\Community_Market::where('item', $material->item)->orderBy('price', 'asc')->get() as $children )
+								@foreach ( Webcraft\Models\Community_Market::where('type', $material->type)->where('meta', $material->meta)->orderBy('price', 'asc')->get() as $children )
 									<li class="list-group-item clearfix">
 										<div class="pull-left">
 											{{ $children->piece }} adet, <span data-toggle="tooltip" title="Oyun Parası">{{ $children->price(true) }} Kredi</span>

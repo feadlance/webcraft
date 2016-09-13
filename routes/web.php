@@ -98,6 +98,18 @@ Route::get('/oyuncu/{player}/chest', [
   'middleware' => ['auth']
 ]);
 
+Route::post('/oyuncu/{player}/chest/sell', [
+  'uses' => '\Webcraft\Http\Controllers\ChestController@postSellItem',
+  'as' => 'profile.chest.sell',
+  'middleware' => ['auth']
+]);
+
+Route::post('/oyuncu/{player}/chest/sell_modal', [
+  'uses' => '\Webcraft\Http\Controllers\ChestController@postSellItemModal',
+  'as' => 'profile.chest.sell_modal',
+  'middleware' => ['auth']
+]);
+
 /*
 * Account
 */

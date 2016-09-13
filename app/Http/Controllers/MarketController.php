@@ -10,7 +10,7 @@ class MarketController extends Controller
 {
 	public function getIndex()
 	{
-		$materials = Community_Market::groupBy('item')->get();
+		$materials = Community_Market::groupBy('type', 'meta')->get();
 
 		return view(app('template') . '.market.community.index')
 			->with('materials', $materials);

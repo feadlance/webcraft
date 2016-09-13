@@ -1,5 +1,9 @@
 @extends($template . '.partials.app')
 
+@section('header')
+	<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/sweetalert/sweetalert.css">
+@stop
+
 @section('container')
 	<div class="row">
 		@if ( $online_users->count() || $top5_users->count() )

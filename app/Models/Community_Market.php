@@ -10,12 +10,17 @@ class Community_Market extends Model
 	protected $table = 'community_market';
 
 	protected $fillable = [
-		'username',
-		'item',
 		'price',
 		'piece',
+		'type',
+		'meta',
 		'durability',
-		'skills',
+		'max_durability',
+		'skills'
+	];
+
+	protected $casts = [
+		'skills' => 'array'
 	];
 
 	public function user()
@@ -25,17 +30,12 @@ class Community_Market extends Model
 
 	public function material()
 	{
-		$explode = explode(':', $this->item);
-
-		$item = $explode[0];
-		$meta = isset($explode[1]) ? $explode[1] : 0;
-
-		return MinecraftMaterial::find($item, $meta);
+		return MinecraftMaterial::find($this->type, $this->meta);
 	}
 
 	public function icon()
 	{
-		return 'global/images/minecraft/items/' . str_replace(':', '-', $this->item) . '.png';
+		return 'global/images/minecraft/items/' . $this->type . '-' . $this->meta . '.png';
 	}
 
 	public function price($total = false, $format = true)

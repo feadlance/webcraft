@@ -2,6 +2,10 @@
 
 @section('title', $user->getDisplayName())
 
+@section('header')
+	<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/sweetalert/sweetalert.css">
+@stop
+
 @section('breadcrumb', [
 	[route('users'), 'Oyuncular']
 ])

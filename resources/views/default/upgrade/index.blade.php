@@ -2,6 +2,10 @@
 
 @section('title', 'Hesabımı Yükselt')
 
+@section('header')
+	<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/sweetalert/sweetalert.css">
+@stop
+
 @section('container')
 	@if ( Auth::user()->isAdmin() )
 		<form id="newGroupModal" class="modal fade">

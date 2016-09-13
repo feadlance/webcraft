@@ -15,12 +15,13 @@ class CreateCommunityMarketTable extends Migration
     {
         Schema::create('community_market', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username');
-            $table->string('item', 10);
-            $table->string('name');
+            $table->integer('user_id');
             $table->float('price');
             $table->integer('piece');
-            $table->integer('durability')->default(0);
+            $table->integer('type');
+            $table->integer('meta');
+            $table->integer('durability');
+            $table->integer('max_durability');
             $table->text('skills')->nullable();
             $table->timestamps();
         });

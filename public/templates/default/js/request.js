@@ -481,3 +481,81 @@ var addGroupFeature = function(that, id) {
 
 	return false;
 };
+
+$('#itemModal').on('show.bs.modal', function (event) {
+	var button = $(event.relatedTarget);
+	var that = this;
+
+	$(this).find('#item_piece').removeAttr('readonly').val('');
+	
+	$.ajax({
+		type: 'POST',
+		url: url + '/oyuncu/' + player + '/chest/sell_modal',
+		data: {
+			item: button.data('item'),
+			number: button.data('number'),
+			_token: token
+		},
+		success: function(respond) {
+			if ( respond.error ) {
+				$(that).find('.modal-body').text(respond.error);
+			} else {
+				$(that).find('#item_order').attr('value', button.data('item'));
+				$(that).find('#chest_number').attr('value', button.data('number'));
+
+				if ( respond.chest.inventory[button.data('item')][4] == 1 ) {
+					$(that).find('#item_piece').attr('readonly', 'true').val(1);
+				}
+			}
+		}
+	});
+});
+
+var sellInventoryItem = function (that) {
+
+	var order = $(that).find('#item_order').val();
+	var number = $(that).find('#chest_number').val();
+	var price = $(that).find('#item_price').val();
+	var piece = $(that).find('#item_piece').val();
+
+	$.ajax({
+		type: 'POST',
+		url: url + '/oyuncu/' + player + '/chest/sell',
+		data: {
+			order: order,
+			number: number,
+			price: price,
+			piece: piece,
+			_token: token
+		},
+		success: function(respond) {
+			if ( respond.error ) {
+				swal("Hata!", respond.error, "error");
+			} else if (respond.validations) {
+				if ( respond.validations.piece ) {
+					swal("Hata!", respond.validations.piece, "error");
+				} else if ( respond.validations.price ) {
+					swal("Hata!", respond.validations.price, "error");
+				}
+			} else {
+				if ( respond.chest.inventory[order] ) {
+					$('#inv_item_' + number + '_' + order + ' .inv-piece').text(respond.chest.inventory[order][4]);
+				} else {
+					$('#inv_item_' + number + '_' + order + ' img').attr('src', 'global/images/minecraft/items/0-0.png');
+					$('#inv_item_' + number + '_' + order + ' .inv-piece').text('');
+				}
+
+				swal('Tamamdır!', 'Ürünün artık topluluk pazarında!');
+				
+				$('#itemModal').modal('hide');
+				$(that).find('input').val('');
+			}
+		},
+		error: function(r){
+			$('html').html(r.responseText);
+		}
+	});
+
+	return false;
+
+};

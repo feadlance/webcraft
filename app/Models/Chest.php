@@ -17,7 +17,8 @@ class Chest extends Model
 	];
 
 	protected $casts = [
-		'inventory' => 'array'
+		'inventory' => 'array',
+		'opened' => 'boolean'
 	];
 
 	public $timestamps = false;
@@ -27,15 +28,28 @@ class Chest extends Model
 		return $this->belongsTo('Webcraft\Models\User', 'username', 'username')->first();
 	}
 
+	public function material($i)
+	{
+		return MinecraftMaterial::find($this->inventory[$i][1], $this->inventory[$i][2]);
+	}
+
 	public function name($i)
 	{
-		return MinecraftMaterial::find($this->inventory[$i][0])->name;
+		return $this->material($i) ? $this->material($i)->name : null;
+	}
+
+	public function displayName($i)
+	{
+		return $this->inventory[$i][3];
+	}
+
+	public function nameOrDisplayName($i)
+	{
+		return $this->displayName($i) ?: $this->name($i); 
 	}
 
 	public function icon($i)
 	{
-		$material = MinecraftMaterial::find($this->inventory[$i][0]);
-
-		return 'global/images/minecraft/items/' . $material->type . '-' . $material->meta . '.png';
+		return 'global/images/minecraft/items/' . $this->inventory[$i][1] . '-' . $this->inventory[$i][2] . '.png';
 	}
 }
