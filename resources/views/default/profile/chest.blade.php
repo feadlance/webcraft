@@ -49,12 +49,12 @@
 						<div class="player-inventory">
 							<div class="inv-row clearfix">
 								@for ($i = 0; $i < 36; $i++)
-									<div class="inv-block">
+									<div class="inv-block"{!! isset($inventory->inventory[$i][7]) && count($inventory->inventory[$i][7]) ? ' style="background-image: url(\'global/images/minecraft/inv-block-ench.png\')"' : '' !!}>
 										@if ( array_key_exists($i, $inventory->inventory) )
 											@if ( Auth::id() === $user->id )
 												<a id="inv_item_{{ $inventory->number }}_{{ $i }}" href="#" data-toggle="modal" data-target="#itemModal" data-number="{{ $inventory->number }}" data-item="{{ $i }}">
 											@endif
-												<img data-toggle="tooltip" title="{{ $inventory->nameOrDisplayName($i) }}" src="{{ $inventory->icon($i) }}" alt="Inventory Block">
+												<img data-toggle="tooltip" data-html="true" title="{{ $inventory->tooltipTitle($i) }}" src="{{ $inventory->icon($i) }}" alt="Inventory Block">
 												<span class="inv-piece">{{ $inventory->inventory[$i][4] }}</span>
 											@if ( Auth::id() === $user->id )
 												</a>

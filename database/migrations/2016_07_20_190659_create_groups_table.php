@@ -16,7 +16,7 @@ class CreateGroupsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('group');
-            $table->float('money');
+            $table->decimal('money', 8, 4);
             $table->timestamps();
         });
     }

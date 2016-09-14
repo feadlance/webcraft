@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('username')->unique();
             $table->string('password');
-            $table->float('money');
+            $table->decimal('money', 8, 4);
             $table->string('ip', 40);
             $table->bigInteger('lastlogin');
             $table->double('x');

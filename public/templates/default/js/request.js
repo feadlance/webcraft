@@ -541,8 +541,7 @@ var sellInventoryItem = function (that) {
 				if ( respond.chest.inventory[order] ) {
 					$('#inv_item_' + number + '_' + order + ' .inv-piece').text(respond.chest.inventory[order][4]);
 				} else {
-					$('#inv_item_' + number + '_' + order + ' img').attr('src', 'global/images/minecraft/items/0-0.png');
-					$('#inv_item_' + number + '_' + order + ' .inv-piece').text('');
+					$('#inv_item_' + number + '_' + order).parent().html('<img src="global/images/minecraft/items/0-0.png" alt="Inventory Block">').removeAttr('style');
 				}
 
 				swal('Tamamdır!', 'Ürünün artık topluluk pazarında!');
@@ -550,9 +549,6 @@ var sellInventoryItem = function (that) {
 				$('#itemModal').modal('hide');
 				$(that).find('input').val('');
 			}
-		},
-		error: function(r){
-			$('html').html(r.responseText);
 		}
 	});
 

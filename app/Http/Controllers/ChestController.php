@@ -55,7 +55,7 @@ class ChestController extends Controller
 			$updateInventory[$order][4] = $inventory[4] - $piece;
 		}
 
-		$chest->inventory = $updateInventory;
+		$chest->inventory = json_encode((object) $updateInventory);
 
 		if ( empty(count($chest->inventory)) === true ) {
 			$chest->delete();
@@ -63,7 +63,7 @@ class ChestController extends Controller
 			$chest->save();
 		}
 
-		Auth::user()->market()->insert([
+		Auth::user()->market()->create([
 			'price' => $price / $piece,
 			'piece' => $piece,
 			'type' => $inventory[1],

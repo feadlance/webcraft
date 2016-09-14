@@ -71,7 +71,7 @@
 									</div>
 									<div class="content">
 										<div class="title">
-											<strong>@lang('minecraft.' . $from_monster->cause)</strong>
+											<strong>@lang('minecraft.monsters.' . $from_monster->cause)</strong>
 										</div>
 										<div class="body">
 											{{ $from_monster->value }} kez
@@ -102,7 +102,7 @@
 									</div>
 									<div class="content">
 										<div class="title">
-											<strong>@lang('minecraft.' . $from_other->cause)</strong>
+											<strong>@lang('minecraft.others.' . $from_other->cause)</strong>
 										</div>
 										<div class="body">
 											{{ $from_other->value }} kez

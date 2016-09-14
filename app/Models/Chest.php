@@ -4,6 +4,7 @@ namespace Webcraft\Models;
 
 use MinecraftMaterial;
 use Illuminate\Database\Eloquent\Model;
+use Webcraft\Helpers\Functions\RomanNumerals;
 
 class Chest extends Model
 {
@@ -17,11 +18,15 @@ class Chest extends Model
 	];
 
 	protected $casts = [
-		'inventory' => 'array',
 		'opened' => 'boolean'
 	];
 
 	public $timestamps = false;
+
+	public function getInventoryAttribute($value)
+	{
+		return json_decode($value, true);
+	}
 
 	public function user()
 	{
@@ -51,5 +56,20 @@ class Chest extends Model
 	public function icon($i)
 	{
 		return 'global/images/minecraft/items/' . $this->inventory[$i][1] . '-' . $this->inventory[$i][2] . '.png';
+	}
+
+	public function tooltipTitle($i)
+	{
+		$return = $this->nameOrDisplayName($i);
+
+		if ( count($this->inventory[$i][7]) ) {
+			$return .= '<br><br>';
+
+			foreach ( $this->inventory[$i][7] as $enchant ) {
+				$return .= '' . trans('minecraft.materials.enchants.' . $enchant[0]) . ' ' . RomanNumerals::decimalToRoman($enchant[1]) . '<br>';
+			}
+		}
+
+		return $return;
 	}
 }
