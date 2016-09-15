@@ -3,7 +3,6 @@
 namespace Webcraft\Http\Controllers;
 
 use Webcraft\Models\Group;
-use Webcraft\Helpers\Minecraft\Color;
 
 class UpgradeController extends Controller
 {
@@ -12,7 +11,6 @@ class UpgradeController extends Controller
 		$groups = Group::orderBy('money', 'desc')->get();
 
 		return view(app('template') . '.upgrade.index')
-			->with('groups', $groups)
-			->with('color', new Color);
+			->with('groups', $groups);
 	}
 }

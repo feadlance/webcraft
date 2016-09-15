@@ -9,6 +9,7 @@
 @section('container')
 	@if ( Auth::user()->isAdmin() )
 		<form id="newGroupModal" class="modal fade">
+			<input type="hidden" id="group_id">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header text-uppercase">
@@ -20,11 +21,12 @@
 							<span class="form-control-feedback"></span>
 						</div>
 						<div class="form-group">
-							<input type="text" placeholder="Grubun oyundaki adı..." id="group_group" class="form-control">
+							<input type="text" placeholder="Fiyatı (gerçek para)..." id="group_money" class="form-control">
 							<span class="form-control-feedback"></span>
 						</div>
 						<div class="form-group">
-							<input type="text" placeholder="Fiyatı (gerçek para)..." id="group_money" class="form-control">
+							<textarea placeholder="Her satıra bir komut gelecek şekilde, grup satın alındığında oyuncuya gidecek olan komutları yazın." id="group_commands" class="form-control" rows="4"></textarea>
+							<small class="form-text text-muted">(@p = oyuncu adı)</small>
 							<span class="form-control-feedback"></span>
 						</div>
 						<div class="form-group clearfix">
@@ -39,6 +41,31 @@
 		</form>
 	@endif
 
+	<form id="buyGroupModal" class="modal fade">
+		<input type="hidden" id="group_id">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header text-uppercase"></div>
+				<div class="modal-body">
+					<div id="group_modal_features" class="form-group">
+						<label><strong>Özellikler;</strong></label>
+						<ul style="list-style: none; margin: 0; padding: 0 0 0 10px;"></ul>
+					</div>
+					<div id="group_modal_commands" class="form-group">
+						<label><strong>Verilecek Komutlar;</strong></label>
+						<ul style="list-style: none; margin: 0; padding: 0 0 0 10px;"></ul>
+					</div>
+					<hr>
+					<div class="form-group m-b-0">
+						<button class="btn btn-primary d-block w-100" onclick="return buyGroup(this);">
+							<i class="fa fa-shopping-cart"></i>
+							Satın Al
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 
 	<div class="row" style="overflow: hidden; margin-bottom: 10px;">
 		<div class="col-lg-8 offset-lg-2 text-xs-center">
@@ -59,44 +86,7 @@
 			<div id="groupCards">
 				@if ( $groups->count() )
 					@foreach ( $groups as $group )
-						<div class="col-lg-4">
-							<div class="card">
-								<div class="card-block">
-									<h4 class="card-title">{{ $group->title }}</h4>
-									<p class="card-text">{{ TurkishGrammar::get($group->title, 'iyelik') }} fiyatı {{ $group->getMoney() }} Türk Lirası'dır.</p>
-								</div>
-								<ul class="list-group list-group-flush">
-									@foreach ( $group->getFeatures()->get() as $feature )
-										<li class="list-group-item">
-											{!! $color->html($feature->body) !!}
-											
-											@if ( Auth::user()->isAdmin() )
-												<div class="pull-right">
-													<a href="{{ route('group.delete.feature', ['id' => $feature->id]) }}" class="text-danger">
-														<i class="fa fa-times"></i>
-													</a>
-												</div>
-											@endif
-										</li>
-									@endforeach
-									@if ( Auth::user()->isAdmin() )
-										<li class="list-group-item">
-											<form role="form" onsubmit="return addGroupFeature(this, {{ $group->id }});">
-												<div class="form-group m-b-0">
-													<input type="text" placeholder="Yeni özellik..." class="form-control">
-												</div>
-											</form>
-										</li>
-									@endif
-								</ul>
-								<div class="card-block">
-									<a href="#" class="btn btn-outline-primary card-link{{ !Auth::user()->isAdmin() ? ' d-block' : '' }}">Satın Al</a>
-									@if ( Auth::user()->isAdmin() )
-										<a href="{{ route('group.delete', ['id' => $group->id]) }}" class="btn btn-outline-danger card-link">Grubu Sil</a>
-									@endif
-								</div>
-							</div>
-						</div>
+						@include($template . '.partials.group.group')
 					@endforeach
 				@else
 					<div class="alert alert-warning text-center">

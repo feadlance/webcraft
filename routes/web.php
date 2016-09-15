@@ -209,6 +209,12 @@ Route::post('/group/new', [
   'middleware' => ['auth', 'admin']
 ]);
 
+Route::post('/group/info', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@postInfo',
+  'as' => 'group.info',
+  'middleware' => ['auth', 'admin']
+]);
+
 Route::get('/group/delete/{id}', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@getDelete',
   'as' => 'group.delete',
@@ -217,13 +223,25 @@ Route::get('/group/delete/{id}', [
 
 Route::post('/group/new/feature', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@postNewFeature',
-  'as' => 'group.new_feature',
+  'as' => 'group.new.feature',
   'middleware' => ['auth', 'admin']
 ]);
 
 Route::get('/group/delete/feature/{id}', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@getDeleteFeature',
   'as' => 'group.delete.feature',
+  'middleware' => ['auth', 'admin']
+]);
+
+Route::post('/group/new/command', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@postNewCommand',
+  'as' => 'group.new.command',
+  'middleware' => ['auth', 'admin']
+]);
+
+Route::get('/group/delete/command/{id}', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@getDeleteCommand',
+  'as' => 'group.delete.command',
   'middleware' => ['auth', 'admin']
 ]);
 

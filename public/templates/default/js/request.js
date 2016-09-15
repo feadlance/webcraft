@@ -409,9 +409,104 @@ var acceptFriend = function (that, id) {
 * Group
 */
 
+$('#newGroupModal').on('show.bs.modal', function (event) {
+	var modal = $(this);
+	var button = $(event.relatedTarget);
+
+	var id = button.closest('.col-lg-4').data('id');	
+
+	if ( id ) {
+		modal.find('.modal-header').text('Grubu Düzenle');
+
+		$.ajax({
+			type: 'POST',
+			url: url + '/group/info',
+			data: {
+				id: id,
+				_token: token
+			},
+			success: function(respond) {
+				if ( respond.error ) {
+					modal.find('.modal-body').text(respond.error);
+				} else {
+					modal.find('#group_id').val(id);
+					modal.find('#group_title').val(respond.group.title);
+					modal.find('#group_money').val(respond.group.money);
+
+					var commands = [];
+
+					$.each(respond.group.commands, function (key, value) {
+						commands.push(value.command);
+					});
+
+					modal.find('#group_commands').val(commands.join("\n"));
+				}
+			}
+		});
+	} else {
+		modal.find('.modal-header').text('Yeni Grup');
+		modal.find('#group_id').val('');
+		modal.find('#group_title').val('');
+		modal.find('#group_money').val('');
+		modal.find('#group_commands').val('');
+	}
+});
+
+$('#buyGroupModal').on('show.bs.modal', function (event) {
+	var modal = $(this);
+	var button = $(event.relatedTarget);
+
+	var id = button.closest('.col-lg-4').data('id');	
+
+	if ( !id ) {
+		modal.find('.modal-body').text('Grup bulunamadı.');
+	} else {
+		$.ajax({
+			type: 'POST',
+			url: url + '/group/info',
+			data: {
+				id: id,
+				_token: token
+			},
+			success: function(respond) {
+				if ( respond.error ) {
+					modal.find('.modal-body').text(respond.error);
+				} else {
+					modal.find('.modal-header').text(respond.group.title);
+
+					if ( !respond.group.features.length ) {
+						modal.find('#group_modal_features').hide();
+					} else {
+						$.each(respond.group.features, function (index, value) {
+							modal.find('#group_modal_features ul').append('<li>' + value.body + '</li>');
+						});
+					}
+
+					if ( !respond.group.commands.length ) {
+						modal.find('#group_modal_commands').hide();
+					} else {
+						$.each(respond.group.commands, function (index, value) {
+							modal.find('#group_modal_commands ul').append('<li>' + value.command + '</li>');
+						});
+					}
+				}
+			}
+		});
+	}
+});
+
+var buyGroup = function (that) {
+	//
+};
+
 var addGroup = function (that) {
 
-	var fields = ['title', 'group', 'money'];
+	var fields = ['title', 'money', 'commands'];
+
+	var id = $(that).closest('#newGroupModal').find('#group_id');
+	var title = $(that).closest('.modal-body').find('#group_title');
+	var money = $(that).closest('.modal-body').find('#group_money');
+	var commands = $(that).closest('.modal-body').find('#group_commands');
 
 	$(that).closest('.modal-body').addClass('loading');
 
@@ -419,9 +514,10 @@ var addGroup = function (that) {
 		type: 'POST',
 		url: url + '/group/new',
 		data: {
-			title: $(that).closest('.modal-body').find('#group_title').val(),
-			group: $(that).closest('.modal-body').find('#group_group').val(),
-			money: $(that).closest('.modal-body').find('#group_money').val(),
+			id: id.val(),
+			title: title.val(),
+			money: money.val(),
+			commands: commands.val(),
 			_token: token
 		},
 		success: function(respond) {
@@ -440,18 +536,50 @@ var addGroup = function (that) {
 			} else {
 				$('#newGroupModal').modal('hide');
 				$('#groupCards').find('.alert').remove();
-				$('#groupCards').append('<div class="col-lg-4"> <div class="card"> <div class="card-block"> <h4 class="card-title">' + respond.data.title + '</h4> <p class="card-text">' + respond.data.description + '</p> </div> <ul class="list-group list-group-flush"> <li class="list-group-item"> <form role="form" onsubmit="return addGroupFeature(this, ' + respond.data.id + ');"> <div class="form-group m-b-0"> <input type="text" placeholder="Yeni özellik..." class="form-control"> </div> </form> </li> </ul> <div class="card-block"> <a href="#" class="btn btn-outline-primary card-link">Satın Al</a> <a href="' + respond.data.delete_link + '" class="btn btn-outline-danger card-link">Grubu Sil</a> </div> </div> </div>');
-				$.each(fields, function( index, value ) {
-					$(that).closest('.modal-body').find('input').val('');
-				});
+				$(that).closest('.modal-body').find('input').val('');
+				
+				if ( respond.data.new ) {
+					$('#groupCards').append(respond.data.layout);
+				} else {
+					$('#group_card_' + id.val()).parent().html(respond.data.layout);
+				}
 			}
 
 			$(that).closest('.modal-body').removeClass('loading');
+		},
+		error: function (r) {
+			$('html').html(r.responseText);
 		}
 	});
 
 	return false;
 
+};
+
+var deleteGroup = function(that, id) {
+	swal({
+	    title: "Grubu siliyorsun...",
+	    text: "Emin misin?",
+	    type: "warning",
+	    showCancelButton: true,
+	    confirmButtonColor: "#DD6B55",
+	    confirmButtonText: "Evet, eminim.",
+	    cancelButtonText: "İptal",
+	    closeOnConfirm: true
+	}, function() {
+		$(that).closest('.card').addClass('loading');
+
+	    $.getJSON(url + '/group/delete/' + id, function(respond) {
+			if ( respond.error ) {
+				swal("Hata!", respond.error, "error");
+				$(that).closest('.card').removeClass('loading');
+			} else {
+				$(that).closest('.col-lg-4').remove();
+			}
+		});
+	});
+	
+	return false;
 };
 
 var addGroupFeature = function(that, id) {
@@ -474,7 +602,61 @@ var addGroupFeature = function(that, id) {
 				}
 			} else {
 				$(that).find('input').val('');
-				$(that).closest('.list-group').find('.list-group-item:last').before('<li class="list-group-item"> ' + respond.data.body + '<div class="pull-right"> <a href="' + respond.data.delete_link + '" class="text-danger"> <i class="fa fa-times"></i> </a> </div> </li>');	
+				$(that).closest('.list-group').find('.list-group-item:last').before(respond.data.layout);
+			}
+		}
+	});
+
+	return false;
+};
+
+var deleteGroupFeature = function(that, id) {
+	swal({
+	    title: "Özellik siliniyor..",
+	    text: "Emin misin?",
+	    type: "warning",
+	    showCancelButton: true,
+	    confirmButtonColor: "#DD6B55",
+	    confirmButtonText: "Evet, eminim.",
+	    cancelButtonText: "İptal",
+	    closeOnConfirm: true
+	}, function() {
+		$(that).closest('.list-group-item').addClass('loading');
+
+	    $.getJSON(url + '/group/delete/feature/' + id, function(respond) {
+			if ( respond.error ) {
+				swal("Hata!", respond.error, "error");
+				$(that).closest('.list-group-item').removeClass('loading');
+			} else {
+				$(that).closest('.list-group-item').remove();
+			}
+		});
+	});
+	
+	return false;
+};
+
+var addGroupCommand = function(that, id) {
+	$.ajax({
+		type: 'POST',
+		url: url + '/group/new/command',
+		data: {
+			id: id,
+			command: $(that).find('input').val(),
+			_token: token
+		},
+		success: function(respond) {
+			if ( respond.error ) {
+				swal("Hata!", respond.error, "error");
+			} else if (respond.validations) {
+				if ( respond.validations.id ) {
+					swal("Hata!", respond.validations.id, "error");
+				} else if ( respond.validations.command ) {
+					swal("Hata!", respond.validations.command, "error");
+				}
+			} else {
+				$(that).find('input').val('');
+				//$(that).closest('.list-group').find('.list-group-item:last').before('<li class="list-group-item"> ' + respond.data.body + '<div class="pull-right"> <a href="' + respond.data.delete_link + '" class="text-danger"> <i class="fa fa-times"></i> </a> </div> </li>');	
 			}
 		}
 	});

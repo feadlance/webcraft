@@ -21,6 +21,11 @@ class Group extends Model
 
     public function getFeatures()
     {
-        return $this->hasMany('Webcraft\Models\GroupFeature');
+        return $this->hasMany('Webcraft\Models\Group_Feature');
+    }
+
+    public function getCommands()
+    {
+        return $this->hasMany('Webcraft\Models\Group_Command');
     }
 }
