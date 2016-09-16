@@ -2,6 +2,7 @@
 
 namespace Webcraft\Http\Controllers;
 
+use Auth;
 use View;
 use Response;
 use Validator;
@@ -21,10 +22,10 @@ class GroupController extends Controller
 			return Response::json(['error' => 'Grup bulunamadı.']);
 		}
 
-		$commands = [];
+		$features = [];
 
-		foreach ( $group->getCommands()->get() as $command ) {
-			$commands[] = $command->command;
+		foreach ( $group->getFeatures()->get() as $feature ) {
+			$features[] = $feature->bodyFormat();
 		}
 
 		return Response::json([
@@ -32,8 +33,9 @@ class GroupController extends Controller
 			'group' => [
 				'title' => $group->title,
 				'money' => $group->money,
+				'min_money' => $group->getMinimumPrice(true),
 				'commands' => $group->getCommands()->get(),
-				'features' => $group->getFeatures()->get()
+				'features' => $features
 			]
 		]);
 	}
@@ -42,14 +44,20 @@ class GroupController extends Controller
 	{
 		$validator = Validator::make($request->all(), [
 			'title' => 'required|max:100',
-			'money' => 'required|regex:/^\d*(\.\d{2})?$/',
-			'commands' => 'max:700'
+			'money.0' => 'required|regex:/^\d*(\.\d{2})?$/',
+			'money.*' => 'required_with:money_day.*|regex:/^\d*(\.\d{2})?$/',
+			'money_day.0' => 'required|numeric|max:100',
+			'money_day.*' => 'required_with:money.*|numeric|max:100',
+			'commands' => 'max:700',
+			'expiry_commands' => 'max:700'
 		]);
 
 		$validator->setAttributeNames([
 			'title' => 'Grup başlığı',
-			'money' => 'Fiyat',
-			'commands' => 'Komutlar'
+			'money.*' => 'Fiyat',
+			'money_day.*' => 'Süre',
+			'commands' => 'Komutlar',
+			'expiry_commands' => 'Komutlar'
 		]);
 
 		if ( $validator->fails() ) {
@@ -58,20 +66,52 @@ class GroupController extends Controller
 
 		$group = Group::find($request->input('id'));
 
+		$money_array = [];
+
+		for ($i=0; $i < count($request->input('money')); $i++) {
+			if ( ($money_day = $request->input('money_day.' . $i)) && ($money = $request->input('money.' . $i)) ) {
+				$money_array[] = [
+					'day' => $money_day,
+					'money' => $money
+				];
+			}
+		}
+
+		$group_create = [
+			'title' => $request->input('title'),
+			'money' => $money_array
+		];
+
 		if ( $group === null ) {
 			$new = true;
-			$group = Group::create($request->only(['title', 'money']));
+			$group = Group::create($group_create);
 		} else {
-			$group->update($request->only(['title', 'money']));
+			$group->update($group_create);
 		}
 
 		$group->getCommands()->delete();
 
-		$commands = explode("\n", $request->input('commands'));
+		$commands = [];
+		$first_commands = explode("\n", $request->input('commands'));
+		$last_commands = explode("\n", $request->input('expiry_commands'));
+
+		foreach ( $first_commands as $command ) {
+			$commands[] = [
+				'type' => 'first',
+				'command' => $command
+			];
+		}
+
+		foreach ( $last_commands as $command ) {
+			$commands[] = [
+				'type' => 'last',
+				'command' => $command
+			];
+		}
 
 		foreach ( $commands as $command ) {
-			if ( !empty(trim($command)) && !$group->getCommands()->where('command', $command)->count() ) {
-				$group->getCommands()->create(['command' => trim($command)]);
+			if ( !empty(trim($command['command'])) && !$group->getCommands()->where('command', $command['command'])->where('type', $command['type'])->count() ) {
+				$group->getCommands()->create($command);
 			}
 		}
 

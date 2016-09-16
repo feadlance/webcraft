@@ -4,6 +4,7 @@
 
 @section('header')
 	<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/sweetalert/sweetalert.css">
+	<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/datepicker/css/bootstrap-datepicker3.min.css">
 @stop
 
 @section('container')
@@ -20,18 +21,42 @@
 							<input type="text" placeholder="Grup başlığı..." id="group_title" class="form-control">
 							<span class="form-control-feedback"></span>
 						</div>
+
+						<div id="group_money_form" class="form-group">
+							<div class="row">
+								<div class="col-lg-6">
+									<label class="m-b-0 hidden-md-down">Kaç gün?</label>
+									<small class="form-text text-muted m-t-0" style="margin-bottom: .5rem;">Grup kaç gün geçerli? (-1 = Sınırsız)</small>
+									<input type="text" placeholder="30" id="group_money_day_0" name="group_money_day[]" class="datepicker form-control">
+									<span class="form-control-feedback"></span>
+								</div>
+								<div class="col-lg-6">
+									<label class="m-b-0 hidden-md-down">Fiyatı</label>
+									<small class="form-text text-muted m-t-0" style="margin-bottom: .5rem;">Gerçek paradır. (₺)</small>
+									<input type="text" placeholder="10" id="group_money_0" name="group_money[]" class="form-control">
+									<span class="form-control-feedback"></span>
+								</div>
+							</div>
+						</div>
+
+						<div id="groupNewMoneyField" class="form-group clearfix">
+							<button data-count="0" onclick="return groupNewMoneyField(this);" class="btn btn-secondary pull-right"><i class="fa fa-plus"></i></button>
+						</div>
+
+						<hr>
 						<div class="form-group">
-							<input type="text" placeholder="Fiyatı (gerçek para)..." id="group_money" class="form-control">
+							<textarea placeholder="Grup satın alındığında oyuncuya gidecek komutlar..." id="group_commands" class="form-control" rows="4"></textarea>
+							<small class="form-text text-muted">Her satıra bir komut. (@p = oyuncu adı)</small>
 							<span class="form-control-feedback"></span>
 						</div>
 						<div class="form-group">
-							<textarea placeholder="Her satıra bir komut gelecek şekilde, grup satın alındığında oyuncuya gidecek olan komutları yazın." id="group_commands" class="form-control" rows="4"></textarea>
-							<small class="form-text text-muted">(@p = oyuncu adı)</small>
+							<textarea placeholder="Grup süresi bittiğinde oyuncuya gidecek komutlar..." id="group_expiry_commands" class="form-control" rows="4"></textarea>
+							<small class="form-text text-muted">Her satıra bir komut. (@p = oyuncu adı)</small>
 							<span class="form-control-feedback"></span>
 						</div>
 						<div class="form-group clearfix">
-							<button class="btn btn-default pull-right" onclick="return addGroup(this);">
-								<i class="fa fa-plus"></i>
+							<button class="btn btn-secondary pull-right" onclick="return addGroup(this);">
+								<i class="fa fa-save"></i>
 								Kaydet
 							</button>
 						</div>
@@ -47,6 +72,9 @@
 			<div class="modal-content">
 				<div class="modal-header text-uppercase"></div>
 				<div class="modal-body">
+					<div id="group_modal_money" class="form-group">
+						<select class="form-control"></select>
+					</div>
 					<div id="group_modal_features" class="form-group">
 						<label><strong>Özellikler;</strong></label>
 						<ul style="list-style: none; margin: 0; padding: 0 0 0 10px;"></ul>
@@ -57,9 +85,8 @@
 					</div>
 					<hr>
 					<div class="form-group m-b-0">
-						<button class="btn btn-primary d-block w-100" onclick="return buyGroup(this);">
-							<i class="fa fa-shopping-cart"></i>
-							Satın Al
+						<button class="btn btn-primary w-100" onclick="return buyGroup(this);">
+							<i class="fa fa-shopping-cart"></i> Satın Al
 						</button>
 					</div>
 				</div>
@@ -100,6 +127,9 @@
 @stop
 
 @section('scripts')
+	
+	<script type="text/javascript" src="templates/{{ $template }}/components/datepicker/js/bootstrap-datepicker.min.js"></script>
 	<script type="text/javascript" src="templates/{{ $template }}/components/sweetalert/sweetalert.min.js"></script>
+	<script type="text/javascript">var player = '{{ Auth::user()->username }}';</script>
 	<script type="text/javascript" src="templates/{{ $template }}/js/request.js"></script>
 @stop

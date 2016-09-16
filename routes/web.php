@@ -199,19 +199,25 @@ Route::get('/hesabimi-yukselt', [
   'middleware' => ['auth']
 ]);
 
+Route::post('/group/buy', [
+  'uses' => '\Webcraft\Http\Controllers\UpgradeController@postBuy',
+  'as' => 'group.buy',
+  'middleware' => ['auth']
+]);
+
 /*
 * Groups
 */
 
-Route::post('/group/new', [
-  'uses' => '\Webcraft\Http\Controllers\GroupController@postNew',
-  'as' => 'group.new',
-  'middleware' => ['auth', 'admin']
-]);
-
 Route::post('/group/info', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@postInfo',
   'as' => 'group.info',
+  'middleware' => ['auth', 'admin']
+]);
+
+Route::post('/group/new', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@postNew',
+  'as' => 'group.new',
   'middleware' => ['auth', 'admin']
 ]);
 

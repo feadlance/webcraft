@@ -413,7 +413,12 @@ $('#newGroupModal').on('show.bs.modal', function (event) {
 	var modal = $(this);
 	var button = $(event.relatedTarget);
 
-	var id = button.closest('.col-lg-4').data('id');	
+	var id = button.closest('.col-lg-4').data('id');
+
+	$('#groupNewMoneyField').find('button').attr('data-count', 0);
+	modal.find('.modal-header').text('Yeni Grup');
+	modal.find('.money-multiple').remove();
+	modal.find('input,textarea').val('');
 
 	if ( id ) {
 		modal.find('.modal-header').text('Grubu Düzenle');
@@ -431,24 +436,35 @@ $('#newGroupModal').on('show.bs.modal', function (event) {
 				} else {
 					modal.find('#group_id').val(id);
 					modal.find('#group_title').val(respond.group.title);
-					modal.find('#group_money').val(respond.group.money);
+
+					var first_money_field = true;
+					$.each(respond.group.money, function(key, value) {
+						if ( first_money_field ) {
+							$('#group_money_form').html('<div class="row"> <div class="col-lg-6"> <label class="m-b-0 hidden-md-down">Kaç gün?</label> <small class="form-text text-muted m-t-0 hidden-md-down" style="margin-bottom: .5rem;">Grup kaç gün geçerli? (-1 = Sınırsız)</small> <input type="text" value="' + value.day + '" placeholder="30" id="group_money_day_' + key + '" name="group_money_day[]" class="datepicker form-control"> <span class="form-control-feedback"></span> </div> <div class="col-lg-6"> <label class="m-b-0 hidden-md-down">Fiyatı</label> <small class="form-text text-muted m-t-0 hidden-md-down" style="margin-bottom: .5rem;">Gerçek paradır. (₺)</small> <input type="text" value="' + value.money + '" placeholder="10" id="group_money_' + key + '" name="group_money[]" class="form-control"> <span class="form-control-feedback"></span> </div> </div>');
+							first_money_field = false;
+						} else {
+							$('#group_money_form').after('<div class="money-multiple form-group"> <div class="row"> <div class="col-lg-6"> <input type="text" value="' + value.day + '" placeholder="30" id="group_money_day_' + key + '" name="group_money_day[]" class="datepicker form-control"> <span class="form-control-feedback"></span> </div> <div class="col-lg-6"> <input type="text" value="' + value.money + '" placeholder="10" id="group_money_' + key + '" name="group_money[]" class="form-control"> <span class="form-control-feedback"></span> </div> </div> </div>');
+						}
+					});
+
+					$('#groupNewMoneyField').find('button').attr('data-count', respond.group.money.length);
 
 					var commands = [];
+					var expiry_commands = [];
 
 					$.each(respond.group.commands, function (key, value) {
-						commands.push(value.command);
+						if ( value.type == 'first' ) {
+							commands.push(value.command);
+						} else if ( value.type == 'last' ) {
+							expiry_commands.push(value.command);
+						}
 					});
 
 					modal.find('#group_commands').val(commands.join("\n"));
+					modal.find('#group_expiry_commands').val(expiry_commands.join("\n"));
 				}
 			}
 		});
-	} else {
-		modal.find('.modal-header').text('Yeni Grup');
-		modal.find('#group_id').val('');
-		modal.find('#group_title').val('');
-		modal.find('#group_money').val('');
-		modal.find('#group_commands').val('');
 	}
 });
 
@@ -461,6 +477,8 @@ $('#buyGroupModal').on('show.bs.modal', function (event) {
 	if ( !id ) {
 		modal.find('.modal-body').text('Grup bulunamadı.');
 	} else {
+		modal.closest('#buyGroupModal').find('#group_id').val(id);
+
 		$.ajax({
 			type: 'POST',
 			url: url + '/group/info',
@@ -474,19 +492,36 @@ $('#buyGroupModal').on('show.bs.modal', function (event) {
 				} else {
 					modal.find('.modal-header').text(respond.group.title);
 
+					modal.find('#group_modal_money select').html('');
+					$.each(respond.group.money, function(index, value) {
+						if ( value.day == '-1' ) {
+							value.day = 'Sınırsız';
+						} else {
+							value.day = value.day + ' gün';
+						}
+
+						modal.find('#group_modal_money select').append('<option value="' + index + '">' + value.day + ' (' + value.money + '₺)</option>');
+					});
+
 					if ( !respond.group.features.length ) {
 						modal.find('#group_modal_features').hide();
 					} else {
+						modal.find('#group_modal_features ul').html('');
+						modal.find('#group_modal_features').show();
 						$.each(respond.group.features, function (index, value) {
-							modal.find('#group_modal_features ul').append('<li>' + value.body + '</li>');
+							modal.find('#group_modal_features ul').append('<li>' + value + '</li>');
 						});
 					}
 
 					if ( !respond.group.commands.length ) {
 						modal.find('#group_modal_commands').hide();
 					} else {
+						modal.find('#group_modal_commands ul').html('');
+						modal.find('#group_modal_commands').show();
 						$.each(respond.group.commands, function (index, value) {
-							modal.find('#group_modal_commands ul').append('<li>' + value.command + '</li>');
+							if ( value.type == 'first' ) {
+								modal.find('#group_modal_commands ul').append('<li>' + value.command.replace('@p', player) + '</li>');
+							}
 						});
 					}
 				}
@@ -496,17 +531,22 @@ $('#buyGroupModal').on('show.bs.modal', function (event) {
 });
 
 var buyGroup = function (that) {
-	//
+	var id = $(that).closest('#buyGroupModal').find('#group_id').val();
+	alert(id);
+	return false;
 };
 
 var addGroup = function (that) {
-
-	var fields = ['title', 'money', 'commands'];
-
 	var id = $(that).closest('#newGroupModal').find('#group_id');
 	var title = $(that).closest('.modal-body').find('#group_title');
-	var money = $(that).closest('.modal-body').find('#group_money');
+	var money_day = $(that).closest('.modal-body').find('input[name=\'group_money_day[]\']').map(function(idx, elem) {
+		return $(elem).val();
+	}).get();
+	var money = $(that).closest('.modal-body').find('input[name=\'group_money[]\']').map(function(idx, elem) {
+		return $(elem).val();
+	}).get();
 	var commands = $(that).closest('.modal-body').find('#group_commands');
+	var expiry_commands = $(that).closest('.modal-body').find('#group_expiry_commands');
 
 	$(that).closest('.modal-body').addClass('loading');
 
@@ -516,22 +556,30 @@ var addGroup = function (that) {
 		data: {
 			id: id.val(),
 			title: title.val(),
-			money: money.val(),
+			money: money,
+			money_day: money_day,
 			commands: commands.val(),
+			expiry_commands: expiry_commands.val(),
 			_token: token
 		},
 		success: function(respond) {
-			$.each(fields, function( index, value ) {
-				$(that).closest('.modal-body').find('#group_' + value).removeClass('form-control-danger');
-				$(that).closest('.modal-body').find('#group_' + value).parent().removeClass('has-danger');
-				$(that).closest('.modal-body').find('#group_' + value).parent().find('.form-control-feedback').text('');
-			});
+			$(that).closest('.modal-body').find('.form-control-danger').removeClass('form-control-danger');
+			$(that).closest('.modal-body').find('.has-danger').removeClass('has-danger');
+			$(that).closest('.modal-body').find('.form-control-feedback').text('');
 
 			if ( respond.errors ) {
 				$.each(respond.errors, function( index, value ) {
-					$(that).closest('.modal-body').find('#group_' + index).addClass('form-control-danger');
-					$(that).closest('.modal-body').find('#group_' + index).parent().addClass('has-danger');
-					$(that).closest('.modal-body').find('#group_' + index).parent().find('.form-control-feedback').text(value);
+					$(that).closest('.modal-body').find('#group_' + index.replace('.', '_')).addClass('form-control-danger');
+					var has_danger = $(that).closest('.modal-body').find('#group_' + index.replace('.', '_'));
+					var feedback = $(that).closest('.modal-body').find('#group_' + index.replace('.', '_'));
+
+					if ( feedback.closest('.form-group').find(' > .form-control-feedback').length ) {
+						feedback.closest('.form-group').addClass('has-danger');
+						feedback.closest('.form-group').find(' > .form-control-feedback').text(value);
+					} else {
+						feedback.closest('.col-lg-6').addClass('has-danger');
+						feedback.closest('.col-lg-6').find('.form-control-feedback').text(value);
+					}
 				});
 			} else {
 				$('#newGroupModal').modal('hide');
@@ -541,19 +589,24 @@ var addGroup = function (that) {
 				if ( respond.data.new ) {
 					$('#groupCards').append(respond.data.layout);
 				} else {
-					$('#group_card_' + id.val()).parent().html(respond.data.layout);
+					var layout = $(respond.data.layout).children();
+					$('#group_card_' + id.val()).html(layout);
 				}
 			}
 
 			$(that).closest('.modal-body').removeClass('loading');
-		},
-		error: function (r) {
-			$('html').html(r.responseText);
 		}
 	});
 
 	return false;
 
+};
+
+var groupNewMoneyField = function (that) {
+	var count = parseInt($(that).attr('data-count')) + 1;
+	$(that).attr('data-count', count);
+	$(that).parent().before('<div class="money-multiple form-group"> <div class="row"> <div class="col-lg-6"> <input type="text" placeholder="30" id="group_money_day_' + count + '" name="group_money_day[]" class="datepicker form-control"> <span class="form-control-feedback"></span> </div> <div class="col-lg-6"> <input type="text" placeholder="10" id="group_money_' + count + '" name="group_money[]" class="form-control"> <span class="form-control-feedback"></span> </div> </div> </div>');
+	return false;
 };
 
 var deleteGroup = function(that, id) {

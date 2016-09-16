@@ -264,6 +264,16 @@ header .pull-right > .header-item #mobileMenu {
 	margin-left: -10px;
 }*/
 
+/* -- Bootstrap Inputs -- */
+
+.form-has-danger {
+	border-color: #d9534f;
+}
+
+.form-has-danger + .form-control-feedback {
+	color: #d9534f;
+}
+
 /*
 * Homepage
 */

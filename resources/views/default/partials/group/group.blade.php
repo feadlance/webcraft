@@ -2,7 +2,7 @@
 	<div class="card">
 		<div class="card-block">
 			<h4 class="card-title">{{ $group->title }}</h4>
-			<p class="card-text">{{ TurkishGrammar::get($group->title, 'iyelik') }} fiyatı {{ $group->getMoney() }} Türk Lirası'dır.</p>
+			<p class="card-text">{{ TurkishGrammar::get($group->title, 'iyelik') }} en uygun fiyatı {{ $group->getMinimumPrice(true) }} Türk Lirası'dır.</p>
 			@if ( Auth::user()->isAdmin() )
 				<div class="btn-group">
 					<button data-toggle="modal" data-target="#newGroupModal" class="btn btn-outline-primary card-link">Düzenle</button>

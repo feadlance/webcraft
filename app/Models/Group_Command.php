@@ -9,6 +9,7 @@ class Group_Command extends Model
     protected $table = 'group_commands';
 
     protected $fillable = [
+    	'type',
     	'command'
     ];
 
