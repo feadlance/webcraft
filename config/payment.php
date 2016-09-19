@@ -2,7 +2,7 @@
 
 return [
 	
-	'type' => env('PAYMENT_TYPE', 'batihost'),
+	'type' => env('PAYMENT_TYPE'),
 
 	'methods' => [
 

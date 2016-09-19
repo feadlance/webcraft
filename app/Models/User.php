@@ -82,6 +82,15 @@ class User extends Authenticatable
 	}
 
 	/*
+	* Payment
+	*/
+
+	public function getLastPayments()
+	{
+		return $this->hasMany('Webcraft\Models\Last_Payments', 'user_id');
+	}
+
+	/*
 	* Money
 	*/
 
