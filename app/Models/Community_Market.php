@@ -10,6 +10,7 @@ class Community_Market extends Model
 	protected $table = 'community_market';
 
 	protected $fillable = [
+		'name',
 		'price',
 		'piece',
 		'type',
@@ -25,7 +26,7 @@ class Community_Market extends Model
 
 	public function user()
 	{
-		return $this->belongsTo('Webcraft\Models\User', 'username', 'username')->first();
+		return $this->belongsTo('Webcraft\Models\User', 'user_id')->first();
 	}
 
 	public function material()

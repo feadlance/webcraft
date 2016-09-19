@@ -91,18 +91,8 @@ class Player extends Model
 		return $this->getUser()->isLogged === 1;
 	}
 
-	public function balance($format = false)
+	public function balance()
 	{
-		$user = $this->getUser();
-
-		if ( $user === null ) {
-			return $format ? 0.00 : 0;
-		}
-
-		$balance = $this->getUser()->belongsTo('Webcraft\Models\Iconomy', 'username', 'username')->first();
-
-		$balance = $balance !== null ? $balance->balance : 0;
-
-		return $format === true ? number_format($balance, 2) : $balance;
-	}
+		return $this->getUser() !== null ? $this->getUser()->belongsTo('Webcraft\Models\iConomy', 'username', 'username')->first() : null;
+	}	
 }

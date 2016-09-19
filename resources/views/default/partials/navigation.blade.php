@@ -36,7 +36,7 @@
 					<i class="fa fa-turkish-lira"></i> {{ Auth::user()->getMoney() }}
 				</div>
 				<div class="pull-right" data-toggle="tooltip" title="Oyun Parası">
-					<i class="fa fa-money"></i> {{ Auth::user()->game() ? Auth::user()->game()->balance(true) : '0.00' }}
+					<i class="fa fa-money"></i> {{ Auth::user()->game() ? Auth::user()->game()->balance()->format() : '0.00' }}
 				</div>
 			</div>
 		</div>
@@ -47,8 +47,8 @@
 			<li{!! Request::route()->getName() == 'home' ? ' class="active"' : '' !!}>
 				<a href="{{ route('home') }}">Anasayfa</a>
 			</li>
-			<li{!! Request::route()->getName() == 'market' ? ' class="active"' : '' !!}>
-				<a href="{{ route('market') }}">Market</a>
+			<li{!! Request::route()->getName() == 'community.market' ? ' class="active"' : '' !!}>
+				<a href="{{ route('community.market') }}">Topluluk Pazarı</a>
 			</li>
 			<li{!! Request::route()->getName() == 'account' ? ' class="active"' : '' !!}>
 				<a href="{{ route('account') }}">Profilim</a>

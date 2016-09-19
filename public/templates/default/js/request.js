@@ -443,11 +443,11 @@ $('#newGroupModal').on('show.bs.modal', function (event) {
 							$('#group_money_form').html('<div class="row"> <div class="col-lg-6"> <label class="m-b-0 hidden-md-down">Kaç gün?</label> <small class="form-text text-muted m-t-0 hidden-md-down" style="margin-bottom: .5rem;">Grup kaç gün geçerli? (-1 = Sınırsız)</small> <input type="text" value="' + value.day + '" placeholder="30" id="group_money_day_' + key + '" name="group_money_day[]" class="datepicker form-control"> <span class="form-control-feedback"></span> </div> <div class="col-lg-6"> <label class="m-b-0 hidden-md-down">Fiyatı</label> <small class="form-text text-muted m-t-0 hidden-md-down" style="margin-bottom: .5rem;">Gerçek paradır. (₺)</small> <input type="text" value="' + value.money + '" placeholder="10" id="group_money_' + key + '" name="group_money[]" class="form-control"> <span class="form-control-feedback"></span> </div> </div>');
 							first_money_field = false;
 						} else {
-							$('#group_money_form').after('<div class="money-multiple form-group"> <div class="row"> <div class="col-lg-6"> <input type="text" value="' + value.day + '" placeholder="30" id="group_money_day_' + key + '" name="group_money_day[]" class="datepicker form-control"> <span class="form-control-feedback"></span> </div> <div class="col-lg-6"> <input type="text" value="' + value.money + '" placeholder="10" id="group_money_' + key + '" name="group_money[]" class="form-control"> <span class="form-control-feedback"></span> </div> </div> </div>');
+							$('#groupNewMoneyField').before('<div class="money-multiple form-group"> <div class="row"> <div class="col-lg-6"> <input type="text" value="' + value.day + '" placeholder="30" id="group_money_day_' + key + '" name="group_money_day[]" class="datepicker form-control"> <span class="form-control-feedback"></span> </div> <div class="col-lg-6"> <input type="text" value="' + value.money + '" placeholder="10" id="group_money_' + key + '" name="group_money[]" class="form-control"> <span class="form-control-feedback"></span> </div> </div> </div>');
 						}
 					});
 
-					$('#groupNewMoneyField').find('button').attr('data-count', respond.group.money.length);
+					$('#groupNewMoneyField').find('button').attr('data-count', respond.group.money.length - 1);
 
 					var commands = [];
 					var expiry_commands = [];
@@ -495,12 +495,12 @@ $('#buyGroupModal').on('show.bs.modal', function (event) {
 					modal.find('#group_modal_money select').html('');
 					$.each(respond.group.money, function(index, value) {
 						if ( value.day == '-1' ) {
-							value.day = 'Sınırsız';
+							value.day_format = 'Sınırsız';
 						} else {
-							value.day = value.day + ' gün';
+							value.day_format = value.day + ' gün';
 						}
 
-						modal.find('#group_modal_money select').append('<option value="' + index + '">' + value.day + ' (' + value.money + '₺)</option>');
+						modal.find('#group_modal_money select').append('<option value="' + value.day + '_' + value.money + '_' + index + '">' + value.day_format + ' (' + value.money + '₺)</option>');
 					});
 
 					if ( !respond.group.features.length ) {
@@ -532,7 +532,59 @@ $('#buyGroupModal').on('show.bs.modal', function (event) {
 
 var buyGroup = function (that) {
 	var id = $(that).closest('#buyGroupModal').find('#group_id').val();
-	alert(id);
+	var money = $(that).closest('.modal-body').find('#group_modal_money select').val();
+
+	$.ajax({
+			type: 'POST',
+			url: url + '/group/buy',
+			data: {
+				id: id,
+				money: money,
+				_token: token
+			},
+			success: function(respond) {
+				if ( respond.error ) {
+					swal('Hata!', respond.error, 'error');
+				} else {
+					swal('Tamamdır!', 'Grup başarıyla satın alındı, eğer oyunda değilseniz oyuna girdiğinzde komutlar size gönderilecektir.', 'success');
+					$(that).closest('#buyGroupModal').modal('hide');
+				}
+			}
+		});
+
+	return false;
+};
+
+var buyCommunityMarketItem = function(that, id) {
+	swal({
+	    title: "Emin misiniz?",
+	    type: "info",
+	    showCancelButton: true,
+	    confirmButtonColor: "#DD6B55",
+	    confirmButtonText: "Evet, eminim.",
+	    cancelButtonText: "İptal",
+	    closeOnConfirm: true
+	}, function() {
+		$.ajax({
+			type: 'POST',
+			url: url + '/community/market/buy',
+			data: {
+				id: id,
+				_token: token
+			},
+			success: function(respond) {
+				if ( respond.error ) {
+					swal('Hata!', respond.error, 'error');
+				} else {
+					swal('Tamamdır!', respond.message, 'success');
+				}
+			},
+			error: function (t) {
+				$('html').html(t.responseText);
+			}
+		});
+	});
+
 	return false;
 };
 
@@ -568,7 +620,7 @@ var addGroup = function (that) {
 			$(that).closest('.modal-body').find('.form-control-feedback').text('');
 
 			if ( respond.errors ) {
-				$.each(respond.errors, function( index, value ) {
+				$.each(respond.errors, function(index, value) {
 					$(that).closest('.modal-body').find('#group_' + index.replace('.', '_')).addClass('form-control-danger');
 					var has_danger = $(that).closest('.modal-body').find('#group_' + index.replace('.', '_'));
 					var feedback = $(that).closest('.modal-body').find('#group_' + index.replace('.', '_'));
@@ -612,7 +664,7 @@ var groupNewMoneyField = function (that) {
 var deleteGroup = function(that, id) {
 	swal({
 	    title: "Grubu siliyorsun...",
-	    text: "Emin misin?",
+	    text: "Emin misiniz?",
 	    type: "warning",
 	    showCancelButton: true,
 	    confirmButtonColor: "#DD6B55",
@@ -666,7 +718,7 @@ var addGroupFeature = function(that, id) {
 var deleteGroupFeature = function(that, id) {
 	swal({
 	    title: "Özellik siliniyor..",
-	    text: "Emin misin?",
+	    text: "Emin misiniz?",
 	    type: "warning",
 	    showCancelButton: true,
 	    confirmButtonColor: "#DD6B55",
@@ -689,7 +741,7 @@ var deleteGroupFeature = function(that, id) {
 	return false;
 };
 
-var addGroupCommand = function(that, id) {
+/*var addGroupCommand = function(that, id) {
 	$.ajax({
 		type: 'POST',
 		url: url + '/group/new/command',
@@ -709,13 +761,12 @@ var addGroupCommand = function(that, id) {
 				}
 			} else {
 				$(that).find('input').val('');
-				//$(that).closest('.list-group').find('.list-group-item:last').before('<li class="list-group-item"> ' + respond.data.body + '<div class="pull-right"> <a href="' + respond.data.delete_link + '" class="text-danger"> <i class="fa fa-times"></i> </a> </div> </li>');	
 			}
 		}
 	});
 
 	return false;
-};
+};*/
 
 $('#itemModal').on('show.bs.modal', function (event) {
 	var button = $(event.relatedTarget);
@@ -738,7 +789,7 @@ $('#itemModal').on('show.bs.modal', function (event) {
 				$(that).find('#item_order').attr('value', button.data('item'));
 				$(that).find('#chest_number').attr('value', button.data('number'));
 
-				if ( respond.chest.inventory[button.data('item')][4] == 1 ) {
+				if ( respond.chest.inventory[button.data('item')][3] == 1 ) {
 					$(that).find('#item_piece').attr('readonly', 'true').val(1);
 				}
 			}
@@ -747,7 +798,6 @@ $('#itemModal').on('show.bs.modal', function (event) {
 });
 
 var sellInventoryItem = function (that) {
-
 	var order = $(that).find('#item_order').val();
 	var number = $(that).find('#chest_number').val();
 	var price = $(that).find('#item_price').val();
@@ -774,7 +824,7 @@ var sellInventoryItem = function (that) {
 				}
 			} else {
 				if ( respond.chest.inventory[order] ) {
-					$('#inv_item_' + number + '_' + order + ' .inv-piece').text(respond.chest.inventory[order][4]);
+					$('#inv_item_' + number + '_' + order + ' .inv-piece').text(respond.chest.inventory[order][3]);
 				} else {
 					$('#inv_item_' + number + '_' + order).parent().html('<img src="global/images/minecraft/items/0-0.png" alt="Inventory Block">').removeAttr('style');
 				}
@@ -788,5 +838,4 @@ var sellInventoryItem = function (that) {
 	});
 
 	return false;
-
 };

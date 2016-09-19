@@ -230,6 +230,7 @@ return [
          */
         //'Ftp' => Anchu\Ftp\FtpServiceProvider::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+        'Websend' => Webcraft\Helpers\Minecraft\Websend::class,
         'TurkishGrammar' => Webcraft\Helpers\Functions\TurkishGrammar::class,
         'MinecraftColor' => Webcraft\Helpers\Minecraft\Color::class,
         'MinecraftServer' => Webcraft\Helpers\Minecraft\Server::class,

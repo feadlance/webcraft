@@ -16,6 +16,7 @@ class CreateCommunityMarketTable extends Migration
         Schema::create('community_market', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->string('name')->nullable();
             $table->decimal('price', 8, 4);
             $table->integer('piece');
             $table->integer('type');

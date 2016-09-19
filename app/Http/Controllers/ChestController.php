@@ -43,16 +43,16 @@ class ChestController extends Controller
 
 		$inventory = $chest->inventory[$order];
 
-		if ( $piece > $inventory[4] ) {
-			return Response::json(['error' => 'En fazla ' . $inventory[4] . ' adet satabilirsiniz.']);
+		if ( $piece > $inventory[3] ) {
+			return Response::json(['error' => 'En fazla ' . $inventory[3] . ' adet satabilirsiniz.']);
 		}
 
 		$updateInventory = $chest->inventory;
 
-		if ( $piece === (int) $inventory[4] ) {
+		if ( $piece === (int) $inventory[3] ) {
 			unset($updateInventory[$order]);
 		} else {
-			$updateInventory[$order][4] = $inventory[4] - $piece;
+			$updateInventory[$order][3] = $inventory[3] - $piece;
 		}
 
 		$chest->inventory = json_encode((object) $updateInventory);
@@ -66,11 +66,12 @@ class ChestController extends Controller
 		Auth::user()->market()->create([
 			'price' => $price / $piece,
 			'piece' => $piece,
-			'type' => $inventory[1],
-			'meta' => $inventory[2],
-			'durability' => $inventory[5],
-			'max_durability' => $inventory[6],
-			'skills' => $inventory[7]
+			'type' => $inventory[0],
+			'meta' => $inventory[1],
+			'name' => $inventory[2],
+			'durability' => $inventory[4],
+			'max_durability' => $inventory[5],
+			'skills' => $inventory[6]
 		]);
 
 		return Response::json(['chest' => $chest]);

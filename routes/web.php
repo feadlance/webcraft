@@ -183,9 +183,15 @@ Route::get('/odeme/basarisiz', [
 * Market
 */
 
-Route::get('/market', [
-  'uses' => '\Webcraft\Http\Controllers\MarketController@getIndex',
-  'as' => 'market',
+Route::get('/community/market', [
+  'uses' => '\Webcraft\Http\Controllers\CommunityMarketController@getIndex',
+  'as' => 'community.market',
+  'middleware' => ['auth']
+]);
+
+Route::post('/community/market/buy', [
+  'uses' => '\Webcraft\Http\Controllers\CommunityMarketController@postBuy',
+  'as' => 'community.market.buy',
   'middleware' => ['auth']
 ]);
 

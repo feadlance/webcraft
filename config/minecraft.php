@@ -30,6 +30,25 @@ return [
   ],
 
   /*
+  * Websend
+  */
+
+  'websend' => [
+    'host' => env('WEBSEND_HOST', config('minecraft.server.host')),
+    'port' => env('WEBSEND_PORT', 4445),
+    'password' => env('WEBSEND_PASSWORD')
+  ],
+
+  /*
+  * SQLChest
+  */
+
+  'sqlchest' => [
+    'command' => '/sqlchest',
+    'slot' => 4 * 9
+  ],
+
+  /*
   * Üyelik şifreleme methodu: bcrypt, md5
   */
 

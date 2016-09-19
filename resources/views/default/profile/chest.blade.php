@@ -40,37 +40,45 @@
 		</form>
 	@endif
 
-	<div class="row">
-		@foreach ( $inventories as $inventory )
-			<div class="col-lg-6 col-md-12r">
-				<div class="card">
-					<div class="card-header">{{ $inventory->number }}. Sandık</div>
-					<div class="card-block">
-						<div class="player-inventory">
-							<div class="inv-row clearfix">
-								@for ($i = 0; $i < 36; $i++)
-									<div class="inv-block"{!! isset($inventory->inventory[$i][7]) && count($inventory->inventory[$i][7]) ? ' style="background-image: url(\'global/images/minecraft/inv-block-ench.png\')"' : '' !!}>
-										@if ( array_key_exists($i, $inventory->inventory) )
-											@if ( Auth::id() === $user->id )
-												<a id="inv_item_{{ $inventory->number }}_{{ $i }}" href="#" data-toggle="modal" data-target="#itemModal" data-number="{{ $inventory->number }}" data-item="{{ $i }}">
+	@if ( $inventories->count() )
+		<div class="row">
+			@foreach ( $inventories as $inventory )
+				<div class="col-lg-6 col-md-12">
+					<div class="card">
+						<div class="card-header">{{ $inventory->number }}. Sandık</div>
+						<div class="card-block">
+							<div class="player-inventory">
+								<div class="inv-row clearfix">
+									@for ($i = 0; $i < 36; $i++)
+										<div class="inv-block"{!! isset($inventory->inventory[$i][6]) && count($inventory->inventory[$i][6]) ? ' style="background-image: url(\'global/images/minecraft/inv-block-ench.png\')"' : '' !!}>
+											@if ( array_key_exists($i, $inventory->inventory) )
+												@if ( Auth::id() === $user->id )
+													<a id="inv_item_{{ $inventory->number }}_{{ $i }}" href="#" data-toggle="modal" data-target="#itemModal" data-number="{{ $inventory->number }}" data-item="{{ $i }}">
+												@endif
+													<img data-toggle="tooltip" data-html="true" title="{{ $inventory->tooltipTitle($i) }}" src="{{ $inventory->icon($i) }}" alt="Inventory Block">
+													<span class="inv-piece">{{ $inventory->inventory[$i][3] }}</span>
+												@if ( Auth::id() === $user->id )
+													</a>
+												@endif
+											@else
+												<img src="global/images/minecraft/items/0-0.png" alt="Inventory Block">
 											@endif
-												<img data-toggle="tooltip" data-html="true" title="{{ $inventory->tooltipTitle($i) }}" src="{{ $inventory->icon($i) }}" alt="Inventory Block">
-												<span class="inv-piece">{{ $inventory->inventory[$i][4] }}</span>
-											@if ( Auth::id() === $user->id )
-												</a>
-											@endif
-										@else
-											<img src="global/images/minecraft/items/0-0.png" alt="Inventory Block">
-										@endif
-									</div>
-								@endfor
+										</div>
+									@endfor
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+			@endforeach
+		</div>
+	@else
+		<div class="card">
+			<div class="card-block">
+				Sandığında hiç eşya yok, hemen {{ config('minecraft.sqlchest.command') }} yazarak bir şeyler koymaya başla ve buradan görüntüle!
 			</div>
-		@endforeach
-	</div>
+		</div>
+	@endif
 @stop
 
 @section('scripts')
