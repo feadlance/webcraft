@@ -163,6 +163,11 @@ Route::post('/payment/listener', [
   'as' => 'payment.listener'
 ]);
 
+Route::post('/payment/send', [
+  'uses' => '\Webcraft\Http\Controllers\PaymentController@postSend',
+  'as' => 'payment.send'
+]);
+
 Route::get('/odeme/basarili', [
   'uses' => '\Webcraft\Http\Controllers\PaymentController@getSuccess',
   'as' => 'payment.success',
