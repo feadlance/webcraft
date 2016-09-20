@@ -19,10 +19,8 @@ class Group_Command extends Model
     	return $this->belongsTo('Webcraft\Models\Group')->first();
     }
 
-    public function replaceCommand(User $user, $slug = false)
+    public function replaceCommand(User $user)
     {
-    	$title = $slug !== false ? str_slug($this->group()->title, $slug) : $this->group()->title;
-
-    	return str_replace(['@p', '@g'], [$user->username, $title], $this->command);
+    	return str_replace(['@p', '@g'], [$user->username, str_slug($this->group()->title, ' ')], $this->command);
     }
 }

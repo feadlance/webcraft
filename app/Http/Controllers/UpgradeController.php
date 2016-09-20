@@ -49,12 +49,16 @@ class UpgradeController extends Controller
 			return Response::json(['error' => 'Sunucu ile bağlantı kurulamadığı için grup komutlarını gönderemedik, lütfen admine bildir.']);
 		}
 
-		foreach ( $group->getCommands()->where('type', 'first')->get() as $command ) {
-			$ws->doCommandAsConsole('csync add ' . $command->replaceCommand(Auth::user(), ' '));
+		/*foreach ( $group->getCommands()->where('type', 'first')->get() as $command ) {
+			$ws->doCommandAsConsole('csync add ' . $command->replaceCommand(Auth::user()));
 		}
 
 		foreach ( $group->getCommands()->where('type', 'last')->get() as $command ) {
-			$ws->doCommandAsConsole('csync add time ' . Carbon::now()->addDays(1) . ' ' . $command->replaceCommand(Auth::user(), ' '));
+			$ws->doCommandAsConsole('csync add time ' . Carbon::now()->addDays($selected_day) . ' ' . $command->replaceCommand(Auth::user(), ' '));
+		}*/
+
+		foreach ( $group->getCommands()->where('type', 'first')->get() as $key => $command ) {
+			$ws->doCommandAsConsole($command->replaceCommand(Auth::user()));
 		}
 		
 		$ws->disconnect();

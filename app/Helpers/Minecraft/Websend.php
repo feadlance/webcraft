@@ -130,33 +130,41 @@ class Websend
 	{
 		$up = unpack( "Ci", fread( $this->stream, 1 ) );
 		$b = $up["i"];
-		if($b > 127){
+
+		if( $b > 127 ){
 			$b -= 256;
 		}
+
 		return $b;
 	}
 	private function readRawUnsignedByte()
 	{
 		$up = unpack( "Ci", fread( $this->stream, 1 ) );
 		$b = $up["i"];
+
 		return $b;
 	}
 	private function readChar()
 	{
 		$byte1 = $this->readRawByte();
 		$byte2 = $this->readRawByte();
+
 		$charValue = chr(utf8_decode((($byte1 << 8) | ($byte2 & 0xff))));
+
 		return $charValue;
 	}
 	private function readChars($len)
 	{
 		$buf = "";
-		for($i = 0;$i<$len;$i++)
+
+		for ($i = 0; $i < $len; $i++)
 		{
 			$byte1 = $this->readRawByte();
 			$byte2 = $this->readRawByte();
+
 			$buf = $buf.chr(utf8_decode((($byte1 << 8) | ($byte2 & 0xff))));
 		}
+
 		return $buf;
 	}
 
@@ -169,27 +177,17 @@ class Websend
 	* @param string $playerName Exact name of the player to run it as.
 	* @return true if the command and player were found, else false
 	*/
-	public function doCommandAsPlayer($cmmd, $playerName)
+	public function doCommandAsPlayer($cmmd, $playerName = "null")
 	{
-		$this->writeRawByte(1);
-		$this->writeString($cmmd);
-		if(isset($playerName))
-		{
-			$this->writeString($playerName);
-		}
-		else
-		{
-			$this->writeString("null");
+		if ( mb_substr($cmmd, 0, 1, 'UTF-8') === '/' ) {
+			$cmmd = mb_substr($cmmd, 1, null, 'UTF-8');
 		}
 
-		if($this->readRawInt() == 1)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		$this->writeRawByte(1);
+		$this->writeString($cmmd);
+		$this->writeString($playerName);
+
+		return $this->readRawInt() == 1 ? true : false;
 	}
 
 	/**
@@ -200,6 +198,10 @@ class Websend
 	*/
 	public function doCommandAsConsole($cmmd)
 	{
+		if ( mb_substr($cmmd, 0, 1, 'UTF-8') === '/' ) {
+			$cmmd = mb_substr($cmmd, 1, null, 'UTF-8');
+		}
+
 		$this->writeRawByte(2);
 		$this->writeString($cmmd);
 
