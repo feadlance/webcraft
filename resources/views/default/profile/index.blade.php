@@ -114,7 +114,7 @@
 							<div class="stats-section">
 								<a href="{{ route('profile.chest', ['player' => $user->username]) }}">
 									<span>Sandığı</span>
-									{{ $user->chests()->totalInventoryItem($user) }} eşya
+									{{ is_numeric($user->chests()->totalInventoryItem()) ? $user->chests()->totalInventoryItem() : 0 }} eşya
 								</a>
 							</div>
 							<div class="stats-section">

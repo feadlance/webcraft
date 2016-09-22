@@ -28,9 +28,9 @@ class Chest extends Model
 		return json_decode($value, true);
 	}
 
-	public function scopeAvailable($query, User $user)
+	public function scopeAvailable($query)
 	{
-		foreach ( $user->chests()->get() as $chest ) {
+		foreach ( $query->get() as $chest ) {
 			if ( count($chest->inventory) >= config('minecraft.sqlchest.slot') ) {
 				continue;
 			}
@@ -39,11 +39,11 @@ class Chest extends Model
 		}
 	}
 
-	public function scopeTotalInventoryItem($query, User $user)
+	public function scopeTotalInventoryItem($query)
 	{
 		$total = [];
 		
-		foreach ( $user->chests()->get() as $chest ) {
+		foreach ( $query->get() as $chest ) {
 			$total[] = count($chest->inventory);
 		}
 

@@ -19,7 +19,7 @@
 
 						<div class="form-group">
 							<label for="amount">Türk Lirası</label>
-							<input type="text" name="amount" id="amount" class="form-control" value="10">
+							<input type="text" name="amount" id="amount" class="form-control" value="{{ old('amount', 10) }}">
 						</div>
 
 						<div class="form-group">
