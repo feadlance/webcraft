@@ -246,7 +246,7 @@ class PaymentController extends Controller
 
 		curl_close($curl);
 
-		return redirect()->route('payment.send')->with('iframe', $responseJson->Message);
+		return redirect()->route('payment')->with('iframe', $responseJson->Message);
 	}
 
 	/*

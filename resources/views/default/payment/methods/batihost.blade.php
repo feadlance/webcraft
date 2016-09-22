@@ -18,7 +18,7 @@
 						<input type="hidden" name="batihostid" value="{{ config('payment.methods.batihost.id') }}">
 
 						<div class="form-group">
-							<label for="amount">Kredi</label>
+							<label for="amount">Türk Lirası</label>
 							<input type="text" name="amount" id="amount" class="form-control" value="10">
 						</div>
 
