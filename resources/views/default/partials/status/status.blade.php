@@ -41,7 +41,7 @@
 			</li>
 		</ul>
 	</div>
-	@include($template . '.partials.status.post_comment', ['open' => $open ?? false])
+	@include($template . '.partials.status.post_comment', ['open' => isset($open) ? $open : false])
 
 	<div class="status-comments"{!! isset($open) && $open ? ' style="display: block;"' : '' !!}>
 		@foreach ( $status->comments()->get() as $comment )

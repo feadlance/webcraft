@@ -138,9 +138,11 @@ class User extends Authenticatable
 
 	public function getProfileStatuses()
 	{
-	    return Status::where(function($query) {
-	    	return $query->where('wall_id', $this->id)->orWhere('wall_id', 0);
-	    })->orWhere('user_id', $this->id);
+		return Status::where('wall_id', $this->id)->where(function ($query) {
+	    	return $query->whereIn('user_id', $this->friends()->pluck('id'))->orWhereIn('user_id', self::where('isAdmin', 1)->pluck('id'));
+	    })->orWhere(function ($query) {
+	    	return $query->where('wall_id', 0)->where('user_id', $this->id);
+	    });
 	}
 
 	public function getHomeStatuses()

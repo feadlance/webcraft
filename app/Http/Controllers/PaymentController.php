@@ -186,7 +186,7 @@ class PaymentController extends Controller
 		]);
 
 		$validator->setAttributeNames([
-			'amount' => 'Kredi Miktarı'
+			'amount' => 'Para Miktarı'
 		]);
 
 		if ( $validator->fails() ) {
@@ -194,11 +194,13 @@ class PaymentController extends Controller
 		}
 
 		$generateHash = base64_encode(hash_hmac('sha256', Auth::user()->username . '|' . Auth::user()->email . '|' . Auth::id() . config('payment.methods.paywant.key'), config('payment.methods.paywant.secret'), true));
+
+		$amount = $request->input('amount');
 		
 		$productData = [
-			'name' =>  'Kredi',
-			'amount' => $request->input('amount') * 100,
-			'extraData' => $request->input('amount'),
+			'name' =>  $amount . ' Türk Lirası',
+			'amount' => $amount * 100,
+			'extraData' => $amount,
 			'paymentChannel' => '1,2,3',
 			'commissionType' => 1
 		];
@@ -244,7 +246,7 @@ class PaymentController extends Controller
 
 		curl_close($curl);
 
-		return redirect()->to($responseJson->Message);
+		return redirect()->route('payment.send')->with('iframe', $responseJson->Message);
 	}
 
 	/*

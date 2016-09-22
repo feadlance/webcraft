@@ -18,6 +18,6 @@ class UserController extends Controller
 		}
 
 		return view(app('template') . '.user.index')
-			->with('users', $users->get());
+			->with('users', $users->paginate(50));
 	}
 }
