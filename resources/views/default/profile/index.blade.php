@@ -110,9 +110,17 @@
 								{{ $user->game()->playTime() }}
 							</div>
 						</div>
-						<div class="stats-section">
-							<span>Oyun Puanı</span>
-							{{ $user->game()->point }}
+						<div class="stats-inline clearfix">
+							<div class="stats-section">
+								<a href="{{ route('profile.chest', ['player' => $user->username]) }}">
+									<span>Sandığı</span>
+									{{ $user->chests()->totalInventoryItem($user) }} eşya
+								</a>
+							</div>
+							<div class="stats-section">
+								<span>Oyun Puanı</span>
+								{{ $user->game()->point }}
+							</div>
 						</div>
 					@else
 						<span style="color: #afafaf; padding: 1.25rem; display: block;">Oyun verisi henüz oluşmamış.</span>

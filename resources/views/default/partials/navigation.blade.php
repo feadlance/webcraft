@@ -53,6 +53,9 @@
 			<li{!! Request::route()->getName() == 'account' ? ' class="active"' : '' !!}>
 				<a href="{{ route('account') }}">Profilim</a>
 			</li>
+			<li{!! Request::route()->getName() == 'account.notifications' ? ' class="active"' : '' !!}>
+				<a href="{{ route('account.notifications') }}">Bildirimlerim</a>
+			</li>
 			<li{!! Request::route()->getName() == 'users' ? ' class="active"' : '' !!}>
 				<a href="{{ route('users') }}">Oyuncular</a>
 			</li>

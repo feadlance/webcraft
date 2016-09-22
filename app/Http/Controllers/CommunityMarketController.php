@@ -30,7 +30,7 @@ class CommunityMarketController extends Controller
 			return Response::json(['error' => 'Bu ürünü almak için yeterli oyun paranız yok.']);
 		}
 
-		$available_chest = Auth::user()->chests()->available();
+		$available_chest = Auth::user()->chests()->available(Auth::user());
 
 		if ( isset($available_chest->id) !== true ) {
 			$last_chest = Auth::user()->chests()->orderBy('number', 'desc')->first();

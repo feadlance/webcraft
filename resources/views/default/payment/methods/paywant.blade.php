@@ -33,7 +33,7 @@
 
 						<div class="form-group{{ $errors->has('amount') ? ' has-danger' : '' }}">
 							<label for="amount">Türk Lirası</label>
-							<input type="text" name="amount" id="amount" class="form-control" value="10">
+							<input type="text" name="amount" id="amount" class="form-control" value="{{ old('amount', 10) }}">
 							@if ( $errors->has('amount') )
 								<span class="form-control-feedback">{{ $errors->first('amount') }}</span>
 							@endif
