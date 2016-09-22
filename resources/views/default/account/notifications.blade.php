@@ -15,7 +15,8 @@
 						<ul class="list-group-user notification">
 							@foreach ( Auth::user()->notifications as $notification )
 								@include ($template . '.partials.notification.' . snake_case(class_basename($notification->type)), [
-									'user' => Webcraft\Models\User::find($notification->data['user_id'])
+									'user' => Webcraft\Models\User::find($notification->data['user_id']),
+									'payload' => $notification->data
 								])
 							@endforeach
 

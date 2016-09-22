@@ -5,6 +5,7 @@ namespace Webcraft\Http\Controllers;
 use Auth;
 use Response;
 use Webcraft\Models\Community_Market;
+use Webcraft\Notifications\SelledCommunityItem;
 
 use Illuminate\Http\Request;
 
@@ -53,7 +54,9 @@ class CommunityMarketController extends Controller
 
 		if ( Auth::id() !== $product->user()->id ) {
 			Auth::user()->game()->balance()->take($product->price(true));
+
 			$product->user()->game()->balance()->give($product->price(true));
+			$product->user()->notify(new SelledCommunityItem(Auth::user(), $product->icon()));
 
 			$success_message = 'Ürün başarıyla alındı! ' . config('minecraft.sqlchest.command') . ' yazarak görüntüleyebilirsin.';
 		}
