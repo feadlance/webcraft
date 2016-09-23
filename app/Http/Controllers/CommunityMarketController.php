@@ -27,7 +27,9 @@ class CommunityMarketController extends Controller
 			return Response::json(['error' => 'Ürün bulunamadı.']);
 		}
 
-		if ( Auth::id() !== $product->user()->id && $product->price > Auth::user()->game()->balance()->format() ) {
+		$balanceFormat = Auth::user()->game() && Auth::user()->game()->balance() ? Auth::user()->game()->balance()->format() : 0;
+
+		if ( Auth::id() !== $product->user()->id && $product->price > $balanceFormat ) {
 			return Response::json(['error' => 'Bu ürünü almak için yeterli oyun paranız yok.']);
 		}
 

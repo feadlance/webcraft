@@ -36,7 +36,7 @@
 					<i class="fa fa-turkish-lira"></i> {{ Auth::user()->getMoney() }}
 				</div>
 				<div class="pull-right" data-toggle="tooltip" title="Oyun Parası">
-					<i class="fa fa-money"></i> {{ Auth::user()->game() ? Auth::user()->game()->balance()->format() : '0.00' }}
+					<i class="fa fa-money"></i> {{ Auth::user()->game() && Auth::user()->game()->balance() ? Auth::user()->game()->balance()->format() : '0.00' }}
 				</div>
 			</div>
 		</div>

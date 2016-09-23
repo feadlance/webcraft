@@ -103,7 +103,7 @@
 						<div class="stats-inline clearfix">
 							<div class="stats-section">
 								<span>Oyun Parası</span>
-								{{ $user->game()->balance()->format() }}
+								{{ $user->game()->balance() ? $user->game()->balance()->format() : 0 }}
 							</div>
 							<div class="stats-section">
 								<span>Oynama Süresi</span>
