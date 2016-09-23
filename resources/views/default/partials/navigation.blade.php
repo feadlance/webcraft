@@ -59,6 +59,9 @@
 			<li{!! Request::route()->getName() == 'users' ? ' class="active"' : '' !!}>
 				<a href="{{ route('users') }}">Oyuncular</a>
 			</li>
+			<li{!! Request::route()->getName() == 'top.best' ? ' class="active"' : '' !!}>
+				<a href="{{ route('top.best') }}">En İyiler</a>
+			</li>
 			<li{!! Request::route()->getName() == 'payment' ? ' class="active"' : '' !!}>
 				<a href="{{ route('payment') }}">Kredi Yükle</a>
 			</li>
