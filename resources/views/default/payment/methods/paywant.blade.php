@@ -18,6 +18,11 @@
 		</div>
 	@endif
 
+	<div class="alert alert-warning">
+		<strong>Dikkat!</strong>
+		İşlemleri tamamladıktan sonra maksimum 4-5 dakika içerisinde hesabınıza yüklenir.
+	</div>
+
 	<div class="row">
 		<div class="col-lg-8 offset-lg-2">
 			<div class="card">
