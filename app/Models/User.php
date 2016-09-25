@@ -37,14 +37,14 @@ class User extends Authenticatable
 
 	protected $hidden = [
 	    'password',
-	    'remember_token',
+	    'remember_token'
 	];
 
 	protected $casts = [
-		'sex' => 'boolean'
+		'sex' => 'boolean',
 		'isLogged' => 'integer',
 		'isVerified' => 'integer',
-		'isAdmin' => 'integer',
+		'isAdmin' => 'integer'
 	];
 
 	/*

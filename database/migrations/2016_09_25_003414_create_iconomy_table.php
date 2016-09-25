@@ -17,7 +17,7 @@ class CreateIconomyTable extends Migration
             $table->increments('id');
             $table->string('username', 32);
             $table->double('balance', 64, 2);
-            $table->integer('status', 2);
+            $table->integer('status');
         });
     }
 
