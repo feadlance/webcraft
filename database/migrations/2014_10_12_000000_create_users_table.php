@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('realname');
             $table->bigInteger('mobile');
             $table->string('city');
-            $table->boolean('sex');
+            $table->integer('sex');
             $table->smallInteger('isLogged');
             $table->smallInteger('isVerified');
             $table->smallInteger('isAdmin');

@@ -41,7 +41,7 @@ class User extends Authenticatable
 	];
 
 	protected $casts = [
-		'sex' => 'boolean',
+		'sex' => 'integer',
 		'isLogged' => 'integer',
 		'isVerified' => 'integer',
 		'isAdmin' => 'integer'
