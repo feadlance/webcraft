@@ -40,6 +40,13 @@ class User extends Authenticatable
 	    'remember_token',
 	];
 
+	protected $casts = [
+		'sex' => 'boolean'
+		'isLogged' => 'integer',
+		'isVerified' => 'integer',
+		'isAdmin' => 'integer',
+	];
+
 	/*
 	* Get Attributes
 	*/

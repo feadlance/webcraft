@@ -21,7 +21,11 @@ class Community_Market extends Model
 	];
 
 	protected $casts = [
-		'skills' => 'array'
+		'type' => 'integer',
+		'meta' => 'integer',
+		'durability' => 'integer',
+		'max_durability' => 'integer',
+		'skills' => 'array',
 	];
 
 	public function user()

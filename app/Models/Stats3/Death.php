@@ -16,7 +16,15 @@ class Death extends Model
 		if ( !in_array($this->cause, $mobs['MONSTERS']) && !in_array($this->cause, $mobs['ANIMALS']) ) {
 			return false;
 		}
+
+		$cause = $this->cause;
+
+		switch ($cause) {
+			case 'PIG_ZOMBIE':
+				$cause = 'PIG';
+				break;
+		}
 		
-		return 'https://minotar.net/avatar/MHF_' . $this->cause . '/' . $size . '.png';
+		return 'https://minotar.net/avatar/MHF_' . $cause . '/' . $size . '.png';
 	}
 }

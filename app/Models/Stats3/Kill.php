@@ -21,7 +21,15 @@ class Kill extends Model
 		if ( !in_array($this->entityType, $mobs['MONSTERS']) && !in_array($this->entityType, $mobs['ANIMALS']) ) {
 			return false;
 		}
+
+		$type = $this->entityType;
+
+		switch ($type) {
+			case 'PIG_ZOMBIE':
+				$type = 'PIG';
+				break;
+		}
 		
-		return 'https://minotar.net/avatar/MHF_' . $this->entityType . '/' . $size . '.png';
+		return 'https://minotar.net/avatar/MHF_' . $type . '/' . $size . '.png';
 	}
 }

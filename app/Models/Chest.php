@@ -18,7 +18,8 @@ class Chest extends Model
 	];
 
 	protected $casts = [
-		'opened' => 'boolean'
+		'opened' => 'boolean',
+		'number' => 'integer'
 	];
 
 	public $timestamps = false;

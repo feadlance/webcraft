@@ -28,6 +28,7 @@ return [
         'POLAR_BEAR' => 'Kutup Ayısı',
         'SPIDER' => 'Örümcek',
         'ZOMBIE_PIGMAN' => 'Zombi Domuz Adam',
+        'PIG_ZOMBIE' => 'Zombi Domuz Adam',
         'CREEPER' => 'Creeper',
         'ELDER_GUARDIAN' => 'ELDER_GUARDIAN',
         'ENDERMITE' => 'ENDERMITE',
@@ -64,6 +65,8 @@ return [
         'ARROW' => 'Ok Tarafından',
         'FALL' => 'Yüksekten Düşerek',
         'LAVA' => 'Lavda Yanarak',
+        'FIRE_TICK' => 'Bilinmeyen',
+        'Unknown' => 'Bilinmeyen'
 
     ],
 
