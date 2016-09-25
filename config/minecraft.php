@@ -91,6 +91,7 @@ return [
         'POLAR_BEAR',
         'SPIDER',
         'ZOMBIE_PIGMAN',
+        'PIG_ZOMBIE'
         'CREEPER',
         'ELDER_GUARDIAN',
         'ENDERMITE',
@@ -117,7 +118,9 @@ return [
       'OTHERS' => [
         'ARROW',
         'FALL',
-        'LAVA'
+        'LAVA',
+        'FIRE_TICK',
+        'Unknown'
       ]
 
   ]
