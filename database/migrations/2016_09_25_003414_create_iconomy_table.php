@@ -15,7 +15,7 @@ class CreateIconomyTable extends Migration
     {
         Schema::create('iconomy', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username');
+            $table->string('username', 32);
             $table->double('balance', 64, 2);
             $table->integer('status', 2);
         });
