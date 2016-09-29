@@ -321,3 +321,12 @@ Route::post('/status/comment/like', [
   'as' => 'status.comment.like',
   'middleware' => ['auth']
 ]);
+
+/*
+* Bug
+*/
+
+Route::post('/bug', [
+  'uses' => '\Webcraft\Http\Controllers\BugController@post',
+  'as' => 'bug'
+]);

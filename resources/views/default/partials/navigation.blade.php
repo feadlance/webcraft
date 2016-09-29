@@ -1,4 +1,4 @@
-<nav>
+<div id="nav">
 	<div class="logo">
 		<a href="/">{{ MinecraftServer::name() }}</a>
 	</div>
@@ -43,6 +43,7 @@
 	</div>
 
 	<div class="widget" style="border-bottom: 0;">
+		<button data-toggle="modal" data-target="#bugModal" class="btn btn-warning w-100 m-b-1">HATA BİLDİR</button>
 		<ul class="navigation-menu">
 			<li{!! Request::route()->getName() == 'home' ? ' class="active"' : '' !!}>
 				<a href="{{ route('home') }}">Anasayfa</a>
@@ -77,4 +78,4 @@
 	<div class="bottom">
 		Copyright, 2016
 	</div>
-</nav>
+</div id="nav">

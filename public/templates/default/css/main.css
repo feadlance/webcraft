@@ -13,7 +13,7 @@ body {
     background: #ecf0f1;
 }
 
-nav {
+#nav {
     width: 300px;
     height: 100%;
     position: fixed;
@@ -24,13 +24,13 @@ nav {
     transition: right 300ms;
 }
 
-nav > .logo {
+#nav > .logo {
 	height: 100px;
 	line-height: 100px;
 	text-align: center;
 }
 
-nav > .logo a {
+#nav > .logo a {
 	display: block;
 	font-size: 50px;
     text-decoration: none;
@@ -39,29 +39,29 @@ nav > .logo a {
     font-family: 'Exo';
 }
 
-nav > .widget {
+#nav > .widget {
     width: 270px;
     margin: 0 auto;
     padding: 13px 0;
     border-bottom: 1px solid #ddd;
 }
 
-nav > .widget .user-card .card-block {
+#nav > .widget .user-card .card-block {
 	text-align: center;
 	padding: 10px;
 }
 
-nav > .widget .user-card .avatar {
+#nav > .widget .user-card .avatar {
 	margin-bottom: 5px;
 	padding-bottom: 10px;
 	border-bottom: 1px solid rgba(0, 0, 0, .10);
 }
 
-nav > .widget .user-card .line {
+#nav > .widget .user-card .line {
 	display: block;
 }
 
-nav > .widget .user-card .card-block.footer {
+#nav > .widget .user-card .card-block.footer {
 	border-top: 1px solid rgba(0, 0, 0, .10);
 }
 
@@ -90,7 +90,7 @@ nav > .widget .user-card .card-block.footer {
     background: #e74c3c;
 }
 
-nav > .bottom {
+#nav > .bottom {
     padding: 10px;
     text-align: center;
     color: #fff;
@@ -175,7 +175,7 @@ header .pull-right > .header-item #mobileMenu {
 */
 
 @media (max-width: 991px) {
-	nav {
+	#nav {
 		right: -300px;
 		left: unset;
 	}

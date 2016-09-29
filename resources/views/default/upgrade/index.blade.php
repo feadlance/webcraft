@@ -3,7 +3,6 @@
 @section('title', 'Hesabımı Yükselt')
 
 @section('header')
-	<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/sweetalert/sweetalert.css">
 	<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/datepicker/css/bootstrap-datepicker3.min.css">
 @stop
 
@@ -127,9 +126,7 @@
 @stop
 
 @section('scripts')
-	
 	<script type="text/javascript" src="templates/{{ $template }}/components/datepicker/js/bootstrap-datepicker.min.js"></script>
-	<script type="text/javascript" src="templates/{{ $template }}/components/sweetalert/sweetalert.min.js"></script>
 	<script type="text/javascript">var player = '{{ Auth::user()->username }}';</script>
 	<script type="text/javascript" src="templates/{{ $template }}/js/request.js"></script>
 @stop
