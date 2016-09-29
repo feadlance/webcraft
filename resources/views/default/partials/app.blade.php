@@ -49,7 +49,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<textarea placeholder="Bir hata gördüyseniz lütfen bildirin..." name="bug[cause]" class="form-control"></textarea>
+							<textarea placeholder="Bir hata gördüyseniz lütfen bildirin..." name="bug[cause]" class="form-control" rows="5"></textarea>
 							<span class="form-control-feedback"></span>
 						</div>
 						<div class="form-group clearfix">

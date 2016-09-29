@@ -17,6 +17,10 @@ class BugController extends Controller
 			return redirect()->back()->with('flash.error', 'Hata mesajı 350 karakterden fazla olamaz.');
 		}
 
+		if ( mb_strlen($cause, 'UTF-8') < 10 ) {
+			return redirect()->back()->with('flash.error', 'Hata mesajı 10 karakterden az olamaz.');
+		}
+
 		Mail::send(app('template') . '.partials.mail.bug', ['bug' => $request->input('bug.cause'), 'user' => Auth::user(), 'server_name' => MinecraftServer::name()], function ($m) {
 		    $m->to('davutkmbr@gmail.com', 'Davut Kember')->subject(MinecraftServer::name() . ' sunucusundan gelen bug bildirimi.');
 		});
