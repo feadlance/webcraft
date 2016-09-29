@@ -549,6 +549,9 @@ var buyGroup = function (that) {
 					swal('Tamamdır!', 'Grup başarıyla satın alındı, eğer oyunda değilseniz oyuna girdiğinzde komutlar size gönderilecektir.', 'success');
 					$(that).closest('#buyGroupModal').modal('hide');
 				}
+			},
+			error: function (r) {
+				$('html').html(r.responseText);
 			}
 		});
 

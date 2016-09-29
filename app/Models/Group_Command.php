@@ -21,6 +21,10 @@ class Group_Command extends Model
 
     public function replaceCommand(User $user)
     {
-    	return str_replace(['@p', '@g'], [$user->username, str_slug($this->group()->title, ' ')], $this->command);
+        if ( mb_substr($this->command, 0, 1, 'UTF-8') === '/' ) {
+            $command = mb_substr($this->command, 1, null, 'UTF-8');
+        }
+
+    	return str_replace(['@p', '@g'], [$user->username, str_slug($this->group()->title, ' ')], $command);
     }
 }
