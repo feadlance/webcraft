@@ -74,12 +74,4 @@
 			</li>
 		</ul>
 	</div>
-<<<<<<< HEAD
 </div>
-=======
-
-	<div class="bottom">
-		Copyright, 2016
-	</div>
-</div id="nav">
->>>>>>> origin/master
