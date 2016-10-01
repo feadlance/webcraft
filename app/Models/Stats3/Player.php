@@ -69,8 +69,12 @@ class Player extends Model
 
 	public function playTime()
 	{
+<<<<<<< HEAD
 		 $playTime = $this->belongsTo('Webcraft\Models\Stats3\Playtime', 'uuid', 'uuid')->first();
 		 return $playTime ? $playTime->value : 0;
+=======
+		return $this->belongsTo('Webcraft\Models\Stats3\Playtime', 'uuid', 'uuid')->first()->value ?: 0;
+>>>>>>> origin/master
 	}
 
 	public function totalJoin()
