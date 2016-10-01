@@ -409,9 +409,199 @@ var acceptFriend = function (that, id) {
 * Group
 */
 
-var addGroup = function (that) {
+$('#newGroupModal').on('show.bs.modal', function (event) {
+	var modal = $(this);
+	var button = $(event.relatedTarget);
 
-	var fields = ['title', 'group', 'money'];
+	var id = button.closest('.col-lg-4').data('id');
+
+	$('#groupNewMoneyField').find('button').attr('data-count', 0);
+	modal.find('.modal-header').text('Yeni Grup');
+	modal.find('.money-multiple').remove();
+	modal.find('input,textarea').val('');
+
+	if ( id ) {
+		modal.find('.modal-header').text('Grubu Düzenle');
+
+		$.ajax({
+			type: 'POST',
+			url: url + '/group/info',
+			data: {
+				id: id,
+				_token: token
+			},
+			success: function(respond) {
+				if ( respond.error ) {
+					modal.find('.modal-body').text(respond.error);
+				} else {
+					modal.find('#group_id').val(id);
+					modal.find('#group_title').val(respond.group.title);
+
+					var first_money_field = true;
+					$.each(respond.group.money, function(key, value) {
+						if ( first_money_field ) {
+							$('#group_money_form').html('<div class="row"> <div class="col-lg-6"> <label class="m-b-0 hidden-md-down">Kaç gün?</label> <small class="form-text text-muted m-t-0 hidden-md-down" style="margin-bottom: .5rem;">Grup kaç gün geçerli? (-1 = Sınırsız)</small> <input type="text" value="' + value.day + '" placeholder="30" id="group_money_day_' + key + '" name="group_money_day[]" class="datepicker form-control"> <span class="form-control-feedback"></span> </div> <div class="col-lg-6"> <label class="m-b-0 hidden-md-down">Fiyatı</label> <small class="form-text text-muted m-t-0 hidden-md-down" style="margin-bottom: .5rem;">Gerçek paradır. (₺)</small> <input type="text" value="' + value.money + '" placeholder="10" id="group_money_' + key + '" name="group_money[]" class="form-control"> <span class="form-control-feedback"></span> </div> </div>');
+							first_money_field = false;
+						} else {
+							$('#groupNewMoneyField').before('<div class="money-multiple form-group"> <div class="row"> <div class="col-lg-6"> <input type="text" value="' + value.day + '" placeholder="30" id="group_money_day_' + key + '" name="group_money_day[]" class="datepicker form-control"> <span class="form-control-feedback"></span> </div> <div class="col-lg-6"> <input type="text" value="' + value.money + '" placeholder="10" id="group_money_' + key + '" name="group_money[]" class="form-control"> <span class="form-control-feedback"></span> </div> </div> </div>');
+						}
+					});
+
+					$('#groupNewMoneyField').find('button').attr('data-count', respond.group.money.length - 1);
+
+					var commands = [];
+					var expiry_commands = [];
+
+					$.each(respond.group.commands, function (key, value) {
+						if ( value.type == 'first' ) {
+							commands.push(value.command);
+						} else if ( value.type == 'last' ) {
+							expiry_commands.push(value.command);
+						}
+					});
+
+					modal.find('#group_commands').val(commands.join("\n"));
+					modal.find('#group_expiry_commands').val(expiry_commands.join("\n"));
+				}
+			}
+		});
+	}
+});
+
+$('#buyGroupModal').on('show.bs.modal', function (event) {
+	var modal = $(this);
+	var button = $(event.relatedTarget);
+
+	var id = button.closest('.col-lg-4').data('id');	
+
+	if ( !id ) {
+		modal.find('.modal-body').text('Grup bulunamadı.');
+	} else {
+		modal.closest('#buyGroupModal').find('#group_id').val(id);
+
+		$.ajax({
+			type: 'POST',
+			url: url + '/group/info',
+			data: {
+				id: id,
+				_token: token
+			},
+			success: function(respond) {
+				if ( respond.error ) {
+					modal.find('.modal-body').text(respond.error);
+				} else {
+					modal.find('.modal-header').text(respond.group.title);
+
+					modal.find('#group_modal_money select').html('');
+					$.each(respond.group.money, function(index, value) {
+						if ( value.day == '-1' ) {
+							value.day_format = 'Sınırsız';
+						} else {
+							value.day_format = value.day + ' gün';
+						}
+
+						modal.find('#group_modal_money select').append('<option value="' + value.day + '_' + value.money + '_' + index + '">' + value.day_format + ' (' + value.money + '₺)</option>');
+					});
+
+					if ( !respond.group.features.length ) {
+						modal.find('#group_modal_features').hide();
+					} else {
+						modal.find('#group_modal_features ul').html('');
+						modal.find('#group_modal_features').show();
+						$.each(respond.group.features, function (index, value) {
+							modal.find('#group_modal_features ul').append('<li>' + value + '</li>');
+						});
+					}
+
+					if ( !respond.group.commands.length ) {
+						modal.find('#group_modal_commands').hide();
+					} else {
+						modal.find('#group_modal_commands ul').html('');
+						modal.find('#group_modal_commands').show();
+						$.each(respond.group.commands, function (index, value) {
+							if ( value.type == 'first' ) {
+								modal.find('#group_modal_commands ul').append('<li>' + value.command.replace('@p', player) + '</li>');
+							}
+						});
+					}
+				}
+			}
+		});
+	}
+});
+
+var buyGroup = function (that) {
+	var id = $(that).closest('#buyGroupModal').find('#group_id').val();
+	var money = $(that).closest('.modal-body').find('#group_modal_money select').val();
+
+	$.ajax({
+			type: 'POST',
+			url: url + '/group/buy',
+			data: {
+				id: id,
+				money: money,
+				_token: token
+			},
+			success: function(respond) {
+				if ( respond.error ) {
+					swal('Hata!', respond.error, 'error');
+				} else {
+					swal('Tamamdır!', 'Grup başarıyla satın alındı, eğer oyunda değilseniz oyuna girdiğinzde komutlar size gönderilecektir.', 'success');
+					$(that).closest('#buyGroupModal').modal('hide');
+				}
+			},
+			error: function (r) {
+				$('html').html(r.responseText);
+			}
+		});
+
+	return false;
+};
+
+var buyCommunityMarketItem = function(that, id) {
+	swal({
+	    title: "Emin misiniz?",
+	    type: "info",
+	    showCancelButton: true,
+	    confirmButtonColor: "#DD6B55",
+	    confirmButtonText: "Evet, eminim.",
+	    cancelButtonText: "İptal",
+	    closeOnConfirm: true
+	}, function() {
+		$.ajax({
+			type: 'POST',
+			url: url + '/community/market/buy',
+			data: {
+				id: id,
+				_token: token
+			},
+			success: function(respond) {
+				if ( respond.error ) {
+					swal('Hata!', respond.error, 'error');
+				} else {
+					swal('Tamamdır!', respond.message, 'success');
+				}
+			},
+			error: function (t) {
+				$('html').html(t.responseText);
+			}
+		});
+	});
+
+	return false;
+};
+
+var addGroup = function (that) {
+	var id = $(that).closest('#newGroupModal').find('#group_id');
+	var title = $(that).closest('.modal-body').find('#group_title');
+	var money_day = $(that).closest('.modal-body').find('input[name=\'group_money_day[]\']').map(function(idx, elem) {
+		return $(elem).val();
+	}).get();
+	var money = $(that).closest('.modal-body').find('input[name=\'group_money[]\']').map(function(idx, elem) {
+		return $(elem).val();
+	}).get();
+	var commands = $(that).closest('.modal-body').find('#group_commands');
+	var expiry_commands = $(that).closest('.modal-body').find('#group_expiry_commands');
 
 	$(that).closest('.modal-body').addClass('loading');
 
@@ -419,31 +609,44 @@ var addGroup = function (that) {
 		type: 'POST',
 		url: url + '/group/new',
 		data: {
-			title: $(that).closest('.modal-body').find('#group_title').val(),
-			group: $(that).closest('.modal-body').find('#group_group').val(),
-			money: $(that).closest('.modal-body').find('#group_money').val(),
+			id: id.val(),
+			title: title.val(),
+			money: money,
+			money_day: money_day,
+			commands: commands.val(),
+			expiry_commands: expiry_commands.val(),
 			_token: token
 		},
 		success: function(respond) {
-			$.each(fields, function( index, value ) {
-				$(that).closest('.modal-body').find('#group_' + value).removeClass('form-control-danger');
-				$(that).closest('.modal-body').find('#group_' + value).parent().removeClass('has-danger');
-				$(that).closest('.modal-body').find('#group_' + value).parent().find('.form-control-feedback').text('');
-			});
+			$(that).closest('.modal-body').find('.form-control-danger').removeClass('form-control-danger');
+			$(that).closest('.modal-body').find('.has-danger').removeClass('has-danger');
+			$(that).closest('.modal-body').find('.form-control-feedback').text('');
 
 			if ( respond.errors ) {
-				$.each(respond.errors, function( index, value ) {
-					$(that).closest('.modal-body').find('#group_' + index).addClass('form-control-danger');
-					$(that).closest('.modal-body').find('#group_' + index).parent().addClass('has-danger');
-					$(that).closest('.modal-body').find('#group_' + index).parent().find('.form-control-feedback').text(value);
+				$.each(respond.errors, function(index, value) {
+					$(that).closest('.modal-body').find('#group_' + index.replace('.', '_')).addClass('form-control-danger');
+					var has_danger = $(that).closest('.modal-body').find('#group_' + index.replace('.', '_'));
+					var feedback = $(that).closest('.modal-body').find('#group_' + index.replace('.', '_'));
+
+					if ( feedback.closest('.form-group').find(' > .form-control-feedback').length ) {
+						feedback.closest('.form-group').addClass('has-danger');
+						feedback.closest('.form-group').find(' > .form-control-feedback').text(value);
+					} else {
+						feedback.closest('.col-lg-6').addClass('has-danger');
+						feedback.closest('.col-lg-6').find('.form-control-feedback').text(value);
+					}
 				});
 			} else {
 				$('#newGroupModal').modal('hide');
 				$('#groupCards').find('.alert').remove();
-				$('#groupCards').append('<div class="col-lg-4"> <div class="card"> <div class="card-block"> <h4 class="card-title">' + respond.data.title + '</h4> <p class="card-text">' + respond.data.description + '</p> </div> <ul class="list-group list-group-flush"> <li class="list-group-item"> <form role="form" onsubmit="return addGroupFeature(this, ' + respond.data.id + ');"> <div class="form-group m-b-0"> <input type="text" placeholder="Yeni özellik..." class="form-control"> </div> </form> </li> </ul> <div class="card-block"> <a href="#" class="btn btn-outline-primary card-link">Satın Al</a> <a href="' + respond.data.delete_link + '" class="btn btn-outline-danger card-link">Grubu Sil</a> </div> </div> </div>');
-				$.each(fields, function( index, value ) {
-					$(that).closest('.modal-body').find('input').val('');
-				});
+				$(that).closest('.modal-body').find('input').val('');
+				
+				if ( respond.data.new ) {
+					$('#groupCards').append(respond.data.layout);
+				} else {
+					var layout = $(respond.data.layout).children();
+					$('#group_card_' + id.val()).html(layout);
+				}
 			}
 
 			$(that).closest('.modal-body').removeClass('loading');
@@ -452,6 +655,39 @@ var addGroup = function (that) {
 
 	return false;
 
+};
+
+var groupNewMoneyField = function (that) {
+	var count = parseInt($(that).attr('data-count')) + 1;
+	$(that).attr('data-count', count);
+	$(that).parent().before('<div class="money-multiple form-group"> <div class="row"> <div class="col-lg-6"> <input type="text" placeholder="30" id="group_money_day_' + count + '" name="group_money_day[]" class="datepicker form-control"> <span class="form-control-feedback"></span> </div> <div class="col-lg-6"> <input type="text" placeholder="10" id="group_money_' + count + '" name="group_money[]" class="form-control"> <span class="form-control-feedback"></span> </div> </div> </div>');
+	return false;
+};
+
+var deleteGroup = function(that, id) {
+	swal({
+	    title: "Grubu siliyorsun...",
+	    text: "Emin misiniz?",
+	    type: "warning",
+	    showCancelButton: true,
+	    confirmButtonColor: "#DD6B55",
+	    confirmButtonText: "Evet, eminim.",
+	    cancelButtonText: "İptal",
+	    closeOnConfirm: true
+	}, function() {
+		$(that).closest('.card').addClass('loading');
+
+	    $.getJSON(url + '/group/delete/' + id, function(respond) {
+			if ( respond.error ) {
+				swal("Hata!", respond.error, "error");
+				$(that).closest('.card').removeClass('loading');
+			} else {
+				$(that).closest('.col-lg-4').remove();
+			}
+		});
+	});
+	
+	return false;
 };
 
 var addGroupFeature = function(that, id) {
@@ -474,7 +710,132 @@ var addGroupFeature = function(that, id) {
 				}
 			} else {
 				$(that).find('input').val('');
-				$(that).closest('.list-group').find('.list-group-item:last').before('<li class="list-group-item"> ' + respond.data.body + '<div class="pull-right"> <a href="' + respond.data.delete_link + '" class="text-danger"> <i class="fa fa-times"></i> </a> </div> </li>');	
+				$(that).closest('.list-group').find('.list-group-item:last').before(respond.data.layout);
+			}
+		}
+	});
+
+	return false;
+};
+
+var deleteGroupFeature = function(that, id) {
+	swal({
+	    title: "Özellik siliniyor..",
+	    text: "Emin misiniz?",
+	    type: "warning",
+	    showCancelButton: true,
+	    confirmButtonColor: "#DD6B55",
+	    confirmButtonText: "Evet, eminim.",
+	    cancelButtonText: "İptal",
+	    closeOnConfirm: true
+	}, function() {
+		$(that).closest('.list-group-item').addClass('loading');
+
+	    $.getJSON(url + '/group/delete/feature/' + id, function(respond) {
+			if ( respond.error ) {
+				swal("Hata!", respond.error, "error");
+				$(that).closest('.list-group-item').removeClass('loading');
+			} else {
+				$(that).closest('.list-group-item').remove();
+			}
+		});
+	});
+	
+	return false;
+};
+
+/*var addGroupCommand = function(that, id) {
+	$.ajax({
+		type: 'POST',
+		url: url + '/group/new/command',
+		data: {
+			id: id,
+			command: $(that).find('input').val(),
+			_token: token
+		},
+		success: function(respond) {
+			if ( respond.error ) {
+				swal("Hata!", respond.error, "error");
+			} else if (respond.validations) {
+				if ( respond.validations.id ) {
+					swal("Hata!", respond.validations.id, "error");
+				} else if ( respond.validations.command ) {
+					swal("Hata!", respond.validations.command, "error");
+				}
+			} else {
+				$(that).find('input').val('');
+			}
+		}
+	});
+
+	return false;
+};*/
+
+$('#itemModal').on('show.bs.modal', function (event) {
+	var button = $(event.relatedTarget);
+	var that = this;
+
+	$(this).find('#item_piece').removeAttr('readonly').val('');
+	
+	$.ajax({
+		type: 'POST',
+		url: url + '/oyuncu/' + player + '/chest/sell_modal',
+		data: {
+			item: button.data('item'),
+			number: button.data('number'),
+			_token: token
+		},
+		success: function(respond) {
+			if ( respond.error ) {
+				$(that).find('.modal-body').text(respond.error);
+			} else {
+				$(that).find('#item_order').attr('value', button.data('item'));
+				$(that).find('#chest_number').attr('value', button.data('number'));
+
+				if ( respond.chest.inventory[button.data('item')][3] == 1 ) {
+					$(that).find('#item_piece').attr('readonly', 'true').val(1);
+				}
+			}
+		}
+	});
+});
+
+var sellInventoryItem = function (that) {
+	var order = $(that).find('#item_order').val();
+	var number = $(that).find('#chest_number').val();
+	var price = $(that).find('#item_price').val();
+	var piece = $(that).find('#item_piece').val();
+
+	$.ajax({
+		type: 'POST',
+		url: url + '/oyuncu/' + player + '/chest/sell',
+		data: {
+			order: order,
+			number: number,
+			price: price,
+			piece: piece,
+			_token: token
+		},
+		success: function(respond) {
+			if ( respond.error ) {
+				swal("Hata!", respond.error, "error");
+			} else if (respond.validations) {
+				if ( respond.validations.piece ) {
+					swal("Hata!", respond.validations.piece, "error");
+				} else if ( respond.validations.price ) {
+					swal("Hata!", respond.validations.price, "error");
+				}
+			} else {
+				if ( respond.chest.inventory[order] ) {
+					$('#inv_item_' + number + '_' + order + ' .inv-piece').text(respond.chest.inventory[order][3]);
+				} else {
+					$('#inv_item_' + number + '_' + order).parent().html('<img src="global/images/minecraft/items/0-0.png" alt="Inventory Block">').removeAttr('style');
+				}
+
+				swal('Tamamdır!', 'Ürünün artık topluluk pazarında!');
+				
+				$('#itemModal').modal('hide');
+				$(that).find('input').val('');
 			}
 		}
 	});

@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('SERVER_TITLE', 'My Application'),
+    'name' => env('APP_NAME', 'WebCraft'),
 
     /*
     |--------------------------------------------------------------------------
@@ -230,11 +230,13 @@ return [
          */
         //'Ftp' => Anchu\Ftp\FtpServiceProvider::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+        'Websend' => Webcraft\Helpers\Minecraft\Websend::class,
         'TurkishGrammar' => Webcraft\Helpers\Functions\TurkishGrammar::class,
         'MinecraftColor' => Webcraft\Helpers\Minecraft\Color::class,
         'MinecraftServer' => Webcraft\Helpers\Minecraft\Server::class,
         'MinecraftQuery' => Webcraft\Helpers\Minecraft\Query::class,
         'MinecraftRcon' => Webcraft\Helpers\Minecraft\Rcon::class,
+        'MinecraftMaterial' => Webcraft\Helpers\Minecraft\Materials\Material::class,
 
     ],
 

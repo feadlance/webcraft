@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('code', 11);
-            $table->float('balance');
+            $table->decimal('balance', 8, 4);
             $table->timestamps();
         });
     }

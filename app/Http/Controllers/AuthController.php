@@ -11,7 +11,6 @@ use Response;
 use Validator;
 use MinecraftServer;
 use Webcraft\Models\User;
-use Webcraft\Models\Iconomy;
 
 use Illuminate\Http\Request;
 

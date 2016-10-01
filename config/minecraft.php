@@ -24,9 +24,28 @@ return [
   */
 
   'server' => [
-    'name' => env('SERVER_TITLE', 'WebCraft'),
+    'name' => env('APP_NAME', 'WebCraft'),
   	'host' => env('SERVER_HOST', 'localhost'),
   	'port' => env('SERVER_PORT', 25565)
+  ],
+
+  /*
+  * Websend
+  */
+
+  'websend' => [
+    'host' => env('WEBSEND_HOST', config('minecraft.server.host')),
+    'port' => env('WEBSEND_PORT', 4445),
+    'password' => env('WEBSEND_PASSWORD')
+  ],
+
+  /*
+  * SQLChest
+  */
+
+  'sqlchest' => [
+    'command' => '/sqlchest',
+    'slot' => 4 * 9
   ],
 
   /*
@@ -72,6 +91,7 @@ return [
         'POLAR_BEAR',
         'SPIDER',
         'ZOMBIE_PIGMAN',
+        'PIG_ZOMBIE',
         'CREEPER',
         'ELDER_GUARDIAN',
         'ENDERMITE',
@@ -98,7 +118,9 @@ return [
       'OTHERS' => [
         'ARROW',
         'FALL',
-        'LAVA'
+        'LAVA',
+        'FIRE_TICK',
+        'Unknown'
       ]
 
   ]

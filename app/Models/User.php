@@ -37,7 +37,14 @@ class User extends Authenticatable
 
 	protected $hidden = [
 	    'password',
-	    'remember_token',
+	    'remember_token'
+	];
+
+	protected $casts = [
+		'sex' => 'integer',
+		'isLogged' => 'integer',
+		'isVerified' => 'integer',
+		'isAdmin' => 'integer'
 	];
 
 	/*
@@ -68,17 +75,26 @@ class User extends Authenticatable
 
 	public function getAvatar($size = 60)
 	{
-		return 'https://minotar.net/avatar/' . $this->username . '/' . $size;
+		return 'http://mcapi.ca/avatar/2d/' . $this->username . '/' . $size . '/true';
 	}
 
 	public function getSkin($size = 100)
 	{
-		return 'https://minotar.net/body/' . $this->username . '/' . $size;
+		return 'https://mcapi.ca/skin/2d/' . $this->username . '/' . $size . '/true';
 	}
 
 	public function getSex()
 	{
 	    return $this->sex === 1 ? 'Erkek' : ($this->sex !== 0 ? 'Kadın' : false);
+	}
+
+	/*
+	* Payment
+	*/
+
+	public function getLastPayments()
+	{
+		return $this->hasMany('Webcraft\Models\Last_Payments', 'user_id');
 	}
 
 	/*
@@ -92,7 +108,7 @@ class User extends Authenticatable
 
 	public function giveMoney($money)
 	{
-	    return $this->update([
+	    return $this->update([ 
 	        'money' => $this->money + $money
 	    ]);
 	}
@@ -129,9 +145,11 @@ class User extends Authenticatable
 
 	public function getProfileStatuses()
 	{
-	    return Status::where(function($query) {
-	    	return $query->where('wall_id', $this->id)->orWhere('wall_id', 0);
-	    })->orWhere('user_id', $this->id);
+		return Status::where('wall_id', $this->id)->where(function ($query) {
+	    	return $query->whereIn('user_id', $this->friends()->pluck('id'))->orWhereIn('user_id', self::where('isAdmin', 1)->pluck('id'));
+	    })->orWhere(function ($query) {
+	    	return $query->where('wall_id', 0)->where('user_id', $this->id);
+	    });
 	}
 
 	public function getHomeStatuses()
@@ -170,37 +188,14 @@ class User extends Authenticatable
 		return $this->belongsTo('Webcraft\Models\Stats3\Player', 'username', 'name')->first();
 	}
 
-	public function getBalance($format = false)
+	public function chests()
 	{
-		$balance = $this->belongsTo('Webcraft\Models\Iconomy', 'username', 'username')->first();
-		
-		if ( $balance === null ) {
-			$balance = 0;
-		} else {
-			$balance = $balance->balance;
-		}
-
-		return $format === true ? number_format($balance, 2) : $balance;
+		return $this->hasMany('Webcraft\Models\Chest', 'username', 'username');
 	}
 
-	public function giveBalance($ws, $balance)
+	public function market()
 	{
-		return $ws->console('money give ' . $this->username . ' ' . $balance);
-	}
-
-	public function takeBalance($ws, $balance)
-	{
-		return $ws->console('money take ' . $this->username . ' ' . $balance);
-	}
-
-	public function giveItem($ws, $item, $piece)
-	{
-		return $ws->console('give ' . $this->username . ' ' . $item . ' ' . $piece);
-	}
-
-	public function setGroup($ws, $group)
-	{
-		return $ws->console('pex user ' . $this->username . ' group set ' . $group);
+		return $this->hasMany('Webcraft\Models\Community_Market', 'user_id');
 	}
 
 	/*

@@ -2,16 +2,16 @@
 
 @section('title', 'Ölüm Detayları')
 
-@section('breadcrumb')
-	<li class="breadcrumb-item"><a href="{{ route('users') }}">Oyuncular</a></li>
-	<li class="breadcrumb-item"><a href="{{ route('profile', ['player' => $user->username]) }}">{{ $user->getDisplayName() }}</a></li>
-@stop
+@section('breadcrumb', [
+	[route('users'), 'Oyuncular'],
+	[route('profile', ['player' => $user->username]), $user->getDisplayName()]
+])
 
 @section('container')
 	<h3 class="m-b-1">{{ TurkishGrammar::get($user->getDisplayName(), 'i') }} öldürenler</h3>
 
 	<div class="row">
-		@if ( !$from_players->count() && !$from_monsters->count() && !$from_others->count() )
+		@if ( !$user->game()->playerDeaths('PLAYER', true) && !$from_monsters->count() && !$from_others->count() )
 			<div class="col-lg-12">
 				<div class="card">
 					<div class="card-block">
@@ -23,7 +23,7 @@
 			</div>
 		@endif
 
-		@if ( $from_players->count() )
+		@if ( $user->game()->playerDeaths('PLAYER', true) )
 			<div class="col-lg-4">
 				<div class="card">
 					<div class="card-header">
@@ -33,25 +33,21 @@
 					<div class="card-block">
 						<ul class="list-group-user">
 							@foreach ( $from_players as $from_player )
-								@if ( $from_player->killer() )
-									<li class="list-group-user-item clearfix">
-										<div class="avatar">
-											<img src="{{ $from_player->killer()->getAvatar(40) }}" alt="User Avatar">
+								<li class="list-group-user-item clearfix">
+									<div class="avatar">
+										<img src="{{ $from_player->killer()->getAvatar(40) }}" alt="User Avatar">
+									</div>
+									<div class="content">
+										<div class="title">
+											<a href="{{ route('profile', ['player' => $from_player->killer()->username]) }}">
+												<strong>{{ $from_player->killer()->getDisplayName() }}</strong>
+											</a>
 										</div>
-										<div class="content">
-											<div class="title">
-												<a href="{{ route('profile', ['player' => $from_player->killer()->username]) }}">
-													<strong>{{ $from_player->killer()->getDisplayName() }}</strong>
-												</a>
-											</div>
-											<div class="body">
-												{{ $from_player->total }} kez
-											</div>
+										<div class="body">
+											{{ $from_player->total }} kez
 										</div>
-									</li>
-								@else
-									<p class="text-muted m-b-0">Seni öldüren oyuncuların kaydı silinmiş.</p>
-								@endif
+									</div>
+								</li>
 							@endforeach
 						</ul>
 					</div>
@@ -75,7 +71,7 @@
 									</div>
 									<div class="content">
 										<div class="title">
-											<strong>@lang('minecraft.' . $from_monster->cause)</strong>
+											<strong>@lang('minecraft.monsters.' . $from_monster->cause)</strong>
 										</div>
 										<div class="body">
 											{{ $from_monster->value }} kez
@@ -106,7 +102,7 @@
 									</div>
 									<div class="content">
 										<div class="title">
-											<strong>@lang('minecraft.' . $from_other->cause)</strong>
+											<strong>@lang('minecraft.others.' . $from_other->cause)</strong>
 										</div>
 										<div class="body">
 											{{ $from_other->value }} kez

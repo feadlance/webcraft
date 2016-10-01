@@ -90,4 +90,19 @@ class ProfileController extends Controller
 			->with('from_monsters', $from_monsters)
 			->with('from_others', $from_others);
 	}
+
+	public function getChest($player)
+	{
+		$user = User::where('username', $player)->first();
+
+		if ( $user === null ) {
+			return abort(404);
+		}
+
+		$inventories = $user->chests()->orderBy('number', 'asc')->get();
+
+		return view(app('template') . '.profile.chest')
+			->with('user', $user)
+			->with('inventories', $inventories);
+	}
 }

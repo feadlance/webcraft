@@ -2,9 +2,13 @@
 
 @section('title', $user->getDisplayName())
 
-@section('breadcrumb')
-	<li class="breadcrumb-item"><a href="{{ route('users') }}">Oyuncular</a></li>
+@section('header')
+	<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/sweetalert/sweetalert.css">
 @stop
+
+@section('breadcrumb', [
+	[route('users'), 'Oyuncular']
+])
 
 @section('container')
 	<div class="row">
@@ -99,16 +103,24 @@
 						<div class="stats-inline clearfix">
 							<div class="stats-section">
 								<span>Oyun Parası</span>
-								{{ $user->getBalance(true) }}
+								{{ $user->game()->balance() ? $user->game()->balance()->format() : 0 }}
 							</div>
 							<div class="stats-section">
 								<span>Oynama Süresi</span>
 								{{ $user->game()->playTime() }}
 							</div>
 						</div>
-						<div class="stats-section">
-							<span>Oyun Puanı</span>
-							{{ $user->game()->point }}
+						<div class="stats-inline clearfix">
+							<div class="stats-section">
+								<a href="{{ route('profile.chest', ['player' => $user->username]) }}">
+									<span>Sandığı</span>
+									{{ is_numeric($user->chests()->totalInventoryItem()) ? $user->chests()->totalInventoryItem() : 0 }} eşya
+								</a>
+							</div>
+							<div class="stats-section">
+								<span>Oyun Puanı</span>
+								{{ $user->game()->point }}
+							</div>
 						</div>
 					@else
 						<span style="color: #afafaf; padding: 1.25rem; display: block;">Oyun verisi henüz oluşmamış.</span>

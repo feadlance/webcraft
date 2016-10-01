@@ -39,6 +39,10 @@ class AppServiceProvider extends ServiceProvider
 			return new \MinecraftRcon(config('minecraft'));
 		});
 
+		$this->app->singleton(\Webcraft\Helpers\Minecraft\Websend::class, function ($app) {
+			return new \Websend(config('minecraft'));
+		});
+
    		$this->app->singleton('template', function() {
     		return config('minecraft.template');
     	});

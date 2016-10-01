@@ -1,0 +1,25 @@
+/*
+* Player Inventory
+*/
+
+.player-inventory .inv-block {
+	background: url('../images/minecraft/inv-block.png') no-repeat;
+	background-size: 100%;
+	width: 11.111%;
+	text-align: center;
+	padding: 1% 0;
+	float: left;
+	position: relative;
+}
+
+.player-inventory .inv-block .inv-piece {
+	position: absolute;
+	bottom: 0;
+	right: 10px;
+	font-size: 16px;
+	color: #fff;
+}
+
+.player-inventory .inv-block img {
+	width: 70%;
+}

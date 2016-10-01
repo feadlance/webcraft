@@ -10,17 +10,31 @@ class Group extends Model
 
     protected $fillable = [
     	'title',
-    	'group',
     	'money'
     ];
 
-    public function getMoney()
+    protected $casts = [
+        'money' => 'array'
+    ];
+
+    public function getMinimumPrice($format = false)
     {
-    	return number_format($this->money, 2);
+        $min = [];
+
+        foreach ( $this->money as $money ) {
+            $min[] = $money['money'];
+        }
+
+        return $format !== true ? min($min) : number_format(min($min), 2);
     }
 
     public function getFeatures()
     {
-        return $this->hasMany('Webcraft\Models\GroupFeature');
+        return $this->hasMany('Webcraft\Models\Group_Feature');
+    }
+
+    public function getCommands()
+    {
+        return $this->hasMany('Webcraft\Models\Group_Command');
     }
 }

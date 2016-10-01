@@ -2,6 +2,10 @@
 
 @section('title', 'Paylaşım')
 
+@section('header')
+	<link rel="stylesheet" type="text/css" href="templates/{{ $template }}/components/sweetalert/sweetalert.css">
+@stop
+
 @section('container')
 	<div class="col-lg-8 offset-lg-2">
 		<div id="statuses">

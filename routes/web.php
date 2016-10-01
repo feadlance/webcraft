@@ -92,6 +92,24 @@ Route::get('/oyuncu/{player}/olum-detaylari', [
   'middleware' => ['auth']
 ]);
 
+Route::get('/oyuncu/{player}/chest', [
+  'uses' => '\Webcraft\Http\Controllers\ProfileController@getChest',
+  'as' => 'profile.chest',
+  'middleware' => ['auth']
+]);
+
+Route::post('/oyuncu/{player}/chest/sell', [
+  'uses' => '\Webcraft\Http\Controllers\ChestController@postSellItem',
+  'as' => 'profile.chest.sell',
+  'middleware' => ['auth']
+]);
+
+Route::post('/oyuncu/{player}/chest/sell_modal', [
+  'uses' => '\Webcraft\Http\Controllers\ChestController@postSellItemModal',
+  'as' => 'profile.chest.sell_modal',
+  'middleware' => ['auth']
+]);
+
 /*
 * Account
 */
@@ -140,13 +158,14 @@ Route::get('/kredi-yukle', [
   'middleware' => ['auth']
 ]);
 
-Route::get('/payment/listener', [
-  'uses' => '\Webcraft\Http\Controllers\PaymentController@getListener',
+Route::post('/payment/listener', [
+  'uses' => '\Webcraft\Http\Controllers\PaymentController@postListener',
   'as' => 'payment.listener'
 ]);
 
-Route::post('/payment/listener', [
-  'uses' => '\Webcraft\Http\Controllers\PaymentController@postListener'
+Route::post('/payment/send', [
+  'uses' => '\Webcraft\Http\Controllers\PaymentController@postSend',
+  'as' => 'payment.send'
 ]);
 
 Route::get('/odeme/basarili', [
@@ -165,11 +184,17 @@ Route::get('/odeme/basarisiz', [
 * Market
 */
 
-/*Route::get('/market', [
-  'uses' => '\Webcraft\Http\Controllers\MarketController@getIndex',
-  'as' => 'market',
+Route::get('/community/market', [
+  'uses' => '\Webcraft\Http\Controllers\CommunityMarketController@getIndex',
+  'as' => 'community.market',
   'middleware' => ['auth']
-]);*/
+]);
+
+Route::post('/community/market/buy', [
+  'uses' => '\Webcraft\Http\Controllers\CommunityMarketController@postBuy',
+  'as' => 'community.market.buy',
+  'middleware' => ['auth']
+]);
 
 /*
 * Upgrade Account
@@ -181,9 +206,21 @@ Route::get('/hesabimi-yukselt', [
   'middleware' => ['auth']
 ]);
 
+Route::post('/group/buy', [
+  'uses' => '\Webcraft\Http\Controllers\UpgradeController@postBuy',
+  'as' => 'group.buy',
+  'middleware' => ['auth']
+]);
+
 /*
 * Groups
 */
+
+Route::post('/group/info', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@postInfo',
+  'as' => 'group.info',
+  'middleware' => ['auth', 'admin']
+]);
 
 Route::post('/group/new', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@postNew',
@@ -199,13 +236,25 @@ Route::get('/group/delete/{id}', [
 
 Route::post('/group/new/feature', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@postNewFeature',
-  'as' => 'group.new_feature',
+  'as' => 'group.new.feature',
   'middleware' => ['auth', 'admin']
 ]);
 
 Route::get('/group/delete/feature/{id}', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@getDeleteFeature',
   'as' => 'group.delete.feature',
+  'middleware' => ['auth', 'admin']
+]);
+
+Route::post('/group/new/command', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@postNewCommand',
+  'as' => 'group.new.command',
+  'middleware' => ['auth', 'admin']
+]);
+
+Route::get('/group/delete/command/{id}', [
+  'uses' => '\Webcraft\Http\Controllers\GroupController@getDeleteCommand',
+  'as' => 'group.delete.command',
   'middleware' => ['auth', 'admin']
 ]);
 
@@ -271,4 +320,13 @@ Route::post('/status/comment/like', [
   'uses' => '\Webcraft\Http\Controllers\CommentController@postLike',
   'as' => 'status.comment.like',
   'middleware' => ['auth']
+]);
+
+/*
+* Bug
+*/
+
+Route::post('/bug', [
+  'uses' => '\Webcraft\Http\Controllers\BugController@post',
+  'as' => 'bug'
 ]);

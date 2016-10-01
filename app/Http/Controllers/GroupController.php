@@ -2,46 +2,124 @@
 
 namespace Webcraft\Http\Controllers;
 
+use Auth;
+use View;
 use Response;
 use Validator;
 use TurkishGrammar;
 use Webcraft\Models\Group;
-use Webcraft\Models\GroupFeature;
+use Webcraft\Models\Group_Command;
+use Webcraft\Models\Group_Feature;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
+	public function postInfo(Request $request)
+	{
+		$group = Group::find($request->input('id'));
+
+		if ( $group === null ) {
+			return Response::json(['error' => 'Grup bulunamadı.']);
+		}
+
+		$features = [];
+
+		foreach ( $group->getFeatures()->get() as $feature ) {
+			$features[] = $feature->bodyFormat();
+		}
+
+		return Response::json([
+			'success' => true,
+			'group' => [
+				'title' => $group->title,
+				'money' => $group->money,
+				'min_money' => $group->getMinimumPrice(true),
+				'commands' => $group->getCommands()->get(),
+				'features' => $features
+			]
+		]);
+	}
+
 	public function postNew(Request $request)
 	{
 		$validator = Validator::make($request->all(), [
 			'title' => 'required|max:100',
-			'group' => 'required|max:100|alpha_dash',
-			'money' => 'required|regex:/^\d*(\.\d{2})?$/'
+			'money.0' => 'required|regex:/^\d*(\.\d{2})?$/',
+			'money.*' => 'required_with:money_day.*|regex:/^\d*(\.\d{2})?$/',
+			'money_day.0' => 'required|numeric|max:100',
+			'money_day.*' => 'required_with:money.*|numeric|max:100',
+			'commands' => 'max:700',
+			'expiry_commands' => 'max:700'
 		]);
 
 		$validator->setAttributeNames([
 			'title' => 'Grup başlığı',
-			'group' => 'Grubun oyundaki adı',
-			'money' => 'Fiyat'
+			'money.*' => 'Fiyat',
+			'money_day.*' => 'Süre',
+			'commands' => 'Komutlar',
+			'expiry_commands' => 'Komutlar'
 		]);
 
 		if ( $validator->fails() ) {
 			return Response::json(['errors' => $validator->errors()]);
 		}
 
-		$group = Group::create([
+		$group = Group::find($request->input('id'));
+
+		$money_array = [];
+
+		for ($i=0; $i < count($request->input('money')); $i++) {
+			if ( ($money_day = $request->input('money_day.' . $i)) && ($money = $request->input('money.' . $i)) ) {
+				$money_array[] = [
+					'day' => $money_day,
+					'money' => $money
+				];
+			}
+		}
+
+		$group_create = [
 			'title' => $request->input('title'),
-			'group' => $request->input('group'),
-			'money' => $request->input('money')
-		]);
+			'money' => $money_array
+		];
+
+		if ( $group === null ) {
+			$new = true;
+			$group = Group::create($group_create);
+		} else {
+			$group->update($group_create);
+		}
+
+		$group->getCommands()->delete();
+
+		$commands = [];
+		$first_commands = explode("\n", $request->input('commands'));
+		$last_commands = explode("\n", $request->input('expiry_commands'));
+
+		foreach ( $first_commands as $command ) {
+			$commands[] = [
+				'type' => 'first',
+				'command' => $command
+			];
+		}
+
+		foreach ( $last_commands as $command ) {
+			$commands[] = [
+				'type' => 'last',
+				'command' => $command
+			];
+		}
+
+		foreach ( $commands as $command ) {
+			if ( !empty(trim($command['command'])) && !$group->getCommands()->where('command', $command['command'])->where('type', $command['type'])->count() ) {
+				$group->getCommands()->create($command);
+			}
+		}
 
 		return Response::json([
 			'success' => true,
 			'data' => [
-				'id' => $group->id,
-				'title' => $group->title,
-				'description' => TurkishGrammar::get($group->title, 'iyelik') . ' fiyatı ' . $group->getMoney() . ' Türk Lirası\'dır.',
-				'delete_link' => route('group.delete', ['id' => $group->id])
+				'new' => isset($new) ? true : false,
+				'layout' => View::make(app('template') . '.partials.group.group', ['group' => $group])->render()
 			]
 		]);
 	}
@@ -51,13 +129,14 @@ class GroupController extends Controller
 		$group = Group::find($id);
 
 		if ( $group === null ) {
-			return redirect()->back();
+			return Response::json(['error' => 'Grup bulunamadı.']);
 		}
 
 		$group->delete();
+		$group->getCommands()->delete();
 		$group->getFeatures()->delete();
 
-		return redirect()->back();
+		return Response::json(['success' => true]);
 	}
 
 	public function postNewFeature(Request $request)
@@ -88,21 +167,65 @@ class GroupController extends Controller
 		return Response::json([
 			'success' => true,
 			'data' =>[
-				'body' => $feature->bodyFormat(),
-				'delete_link' => route('group.delete.feature', ['id' => $feature->id])
+				'layout' => View::make(app('template') . '.partials.group.feature', ['feature' => $feature])->render()
 			]
 		]);
 	}
 
 	public function getDeleteFeature($id)
 	{
-		$feature = GroupFeature::find($id);
+		$feature = Group_Feature::find($id);
 
 		if ( $feature === null ) {
-			return redirect()->back();
-		}
+			return Response::json(['error' => 'Özellik bulunamadı.']);
+		}		
 
 		$feature->delete();
+
+		return Response::json(['success' => true]);
+	}
+
+	public function postNewCommand(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'id' => 'required|numeric|exists:groups',
+			'command' => 'required|max:100'
+		]);
+
+		if ( $validator->fails() ) {
+			return Response::json(['validations' => $validator->errors()]);
+		}
+
+		$group = Group::find($request->input('id'));
+
+		if ( $group === null ) {
+			return Response::json(['error' => 'Bu özelliği eklemek istediğiniz grubu bulamadık.']);
+		}
+
+		if ( $group->getCommands()->where('command', $request->input('command'))->count() ) {
+			return Response::json(['error' => 'Bu gruba bu komutu zaten eklemişsiniz.']);
+		}
+
+		$command = $group->getCommands()->create([
+			'command' => $request->input('command')
+		]);
+
+		return Response::json([
+			'success' => true,
+			'data' =>[
+				'command' => $command->command,
+				'delete_link' => route('group.delete.command', ['id' => $command->id])
+			]
+		]);
+	}
+
+	public function getDeleteCommand($id)
+	{
+		$command = Group_Command::find($id);
+
+		if ( $command !== null ) {
+			$command->delete();
+		}		
 
 		return redirect()->back();
 	}
