@@ -219,7 +219,7 @@ Route::post('/group/buy', [
 Route::post('/group/info', [
   'uses' => '\Webcraft\Http\Controllers\GroupController@postInfo',
   'as' => 'group.info',
-  'middleware' => ['auth', 'admin']
+  'middleware' => ['auth']
 ]);
 
 Route::post('/group/new', [

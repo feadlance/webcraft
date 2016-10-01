@@ -549,9 +549,6 @@ var buyGroup = function (that) {
 					swal('Tamamdır!', 'Grup başarıyla satın alındı, eğer oyunda değilseniz oyuna girdiğinzde komutlar size gönderilecektir.', 'success');
 					$(that).closest('#buyGroupModal').modal('hide');
 				}
-			},
-			error: function (r) {
-				$('html').html(r.responseText);
 			}
 		});
 
@@ -581,9 +578,6 @@ var buyCommunityMarketItem = function(that, id) {
 				} else {
 					swal('Tamamdır!', respond.message, 'success');
 				}
-			},
-			error: function (t) {
-				$('html').html(t.responseText);
 			}
 		});
 	});
