@@ -13,16 +13,16 @@ $(function() {
 	$('#mobileMenu').on('click', function(e) {
 		e.stopPropagation();
 
-		$('nav').css('right', 0);
+		$('#nav').css('right', 0);
 		$('body').addClass('dark');
 	});
 
-	$('nav').on('click', function(e) {
+	$('#nav').on('click', function(e) {
 		e.stopPropagation();
 	});
 
 	$(window).on('click', function() {
-		$('nav').css('right', -300);
+		$('#nav').css('right', -300);
 		$('body').removeClass('dark');
 	});
 
